@@ -135,39 +135,39 @@ export const authOptions = {
                 token.user.password = session.password;
             } else {
 
-                // // First, attempt to find the user in the Credential model
-                // const userCredential = await getCredentialByEmail({ email: token.email });
-                // if (userCredential) {
-                //     token.user = userCredential; // Found in UserCredential model
-                // } else {
-
-                //     // If not found in Credential model, check the User model (OAuth)
-                //     const user = await getUserByEmail({ email: token.email });
-
-                //     if (user) {
-                //         token.user = user; // Found in OAuth model
-                //     } else {
-                //         // Handle the case when the email is not found in either model
-                //         throw new Error('User not found');
-                //     }
-                // }
-
-                // First, attempt to find the user in the User model (OAuth)
-                const user = await getUserByEmail({ email: token.email });
-
-                if (user) {
-                    token.user = user; // Found in OAuth model
+                // First, attempt to find the user in the Credential model
+                const userCredential = await getCredentialByEmail({ email: token.email });
+                if (userCredential) {
+                    token.user = userCredential; // Found in UserCredential model
                 } else {
-                    // If not found in User model, check the Credential model
-                    const userCredential = await getCredentialByEmail({ email: token.email });
 
-                    if (userCredential) {
-                        token.user = userCredential; // Found in UserCredential model
+                    // If not found in Credential model, check the User model (OAuth)
+                    const user = await getUserByEmail({ email: token.email });
+
+                    if (user) {
+                        token.user = user; // Found in OAuth model
                     } else {
                         // Handle the case when the email is not found in either model
                         throw new Error('User not found');
                     }
                 }
+
+                // // First, attempt to find the user in the User model (OAuth)
+                // const user = await getUserByEmail({ email: token.email });
+
+                // if (user) {
+                //     token.user = user; // Found in OAuth model
+                // } else {
+                //     // If not found in User model, check the Credential model
+                //     const userCredential = await getCredentialByEmail({ email: token.email });
+
+                //     if (userCredential) {
+                //         token.user = userCredential; // Found in UserCredential model
+                //     } else {
+                //         // Handle the case when the email is not found in either model
+                //         throw new Error('User not found');
+                //     }
+                // }
 
 
             }

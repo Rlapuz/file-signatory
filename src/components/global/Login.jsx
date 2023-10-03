@@ -55,7 +55,7 @@ export const Login = () => {
                     <div className="text-center">
                       <Image
                         className="mx-auto"
-                        src="/bsu_logo.png"
+                        src="/images/Meneses.png"
                         alt="logo"
                         width={90}
                         height={90}

@@ -1,3 +1,4 @@
+import { Calendar } from "@/components/local/Calendar";
 import React from "react";
 
 export const metadata = {
@@ -5,7 +6,11 @@ export const metadata = {
 };
 
 export const CalendarPage = () => {
-  return <div>CalendarPage</div>;
+  return (
+    <>
+      <Calendar />
+    </>
+  );
 };
 
 export default CalendarPage;

@@ -9,13 +9,15 @@ export const Dashboardlayout = ({ children }) => {
         <div className="flex-grow flex gap-3">
           <Sidebar />
           <div className="w-full flex flex-col gap-7">
-            <Navbar />
-            {children}
+            <div>
+              <Navbar />
+            </div>
+            <div>{children}</div>
           </div>
         </div>
-        <div className="mt-auto">
+        <footer>
           <Footer />
-        </div>
+        </footer>
       </div>
     </>
   );

@@ -1,3 +1,4 @@
+import { ViewFiles } from "@/components/local/ViewFiles";
 import React from "react";
 
 export const metadata = {
@@ -5,7 +6,11 @@ export const metadata = {
 };
 
 export const ViewFilesPage = () => {
-  return <div>ViewFilesPage</div>;
+  return (
+    <>
+      <ViewFiles />
+    </>
+  );
 };
 
 export default ViewFilesPage;
