@@ -40,7 +40,7 @@ export const Navbar = () => {
   };
   return (
     <>
-      <nav className="shadow-md bg-transparent rounded-md">
+      <nav className="shadow-md bg-transparent rounded-md w-full">
         {/* search */}
         <div className="flex items-center justify-between py-3 px-6 bg-gray-50 border-b space-x-6">
           <form

@@ -93,8 +93,8 @@ export const File = () => {
   return (
     <>
       <h1 className="text-md font-semibold mb-8">Files</h1>
-      <div>
-        <section className="ml-5 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5 text-sm">
+      <div className="flex justify-center">
+        <section className="grid grid-cols-1 gap-4 md:gap-10 md:grid-cols-3 lg:grid-cols-5 text-sm">
           {files.map((file) => (
             <div key={file._id}>
               <div className="flex flex-col gap-2 border rounded-lg p-2 bg-gray-50 hover:bg-gray-200 box-border h-52 w-52 shadow-md  overflow-hidden">
@@ -104,7 +104,7 @@ export const File = () => {
                       size={20}
                       className=" text-red-900"
                     />
-                    <h3 className="ml-0">{file.filename}</h3>
+                    <h3 className="ml-0 truncate ...">{file.filename}</h3>
                   </div>
                   <BiDotsVerticalRounded
                     size={20}

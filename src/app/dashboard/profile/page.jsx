@@ -1,11 +1,15 @@
-import React from "react";
+import { Profile } from "@/components/local/Profile";
 
 export const metadata = {
   title: "Meneses | Profile",
 };
 
 export const ProfilePage = () => {
-  return <div>ProfilePage</div>;
+  return (
+    <>
+      <Profile />
+    </>
+  );
 };
 
 export default ProfilePage;

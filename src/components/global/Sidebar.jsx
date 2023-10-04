@@ -65,11 +65,8 @@ export const Sidebar = () => {
       };
 
   const router = useRouter();
+  const pathname = router.pathname;
 
-  // Function to determine if a menu item is active and style
-  const isActive = (href) => {
-    return router.pathname === href;
-  };
   return (
     <>
       <aside>
@@ -103,12 +100,14 @@ export const Sidebar = () => {
 
           {/* menus */}
           <div className="flex flex-col h-full">
-            <ul className="whitespace-pre px-3 text-[0.9rem] py-5 flex flex-col gap-1 font-medium overflow-x-hidden">
+            <ul className="whitespace-pre px-3 text-[0.9rem] py-5 flex flex-col gap-1 font-bold overflow-x-hidden">
               {/* dashboard */}
               <li>
                 <Link
                   href="/dashboard"
-                  className={isActive("/dashboard") ? "linkactive" : "link"}>
+                  className={`link ${
+                    pathname === "/dashboard" ? "active" : ""
+                  }`}>
                   <BsGrid
                     size={23}
                     className="min-w-max"
@@ -121,9 +120,9 @@ export const Sidebar = () => {
               <li>
                 <Link
                   href="/dashboard/view-files"
-                  className={
-                    isActive("/dashboard/view-files") ? "linkactive" : "link"
-                  }>
+                  className={`link ${
+                    pathname === "/dashboard/view-files" ? "active" : ""
+                  }`}>
                   <BsBox
                     size={23}
                     className="min-w-max"
@@ -136,9 +135,9 @@ export const Sidebar = () => {
               <li>
                 <Link
                   href="/dashboard/upload"
-                  className={
-                    isActive("/dashboard/upload") ? "linkactive" : "link"
-                  }>
+                  className={`link ${
+                    pathname === "/dashboard/upload" ? "active" : ""
+                  }`}>
                   <SlCloudUpload
                     size={23}
                     className="min-w-max"
@@ -151,9 +150,9 @@ export const Sidebar = () => {
               <li>
                 <Link
                   href="/dashboard/calendar"
-                  className={
-                    isActive("/dashboard/calendar") ? "linkactive" : "link"
-                  }>
+                  className={`link ${
+                    pathname === "/dashboard/calendar" ? "active" : ""
+                  }`}>
                   <BsCalendar4Event
                     size={23}
                     className="min-w-max"
@@ -166,9 +165,9 @@ export const Sidebar = () => {
               <li>
                 <Link
                   href="/dashboard/notifications"
-                  className={
-                    isActive("/dashboard/notifications") ? "linkactive" : "link"
-                  }>
+                  className={`link ${
+                    pathname === "/dashboard/notifications" ? "active" : ""
+                  }`}>
                   <BsBell
                     size={23}
                     className="min-w-max"
@@ -181,9 +180,9 @@ export const Sidebar = () => {
               <li>
                 <Link
                   href="/dashboard/profile"
-                  className={
-                    isActive("/dashboard/profile") ? "linkactive" : "link"
-                  }>
+                  className={`link ${
+                    pathname === "/dashboard/profile" ? "active" : ""
+                  }`}>
                   <BsPersonGear
                     size={23}
                     className="min-w-max"

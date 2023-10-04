@@ -1,3 +1,5 @@
+import { Filestack } from "@/components/local/Filestack";
+import { UploadCare } from "@/components/local/UploadCare";
 import React from "react";
 
 export const metadata = {
@@ -5,7 +7,12 @@ export const metadata = {
 };
 
 export const UploadPage = () => {
-  return <div>UploadPage</div>;
+  return (
+    <>
+      {/* <UploadCare /> */}
+      <Filestack />
+    </>
+  );
 };
 
 export default UploadPage;

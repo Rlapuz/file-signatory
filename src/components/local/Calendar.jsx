@@ -113,13 +113,14 @@ export const Calendar = () => {
 
   return (
     <>
-      <div className="border-4 rounded-sm border-solid border-cyan-500">
-        <nav className="flex justify-between mb-2 border-b border-violet-100 p-4">
+      <div className="">
+        <nav className="flex flex-col justify-between mb-2 border-b border-violet-100 p-4">
           <h1 className="font-bold text-2xl text-gray-700">Calendar</h1>
         </nav>
         <main className="flex flex-col items-center justify-between py-4 px-6">
-          <div className="grid grid-cols-8">
-            <div className="col-span-6">
+          <div className="md:flex gap-5 justify-center grid md:grid-cols-10">
+            {/* ..................................................... */}
+            <div className="w-full md:col-span-8 overflow-auto md:overflow-visible">
               <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
                 headerToolbar={{
@@ -140,7 +141,7 @@ export const Calendar = () => {
             </div>
             <div
               id="draggable-el"
-              className="ml-16 w-full border-2 p-2 rounded-md mt-16 lg:h-1/2 bg-violet-50">
+              className="w-full border-2 p-2 rounded-md mt-4 lg:h-1/2 bg-violet-50">
               <h1 className="font-bold text-lg text-center">Drag Event</h1>
               {events.map((event) => (
                 <div

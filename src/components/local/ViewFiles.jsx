@@ -51,7 +51,7 @@ export const ViewFiles = ({ updateFolders }) => {
             onClick={handleShowModal}
             className="flex justify-between items-center gap-2 border rounded-md shadow-md px-4 py-2 bg-gray-50 hover:bg-gray-200">
             <HiFolderPlus size={20} />
-            <h1 className="text-sm font-semibold">New Folder</h1>
+            <h1 className="text-sm font-semibold">New</h1>
           </button>
           {showModal && (
             <Modal
