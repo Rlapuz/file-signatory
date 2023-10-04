@@ -35,7 +35,7 @@ export const Login = () => {
         return;
       }
 
-      router.replace("/dashboard");
+      router.replace("https://file-signatory.vercel.app/dashboard");
     } catch (error) {
       console.error("Login error:", error);
     }
