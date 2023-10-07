@@ -19,7 +19,10 @@ export const AdminPage = () => {
     }
 
     try {
+      // local route
       const res = await fetch("http://localhost:3000/api/register", {
+        // deploy route vercel
+        // const res = await fetch("https://file-signatory.vercel.app/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

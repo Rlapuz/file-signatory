@@ -39,13 +39,19 @@ export const Filestack = () => {
         setUploadedFileHandle(handle);
         const { filename, size, url, mimetype } = res.filesUploaded[0];
 
-        const response = await fetch("http://localhost:3000/api/file", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ filename, size, url, mimetype }),
-        });
+        const response = await fetch(
+          // local route
+          // "http://localhost:3000/api/file",
+          // deploy route vercel
+          "https://file-signatory.vercel.app/api/file",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ filename, size, url, mimetype }),
+          }
+        );
         // console.log("Response", response);
         if (response.ok) {
           console.log("File uploaded successfully!");
