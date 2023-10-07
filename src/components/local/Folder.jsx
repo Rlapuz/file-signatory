@@ -19,7 +19,10 @@ export const Folder = () => {
         if (session) {
           const userId = session.user._id; // Get the user's ID from the session
           const res = await fetch(
-            `http://localhost:3000/api/folder?userId=${userId}`,
+            // local route
+            // `http://localhost:3000/api/folder?userId=${userId}`,
+            // deploy route vercel
+            `https://file-signatory.vercel.app/api/folder?userId=${userId}`,
             {
               cache: "no-store",
             }
@@ -83,9 +86,15 @@ export const Folder = () => {
 
   const deleteFolder = async (id) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/folder?id=${id}`, {
-        method: "DELETE",
-      });
+      // local route
+      // const res = await fetch(`http://localhost:3000/api/folder?id=${id}`, {
+      // deploy route vercel
+      const res = await fetch(
+        `https://file-signatory.vercel.app/api/folder?id=${id}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (!res.ok) {
         throw new Error("Something went wrong");
       }

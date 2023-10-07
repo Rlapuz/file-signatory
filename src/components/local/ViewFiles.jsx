@@ -22,13 +22,20 @@ export const ViewFiles = ({ updateFolders }) => {
   const handleCreate = async () => {
     try {
       // Create a new folder here (similar to your previous code)
-      const response = await fetch("http://localhost:3000/api/folder", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: newFolderName }),
-      });
+      // local route
+      // const response = await fetch("http://localhost:3000/api/folder", {
+
+      // deploy route vercel
+      const response = await fetch(
+        "https://file-signatory.vercel.app/api/folder",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: newFolderName }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to create folder");

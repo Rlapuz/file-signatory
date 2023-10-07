@@ -26,7 +26,10 @@ export const File = () => {
           // console.log("Session", session);
 
           const res = await fetch(
-            `http://localhost:3000/api/file?userId=${userId}`,
+            // local route
+            // `http://localhost:3000/api/file?userId=${userId}`,
+            // deploy route vercel
+            `https://file-signatory.vercel.app/api/file?userId=${userId}`,
             {
               cache: "no-store",
             }
