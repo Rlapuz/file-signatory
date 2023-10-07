@@ -56,40 +56,13 @@ export const Folder = () => {
     };
   }, [session]);
 
-  // Function to create a new folder
-  // const createFolder = async () => {
-  //   try {
-  //     const newFolderName = prompt("Enter folder name:");
-  //     if (!newFolderName) return; // User canceled or didn't enter a name
-
-  //     // Create the new folder
-  //     const response = await fetch("http://localhost:3000/api/folder", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ name: newFolderName }),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error("Failed to create folder");
-  //     }
-
-  //     // Fetch the updated list of folders
-  //     const updatedFolders = await fetchFolders();
-  //     setFolders(updatedFolders);
-  //   } catch (error) {
-  //     console.error(error);
-  //     alert("Error creating folder: " + error.message);
-  //   }
-  // };
-
   const deleteFolder = async (id) => {
     try {
-      // local route
-      // const res = await fetch(`http://localhost:3000/api/folder?id=${id}`, {
-      // deploy route vercel
       const res = await fetch(
+        // local route
+        // `http://localhost:3000/api/folder?id=${id}`,
+
+        // deploy route vercel
         `https://file-signatory.vercel.app/api/folder?id=${id}`,
         {
           method: "DELETE",
@@ -127,7 +100,7 @@ export const Folder = () => {
         <div key={folder._id}>
           <div className="flex justify-between items-center gap-4 border rounded-lg shadow-md px-3 py-4 bg-gray-50 hover:bg-gray-200">
             <Link
-              href={`/view-files/${folder.userId}?name=${folder.name}`}
+              href={`/view-files/${folder._id}`}
               className="flex items-center gap-2">
               <FaFolder size={20} />
               <h3 className="ml-0">{folder.name}</h3>

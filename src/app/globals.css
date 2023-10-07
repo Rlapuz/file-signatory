@@ -26,6 +26,11 @@ body {
   --l-accent: 61%;
 }
 
+/* login */
+.lot {
+  background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+}
+
 .link {
   @apply p-2.5 flex rounded-md gap-6 items-center md:cursor-pointer cursor-default duration-300 font-medium hover:bg-blue-400;
 }

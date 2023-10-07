@@ -22,11 +22,11 @@ export const ViewFiles = ({ updateFolders }) => {
   const handleCreate = async () => {
     try {
       // Create a new folder here (similar to your previous code)
-      // local route
-      // const response = await fetch("http://localhost:3000/api/folder", {
 
-      // deploy route vercel
       const response = await fetch(
+        // local route
+        // "http://localhost:3000/api/folder",
+        // deploy route vercel
         "https://file-signatory.vercel.app/api/folder",
         {
           method: "POST",

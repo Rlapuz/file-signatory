@@ -50,10 +50,10 @@ export const authOptions = {
                 }
             })
         ],
-    // session: {
-    //     strategy: "jwt"
-    // },
-    // secret: process.env.NEXTAUTH_SECRET,
+    session: {
+        strategy: "jwt"
+    },
+    secret: process.env.NEXTAUTH_SECRET,
 
     pages: {
         signIn: '/',
@@ -177,7 +177,7 @@ export const authOptions = {
 
         async session({ session, token }) {
             session.user = token.user;
-            console.log("Session ewan ", session)
+            // console.log("Session ewan ", session)
             return session;
 
         },

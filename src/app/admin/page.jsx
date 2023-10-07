@@ -20,22 +20,25 @@ export const AdminPage = () => {
 
     try {
       // local route
-      const res = await fetch("http://localhost:3000/api/register", {
-        // deploy route vercel
-        // const res = await fetch("https://file-signatory.vercel.app/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          contact,
-          employeeId,
-          email,
-          password,
-          role,
-        }),
-      });
+      // const res = await fetch("http://localhost:3000/api/register", {
+      // deploy route vercel
+      const res = await fetch(
+        "https://file-signatory.vercel.app/api/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            contact,
+            employeeId,
+            email,
+            password,
+            role,
+          }),
+        }
+      );
 
       if (res.ok) {
         // Clear the form fields manually
@@ -67,45 +70,70 @@ export const AdminPage = () => {
       <form
         onSubmit={registerSubmit}
         className="flex flex-col p-5 justify-center items-center">
-        <input
-          type="text"
-          placeholder="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+        <div class="relative">
+          <input
+            type="text"
+            id="name"
+            class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <label
+            for="name"
+            class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
+            Name
+          </label>
+        </div>
         <br />
         <br />
-        <input
-          type="text"
-          placeholder="contact"
-          value={contact}
-          onChange={(e) => setContact(e.target.value)}
-        />
+        <div class="relative">
+          <input
+            type="text"
+            id="contact"
+            class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+            value={contact}
+            onChange={(e) => setContact(e.target.value)}
+          />
+          <label
+            for="contact"
+            class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
+            Contact
+          </label>
+        </div>
         <br />
+        <div class="relative">
+          <input
+            type="text"
+            id="email"
+            class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <label
+            for="Email"
+            class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
+            Email
+          </label>
+        </div>
         <br />
-        <input
-          type="text"
-          placeholder="empoyeeId"
-          value={employeeId}
-          onChange={(e) => setEmployeeId(e.target.value)}
-        />
-        <br />
-        <br />
-        <input
-          type="text"
-          placeholder="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <br />
-        <br />
-        <input
-          type="password"
-          placeholder="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <br />
+        <div class="relative">
+          <input
+            type="password"
+            id="password"
+            class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <label
+            for="Password"
+            class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
+            Password
+          </label>
+        </div>
         <br />
         <br />
 
@@ -119,6 +147,7 @@ export const AdminPage = () => {
           <option value="admin">Admin</option>
           <option value="dean">Dean</option>
           <option value="cesu">Cesu</option>
+          <option value="progchair">ProgChair</option>
         </select>
 
         <br />
