@@ -9,14 +9,20 @@ import { IoCloseOutline } from "react-icons/io5";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { Avatar } from "@nextui-org/react";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Button,
+} from "@nextui-org/react";
 
 export const Navbar = () => {
   const { data: session } = useSession();
 
-  const [openProfile, setOpenProfile] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [showSearchResults, setShowSearchResults] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   // Function to handle the search query
   const handleSearch = (e) => {
@@ -65,50 +71,57 @@ export const Navbar = () => {
               <HiOutlineBellAlert className="w-6 h-6" />
             </div>
             <div>
-              <div onClick={() => setOpenProfile((prev) => !prev)}>
-                <div>
-                  {session?.user?.image ? (
-                    <div className="rounded-full w-10 h-10 flex justify-center items-center">
-                      <Avatar
-                        isBordered
-                        color="success"
-                        src={session?.user?.image}
-                      />
+              <div className="flex flex-col gap-2">
+                <Popover
+                  placement="bottom"
+                  showArrow={true}
+                  isOpen={isOpen}
+                  onOpenChange={(open) => setIsOpen(open)}>
+                  <PopoverTrigger>
+                    <div>
+                      {session?.user?.image ? (
+                        <div className="rounded-full w-10 h-10 flex justify-center items-center">
+                          <Avatar
+                            isBordered
+                            color="success"
+                            src={session?.user?.image}
+                          />
+                        </div>
+                      ) : (
+                        <div className="rounded-full w-10 h-10 flex justify-center items-center">
+                          <Avatar
+                            isBordered
+                            color="success"
+                            src="/images/cat.jpg"
+                          />
+                        </div>
+                      )}
                     </div>
-                  ) : (
-                    <div className="rounded-full w-10 h-10 flex justify-center items-center">
-                      <Avatar
-                        isBordered
-                        color="success"
-                        src="/images/cat.jpg"
-                      />
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <div className="px-1 py-2">
+                      <ul className="flex flex-col gap-2">
+                        <Link
+                          href="/dashboard/profile"
+                          className="px-5 hover:bg-violet-300 rounded-md text-center">
+                          Profile
+                        </Link>
+                        <Link
+                          href="/setting"
+                          className="px-5 hover:bg-violet-300 rounded-md text-center">
+                          Settings
+                        </Link>
+                        <hr />
+                        <button
+                          onClick={signOut}
+                          className="px-5 hover:bg-red-500 rounded-md">
+                          Logout
+                        </button>
+                      </ul>
                     </div>
-                  )}
-                </div>
+                  </PopoverContent>
+                </Popover>
               </div>
-
-              {openProfile && (
-                <div className="flex flex-col absolute top-12 -right-1 md:top-30 md:right-24 p-5 w-100 rounded-md bg-white shadow-md">
-                  <ul className="flex flex-col gap-2">
-                    <Link
-                      href="/profile"
-                      className="px-5 hover:bg-gray-300 rounded-md ">
-                      Profile
-                    </Link>
-                    <Link
-                      href="/setting"
-                      className="px-5 hover:bg-gray-300 rounded-md">
-                      Settings
-                    </Link>
-                    <hr />
-                    <button
-                      onClick={signOut}
-                      className="px-5 hover:bg-red-500 rounded-md">
-                      Logout
-                    </button>
-                  </ul>
-                </div>
-              )}
             </div>
             <div className=" flex-col hidden md:block">
               <h1 className="font-medium">{session?.user?.name}</h1>

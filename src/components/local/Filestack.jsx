@@ -36,8 +36,13 @@ export const Filestack = () => {
     try {
       if (res?.filesUploaded && res.filesUploaded.length > 0) {
         const { handle } = res.filesUploaded[0];
-        setUploadedFileHandle(handle);
         const { filename, size, url, mimetype } = res.filesUploaded[0];
+
+        // Extract the filename without the extension
+        const filenameWithoutExtension = filename
+          .split(".")
+          .slice(0, -1)
+          .join(".");
 
         const response = await fetch(
           // local route
@@ -49,13 +54,24 @@ export const Filestack = () => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ filename, size, url, mimetype }),
+            // Save the filename without extension to the database
+            body: JSON.stringify({
+              filename: filenameWithoutExtension,
+              size,
+              url,
+              mimetype,
+            }),
           }
         );
         // console.log("Response", response);
         if (response.ok) {
           console.log("File uploaded successfully!");
-          setUploadedFile({ filename, size, url, mimetype });
+          setUploadedFile({
+            filename: filenameWithoutExtension,
+            size,
+            url,
+            mimetype,
+          });
           setHasUploadedFile(true); // Set the hasUploadedFile state to true
         } else {
           console.error("Failed to upload file to MongoDB.");
@@ -67,6 +83,7 @@ export const Filestack = () => {
       console.error("Error while uploading file:", error);
     }
   };
+
   return (
     <>
       <div className="flex items-center justify-center p-12">
@@ -127,7 +144,7 @@ export const Filestack = () => {
                         )
                       }
                       className="truncate pr-3 text-base font-medium text-[#07074D]">
-                      {uploadedFile.filename}
+                      {uploadedFile.filename.split(".")[0]}
                     </span>
                     <button
                       className="text-[#07074D]"

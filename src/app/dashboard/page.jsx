@@ -1,3 +1,5 @@
+import { Dashboard } from "@/components/local/Dashboard";
+
 export const metadata = {
   title: "Meneses | Dashboard",
 };
@@ -5,11 +7,7 @@ export const metadata = {
 const DashboardPage = () => {
   return (
     <>
-      <main className="">
-        <div className="">
-          <h1>hello</h1>
-        </div>
-      </main>
+      <Dashboard />
     </>
   );
 };

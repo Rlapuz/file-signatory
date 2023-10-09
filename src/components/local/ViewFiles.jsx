@@ -1,15 +1,29 @@
 "use client";
 
 import { useState } from "react";
-import { Modal } from "@/components/local/Modal";
+// import { Modal } from "@/components/local/Modal";
 import { Folder } from "@/components/local/Folder";
 import { File } from "@/components/local/File";
 import { HiFolderPlus } from "react-icons/hi2";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+  Checkbox,
+  Input,
+} from "@nextui-org/react";
 
 export const ViewFiles = ({ updateFolders }) => {
-  const [showModal, setShowModal] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+  /** 
+  * ? manual modal
+  const [showModal, setShowModal] = useState(false);
   const handleShowModal = () => {
     setShowModal(true);
   };
@@ -18,6 +32,7 @@ export const ViewFiles = ({ updateFolders }) => {
     setShowModal(false);
     setNewFolderName("");
   };
+  */
 
   const handleCreate = async () => {
     try {
@@ -54,7 +69,8 @@ export const ViewFiles = ({ updateFolders }) => {
     <>
       <div>
         <div className="flex flex-row-reverse mr-5">
-          <button
+          {/*  manual modal */}
+          {/* <button
             onClick={handleShowModal}
             className="flex justify-between items-center gap-2 border rounded-md shadow-md px-4 py-2 bg-gray-50 hover:bg-gray-200">
             <HiFolderPlus size={20} />
@@ -64,10 +80,58 @@ export const ViewFiles = ({ updateFolders }) => {
             <Modal
               isVisible={showModal}
               onClose={handleCloseModal}
-              onFolderNameChange={setNewFolderName} // Pass a function to update the folder name
-              onSubmit={handleCreate} // Pass the create function to the modal
             />
-          )}
+          )} */}
+
+          <Button
+            onPress={onOpen}
+            color="secondary">
+            <span>
+              <HiFolderPlus size={20} />
+            </span>
+            New
+          </Button>
+          <Modal
+            onOpenChange={onOpenChange}
+            isOpen={isOpen}
+            onSubmit={handleCreate}
+            placement="center">
+            <ModalContent>
+              {(onClose) => (
+                <>
+                  <ModalHeader className="flex flex-col gap-1">
+                    New Folder
+                  </ModalHeader>
+                  <ModalBody>
+                    <Input
+                      autoFocus
+                      label="New Folder"
+                      placeholder="Untitled folder"
+                      value={newFolderName}
+                      onChange={(e) => {
+                        setNewFolderName(e.target.value);
+                      }}
+                      variant="bordered"
+                    />
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button
+                      color="danger"
+                      variant="flat"
+                      onPress={onClose}>
+                      Close
+                    </Button>
+                    <Button
+                      color="primary"
+                      onPress={onClose}
+                      onClick={handleCreate}>
+                      Create
+                    </Button>
+                  </ModalFooter>
+                </>
+              )}
+            </ModalContent>
+          </Modal>
         </div>
         <div className="p-2">
           <h1 className="text-md font-semibold mb-8">Folders</h1>

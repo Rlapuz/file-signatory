@@ -20,3 +20,13 @@ export async function GET(req) {
         return NextResponse.json({ message: "Failed to get files" }, { status: 500 });
     }
 }
+
+
+// PUT
+export async function PUT(request) {
+    const body = Object.fromEntries([...new FormData(request)])
+    const id = request.nextUrl.searchParams.get("id")
+    await connectDB()
+    const updatedFileData = await FileModel.findOneAndUpdate({ "_id": id }, body, { new: true })
+    return NextResponse.json(updatedFileData, { status: 200 })
+}

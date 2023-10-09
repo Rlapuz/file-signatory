@@ -29,6 +29,13 @@ export const Sidebar = () => {
     // false mobile & true laptop
   }, [isTab]);
 
+  // Create a function to close the sidebar in mobile view
+  const closeSidebarMobile = () => {
+    if (isTab) {
+      setIsOpen(false);
+    }
+  };
+
   const Sidebar_animation = isTab
     ? // mobile view
       {
@@ -80,7 +87,7 @@ export const Sidebar = () => {
         )}
         <motion.div
           variants={Sidebar_animation}
-          // initial = {{x: isTab ? -250 : 0}}
+          initial={{ x: isTab ? -250 : 0 }}
           animate={isOpen ? "open" : "closed"}
           className="bg-gray-50 text-gray rounded-md shadow-lg z-[999] w-[16rem] max-w-[16rem] h-screen overflow-hidden md:relative fixed">
           {/* logo sidebar */}
@@ -100,7 +107,9 @@ export const Sidebar = () => {
 
           {/* menus */}
           <div className="flex flex-col h-full">
-            <ul className="whitespace-pre px-3 text-[0.9rem] py-5 flex flex-col gap-1 font-bold overflow-x-hidden">
+            <ul
+              className="whitespace-pre px-3 text-[0.9rem] py-5 flex flex-col gap-1 font-bold overflow-x-hidden"
+              onClick={closeSidebarMobile}>
               {/* dashboard */}
               <li>
                 <Link
