@@ -8,6 +8,7 @@ import { HiOutlineBellAlert } from "react-icons/hi2";
 import { IoCloseOutline } from "react-icons/io5";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Avatar } from "@nextui-org/react";
 import {
   Popover,
@@ -17,6 +18,7 @@ import {
 } from "@nextui-org/react";
 
 export const Navbar = () => {
+  const router = useRouter();
   const { data: session } = useSession();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -24,33 +26,70 @@ export const Navbar = () => {
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
+  /** 
+   * ? Unfinished search feature
   // Function to handle the search query
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
-    // Perform your search logic here based on the search query
-    // Replace the following code with your actual search implementation
-    const dummySearchResults = [
-      { name: "File 1", path: "/files/file1" },
-      { name: "File 2", path: "/files/file2" },
-      { name: "File 3", path: "/files/file3" },
-    ];
-    setSearchResults(dummySearchResults);
-    setShowSearchResults(true);
+
+    if (searchQuery.trim() === "") {
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `http://localhost:3000/api/file/search?query=${searchQuery}`
+      );
+      if (res.ok) {
+        const data = await res.json();
+
+        // Filter the search results to include only files and folders that match the userId
+        const filteredFiles = data.files.filter(
+          (file) => file.userId === session.user._id
+        );
+        const filteredFolders = data.folders.filter(
+          (folder) => folder.userId === session.user._id
+        );
+
+        const results = {
+          files: filteredFiles,
+          folders: filteredFolders,
+        };
+
+        if (results.files.length === 0 && results.folders.length === 0) {
+          setNoResults(true); // Set noResults to true when no results are found
+        } else {
+          setNoResults(false); // Reset noResults if there are results
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  // Function to clear the search results and query
   const clearSearch = () => {
     setSearchQuery("");
     setSearchResults([]);
     setShowSearchResults(false);
+    setNoResults(false);
   };
+
+  const navigateToResult = (path) => {
+    <Link href={`/file/${result._id}`}>
+      <h1>{result.name}</h1>
+    </Link>;
+    clearSearch();
+  };
+
+  */
+
   return (
     <>
       <nav className="shadow-md bg-transparent rounded-md w-full">
         {/* search */}
         <div className="flex items-center justify-between py-3 px-6 bg-gray-50 border-b space-x-6">
           <form
-            onSubmit={handleSearch}
+            // onSubmit={handleSearch}
             className="w-full max-w-md">
             <div className="relative flex items-center text-gray-400 focus-within:text-gray-600  ">
               <BiSearch className="w-5 h-5 absolute ml-7 md:ml-3 pointer-events-none" />
@@ -130,7 +169,10 @@ export const Navbar = () => {
           </div>
         </div>
 
-        {/* Display search results */}
+        {/* 
+        /** 
+         * ? Unfinished search feature
+        Display search results
         {showSearchResults && (
           <div className="bg-gray-50 p-4 mt-2 ml-5 md:w-5/12 rounded-md shadow-md">
             <div className="flex items-center justify-between mb-2">
@@ -140,15 +182,38 @@ export const Navbar = () => {
                 onClick={clearSearch}
               />
             </div>
-            <ul>
-              {searchResults.map((result) => (
-                <li key={result.path}>
-                  <Link href={result.path}>{result.name}</Link>
-                </li>
-              ))}
-            </ul>
+            {noResults ? ( // Display a message when no results are found
+              <p>No files or folders found.</p>
+            ) : (
+              <ul>
+                {searchResults.files.map((result) => (
+                  <li
+                    key={result._id}
+                    className="cursor-pointer"
+                    onClick={() =>
+                      navigateToResult(
+                        `http://localhost:3000/api/file/${result._id}`
+                      )
+                    }>
+                    {result.filename}
+                  </li>
+                ))}
+                {searchResults.folders.map((result) => (
+                  <li
+                    key={result._id}
+                    className="cursor-pointer"
+                    onClick={() =>
+                      navigateToResult(
+                        `http://localhost:3000/api/folder/${result._id}`
+                      )
+                    }>
+                    {result.name}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-        )}
+        )} */}
       </nav>
     </>
   );

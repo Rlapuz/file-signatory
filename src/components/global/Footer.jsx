@@ -33,7 +33,7 @@ export const Footer = () => {
             href="/">
             <svg
               fill="currentColor"
-              stroke-linecap="round"
+              strokeLinecap="round"
               stroke-linejoin="round"
               stroke-width="2"
               className="w-5 h-5"
@@ -46,7 +46,7 @@ export const Footer = () => {
             href="/">
             <svg
               fill="currentColor"
-              stroke-linecap="round"
+              strokeLinecap="round"
               stroke-linejoin="round"
               stroke-width="2"
               className="w-5 h-5"
@@ -60,7 +60,7 @@ export const Footer = () => {
             <svg
               fill="none"
               stroke="currentColor"
-              stroke-linecap="round"
+              strokeLinecap="round"
               stroke-linejoin="round"
               stroke-width="2"
               className="w-5 h-5"
@@ -81,7 +81,7 @@ export const Footer = () => {
             <svg
               fill="currentColor"
               stroke="currentColor"
-              stroke-linecap="round"
+              strokeLinecap="round"
               stroke-linejoin="round"
               stroke-width="0"
               className="w-5 h-5"

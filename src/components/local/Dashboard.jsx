@@ -81,7 +81,7 @@ export const Dashboard = () => {
                 <h1>Employee ID</h1>
                 <p className="opacity-50 text-sm  mt-1">
                   {" "}
-                  {session?.user?.employeeID}
+                  {session?.user?.employeeId}
                 </p>
               </div>
             </div>
@@ -107,7 +107,7 @@ export const Dashboard = () => {
               <div className="flex flex-col justify-end">
                 <h1>Contact</h1>
                 <p className="opacity-50 text-sm  mt-1">
-                  {session?.user?.contacts}
+                  {session?.user?.contact}
                 </p>
               </div>
             </div>

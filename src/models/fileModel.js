@@ -24,6 +24,16 @@ const fileSchema = new Schema({
         ref: 'UserGoogle',
         required: true,
     },
+    currentSignatory: {
+        type: String,
+        enum: ["ProgChair", "CESU", "DEAN", "FOCAL"],
+        default: "ProgChair", // Set the initial signatory role
+    },
+    status: {
+        type: String,
+        default: "Pending",
+    },
+
 }, { timestamps: true });
 
 const FileModel = models.File || model('File', fileSchema);

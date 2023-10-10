@@ -46,9 +46,9 @@ export const Filestack = () => {
 
         const response = await fetch(
           // local route
-          // "http://localhost:3000/api/file",
+          "http://localhost:3000/api/file",
           // deploy route vercel
-          "https://file-signatory.vercel.app/api/file",
+          // "https://file-signatory.vercel.app/api/file",
           {
             method: "POST",
             headers: {
@@ -73,6 +73,9 @@ export const Filestack = () => {
             mimetype,
           });
           setHasUploadedFile(true); // Set the hasUploadedFile state to true
+
+          // After successful upload, send the document to the appropriate signatory
+          sendDocumentToSignatory();
         } else {
           console.error("Failed to upload file to MongoDB.");
         }
@@ -84,13 +87,52 @@ export const Filestack = () => {
     }
   };
 
+  // / Function to send the document to the appropriate signatory
+  const sendDocumentToSignatory = async () => {
+    try {
+      // Send a POST request to your API route to initiate document routing
+      const response = await fetch("http://localhost:3000/api/signatory", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        console.log("Document sent to the appropriate signatory!");
+        // You can add additional logic here, such as updating UI or showing notifications.
+      } else {
+        console.error("Failed to send document to signatory.");
+      }
+    } catch (error) {
+      console.error("Error sending document to signatory:", error);
+    }
+  };
+
+  // Function to handle the "Send File" button click
+  const handleSendFileClick = async () => {
+    if (!hasUploadedFile) {
+      console.warn("No files uploaded.");
+      return;
+    }
+
+    try {
+      // Send the document to the appropriate signatory
+      await sendDocumentToSignatory();
+
+      // Reset the form and state after successful send
+      setInputValue(""); // Clear the input field
+      removeUploadedFile(); // Clear the uploaded file state
+    } catch (error) {
+      console.error("Error sending document:", error);
+    }
+  };
+
   return (
     <>
       <div className="flex items-center justify-center p-12">
         <div className="mx-auto w-full max-w-[550px] bg-white">
-          <form
-            className="py-6 px-9"
-            method="POST">
+          <form className="py-6 px-9">
             <div className="mb-5">
               <label
                 for="signatory"
@@ -157,7 +199,9 @@ export const Filestack = () => {
             </div>
 
             <div>
-              <button className="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">
+              <button
+                onClick={handleSendFileClick}
+                className="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">
                 Send File
               </button>
             </div>

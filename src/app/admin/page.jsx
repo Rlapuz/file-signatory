@@ -20,25 +20,24 @@ export const AdminPage = () => {
 
     try {
       // local route
-      // const res = await fetch("http://localhost:3000/api/register", {
-      // deploy route vercel
-      const res = await fetch(
-        "https://file-signatory.vercel.app/api/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            contact,
-            employeeId,
-            email,
-            password,
-            role,
-          }),
-        }
-      );
+      const res = await fetch("http://localhost:3000/api/register", {
+        // deploy route vercel
+        // const res = await fetch(
+        // "https://file-signatory.vercel.app/api/register",
+        // {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          contact,
+          employeeId,
+          email,
+          password,
+          role,
+        }),
+      });
 
       if (res.ok) {
         // Clear the form fields manually
@@ -50,12 +49,6 @@ export const AdminPage = () => {
         setRole("user");
         // Display a success alert message
         alert("Registration successful!");
-
-        // Clear the error message
-        setError("");
-
-        // Clear the success message after a few seconds (optional)
-        setTimeout(() => alert(""), 3000);
       } else {
         console.log("Credential registration Failed");
       }
@@ -73,15 +66,12 @@ export const AdminPage = () => {
         <div class="relative">
           <input
             type="text"
-            id="name"
             class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          <label
-            for="name"
-            class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
+          <label class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
             Name
           </label>
         </div>
@@ -90,31 +80,40 @@ export const AdminPage = () => {
         <div class="relative">
           <input
             type="text"
-            id="contact"
+            class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+            value={employeeId}
+            onChange={(e) => setEmployeeId(e.target.value)}
+          />
+          <label class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
+            EmpoyeeId
+          </label>
+        </div>
+        <br />
+        <br />
+        <div class="relative">
+          <input
+            type="text"
             class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             value={contact}
             onChange={(e) => setContact(e.target.value)}
           />
-          <label
-            for="contact"
-            class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
+          <label class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
             Contact
           </label>
         </div>
+
         <br />
         <div class="relative">
           <input
             type="text"
-            id="email"
             class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <label
-            for="Email"
-            class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
+          <label class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
             Email
           </label>
         </div>
@@ -122,14 +121,13 @@ export const AdminPage = () => {
         <div class="relative">
           <input
             type="password"
-            id="password"
             class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <label
-            for="Password"
+            htmlFor="Password"
             class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
             Password
           </label>
@@ -137,21 +135,25 @@ export const AdminPage = () => {
         <br />
         <br />
 
-        {/* choose role 4 roles Focal, Admin, Dean , and Cesu */}
+        {/* choose role 5 roles ProgChair, Focal, Admin, Dean , and Cesu */}
         <select
           name="role"
           id="role"
           value={role}
           onChange={(e) => setRole(e.target.value)}>
-          <option value="focal">Focal</option>
-          <option value="admin">Admin</option>
-          <option value="dean">Dean</option>
-          <option value="cesu">Cesu</option>
-          <option value="progchair">ProgChair</option>
+          <option value="FOCAL">Focal</option>
+          <option value="ADMIN">Admin</option>
+          <option value="DEAN">Dean</option>
+          <option value="CESU">Cesu</option>
+          <option value="ProgChair">ProgChair</option>
         </select>
 
         <br />
-        <button type="submit">Register</button>
+        <button
+          type="submit"
+          className="p-2 bg-red-500 rounded-md">
+          Register
+        </button>
       </form>
     </>
   );

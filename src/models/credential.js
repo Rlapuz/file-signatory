@@ -1,5 +1,5 @@
 import { Schema, model, models } from "mongoose";
-
+import bcrypt from "bcryptjs";
 
 const CredentialSchema = new Schema({
     name: {
@@ -24,8 +24,10 @@ const CredentialSchema = new Schema({
         type: String,
         required: true,
     },
+
     image: {
         type: String,
+
     },
     role: {
         type: String,
@@ -36,8 +38,48 @@ const CredentialSchema = new Schema({
         default: 'credentials'
     },
 
+
+
 }, { timestamps: true })
 
+
+/**
+ * ? This is the correct way to hash passwords
+CredentialSchema.pre("save", function (next) {
+    const user = this;
+
+    if (this.isModified("password") || this.isNew) {
+        bcrypt.genSalt(10, function (saltError, salt) {
+            if (saltError) {
+                return next(saltError);
+            } else {
+                bcrypt.hash(user.password, salt, function (hashError, hash) {
+                    if (hashError) {
+                        return next(hashError);
+                    }
+
+                    user.password = hash;
+                    next();
+                });
+            }
+        });
+    } else {
+        return next();
+    }
+});
+
+
+CredentialSchema.methods.comparePassword = function (password, callback) {
+    bcrypt.compare(password, this.password, function (error, isMatch) {
+        if (error) {
+            return callback(error)
+        } else {
+            callback(null, isMatch)
+        }
+    })
+}
+
+ */
 const Credential = models.Credential || model("Credential", CredentialSchema)
 
 export default Credential;

@@ -1,3 +1,4 @@
+import Notif from "@/components/local/Notif";
 import React from "react";
 
 export const metadata = {
@@ -5,7 +6,11 @@ export const metadata = {
 };
 
 export const NotificationsPage = () => {
-  return <div>NotificationsPage</div>;
+  return (
+    <>
+      <Notif />
+    </>
+  );
 };
 
 export default NotificationsPage;

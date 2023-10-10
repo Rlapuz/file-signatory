@@ -47,9 +47,9 @@ export const File = () => {
 
           const res = await fetch(
             // local route
-            // `http://localhost:3000/api/file?userId=${userId}`,
+            `http://localhost:3000/api/file?userId=${userId}`,
             // deploy route vercel
-            `https://file-signatory.vercel.app/api/file?userId=${userId}`,
+            // `https://file-signatory.vercel.app/api/file?userId=${userId}`,
             {
               cache: "no-store",
             }
@@ -87,14 +87,13 @@ export const File = () => {
   const deleteFile = async (id) => {
     try {
       // deploy route vercel
-      const res = await fetch(
-        `https://file-signatory.vercel.app/api/file?id=${id}`,
-        {
-          // local route
-          // const res = await fetch(`http://localhost:3000/api/file?id=${id}`, {
-          method: "DELETE",
-        }
-      );
+      // const res = await fetch(
+      // `https://file-signatory.vercel.app/api/file?id=${id}`,
+      // {
+      // local route
+      const res = await fetch(`http://localhost:3000/api/file?id=${id}`, {
+        method: "DELETE",
+      });
       if (!res.ok) {
         throw new Error("Something went wrong");
       }
@@ -173,7 +172,9 @@ export const File = () => {
 
     try {
       // deploy route vercel
-      // const res = await fetch(`https://file-signatory.vercel.app/api/file?id=${id}`, {
+      // const res = await fetch(
+      // `https://file-signatory.vercel.app/api/file?id=${id}`,
+      // {
       // local route
       const res = await fetch(`http://localhost:3000/api/file?id=${id}`, {
         method: "PUT",
@@ -241,7 +242,7 @@ export const File = () => {
                 </CardHeader>
                 <CardBody className="overflow-visible py-2">
                   <Image
-                    alt="Card background"
+                    alt="file-preview"
                     className="object-cover rounded-lg"
                     src={file.url}
                     width={200}
@@ -264,9 +265,11 @@ export const File = () => {
                   </Button>
                   <Button
                     color="success"
-                    onClick={() => {
-                      file.url;
-                    }}>
+                    onClick={() =>
+                      window.open(
+                        `https://cdn.filestackcontent.com/${file.url}`
+                      )
+                    }>
                     View
                   </Button>
                   <Modal
