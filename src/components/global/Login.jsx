@@ -31,10 +31,10 @@ export const Login = () => {
       }
 
       // local route
-      router.replace("/dashboard");
+      // router.replace("/dashboard");
 
       // deploy route vercel
-      // router.replace("https://file-signatory.vercel.app/dashboard");
+      router.replace("https://file-signatory.vercel.app/dashboard");
     } catch (error) {
       console.error("Login error:", error);
     }

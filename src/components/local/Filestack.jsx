@@ -46,9 +46,9 @@ export const Filestack = () => {
 
         const response = await fetch(
           // local route
-          "http://localhost:3000/api/file",
+          // "http://localhost:3000/api/file",
           // deploy route vercel
-          // "https://file-signatory.vercel.app/api/file",
+          "https://file-signatory.vercel.app/api/file",
           {
             method: "POST",
             headers: {

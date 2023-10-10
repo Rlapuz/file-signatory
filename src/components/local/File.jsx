@@ -47,9 +47,9 @@ export const File = () => {
 
           const res = await fetch(
             // local route
-            `http://localhost:3000/api/file?userId=${userId}`,
+            // `http://localhost:3000/api/file?userId=${userId}`,
             // deploy route vercel
-            // `https://file-signatory.vercel.app/api/file?userId=${userId}`,
+            `https://file-signatory.vercel.app/api/file?userId=${userId}`,
             {
               cache: "no-store",
             }
@@ -87,13 +87,14 @@ export const File = () => {
   const deleteFile = async (id) => {
     try {
       // deploy route vercel
-      // const res = await fetch(
-      // `https://file-signatory.vercel.app/api/file?id=${id}`,
-      // {
-      // local route
-      const res = await fetch(`http://localhost:3000/api/file?id=${id}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `https://file-signatory.vercel.app/api/file?id=${id}`,
+        {
+          // local route
+          // const res = await fetch(`http://localhost:3000/api/file?id=${id}`, {
+          method: "DELETE",
+        }
+      );
       if (!res.ok) {
         throw new Error("Something went wrong");
       }
@@ -172,17 +173,18 @@ export const File = () => {
 
     try {
       // deploy route vercel
-      // const res = await fetch(
-      // `https://file-signatory.vercel.app/api/file?id=${id}`,
-      // {
-      // local route
-      const res = await fetch(`http://localhost:3000/api/file?id=${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ newFileName }),
-      });
+      const res = await fetch(
+        `https://file-signatory.vercel.app/api/file?id=${id}`,
+        {
+          // local route
+          // const res = await fetch(`http://localhost:3000/api/file?id=${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ newFileName }),
+        }
+      );
       if (!res.ok) {
         throw new Error("Something went wrong");
       }
