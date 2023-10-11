@@ -16,6 +16,8 @@ export const Login = () => {
 
   const router = useRouter();
 
+  const session = useSession();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -30,11 +32,19 @@ export const Login = () => {
         return;
       }
 
-      // local route
-      // router.replace("/dashboard");
-
-      // deploy route vercel
-      router.replace("https://file-signatory.vercel.app/dashboard");
+      // Check if the user has the "admin" role
+      if (session.data?.user?.role === "admin") {
+        // deploy route vercel
+        router.replace("https://file-signatory.vercel.app/admin");
+        // Redirect to the admin page
+        // router.replace("/admin");
+      } else {
+        // deploy route vercel
+        router.replace("https://file-signatory.vercel.app/dashboard");
+        // local route
+        // Redirect to the dashboard page
+        // router.replace("/dashboard");
+      }
     } catch (error) {
       console.error("Login error:", error);
     }

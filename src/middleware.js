@@ -1,10 +1,26 @@
-export { default } from "next-auth/middleware"
+import { withAuth } from "next-auth/middleware"
+
+export default withAuth(
+    function middleware() {
+
+    },
+    {
+        callbacks: {
+            authorized: ({ req, token }) => {
+                if (req.nextUrl.pathname === '/admin') {
+                    return token?.role === "admin"
+                }
+
+                return Boolean(token)
+            }
+        }
+    })
+
+
+
+// export { default } from "next-auth/middleware"
 
 export const config = {
     matcher: ['/dashboard/:path*', '/admin']
 }
 
-// // deploy to vercel
-// export const config = {
-//     matcher: ['https://file-signatory.vercel.app/dashboard/:path*', 'https://file-signatory.vercel.app/admin']
-// }

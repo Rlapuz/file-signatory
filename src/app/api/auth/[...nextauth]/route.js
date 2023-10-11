@@ -20,6 +20,17 @@ export const authOptions = {
                 credentials: {
 
                 },
+                profile(profile) {
+                    return {
+                        id: profile.id,
+                        name: profile.name,
+                        contact: profile.contact,
+                        employeeId: profile.employeeId,
+                        email: profile.email,
+                        image: profile.image,
+                        role: profile.role ?? 'user',
+                    }
+                },
                 async authorize(credentials, req) {
 
                     // check if the email is in the database and the password is correct with bcrypt
@@ -119,7 +130,13 @@ export const authOptions = {
             return true;
         },
 
-        async jwt({ token, trigger, session }) {
+        async jwt({ token, trigger, session, user }) {
+
+            // console.log("JWT", token)
+            if (user) {
+                token.role = user.role
+            }
+
             if (trigger === 'update') {
                 // Handle OAuth JWT update
                 token.user.name = session.name;
