@@ -7,6 +7,7 @@ import { HiIdentification } from "react-icons/hi";
 import { IoIosMail } from "react-icons/io";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 export const Dashboard = () => {
   const { data: session } = useSession();
@@ -116,7 +117,7 @@ export const Dashboard = () => {
           {/* update button */}
           <div className="flex justify-center items-center">
             <button className="bg-[#6A64F1] hover:bg-blue-700 text-white px-5 py-1 rounded-md">
-              Update
+              <Link href="/dashboard/profile">Update</Link>
             </button>
           </div>
         </div>

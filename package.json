@@ -17,6 +17,7 @@
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "@nextui-org/react": "^2.1.13",
+    "@novu/notification-center": "^0.20.0",
     "@uploadcare/blocks": "0.25.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
@@ -29,7 +30,8 @@
     "react": "latest",
     "react-dom": "latest",
     "react-icons": "^4.11.0",
-    "react-responsive": "^9.0.2"
+    "react-responsive": "^9.0.2",
+    "sweetalert2": "^11.7.32"
   },
   "devDependencies": {
     "autoprefixer": "latest",

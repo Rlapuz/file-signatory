@@ -14,7 +14,7 @@ import {
   BsPersonGear,
   BsBell,
 } from "react-icons/bs";
-import { GrUserAdmin } from "react-icons/gr";
+import { BsTrash } from "react-icons/bs";
 import { SlCloudUpload } from "react-icons/sl";
 import { useRouter } from "next/navigation";
 import { Logout } from "./Logout";
@@ -199,6 +199,21 @@ export const Sidebar = () => {
                   Profile
                 </Link>
               </li>
+
+              {/* retrieve */}
+              <li>
+                <Link
+                  href="/dashboard/retrieve"
+                  className={`link ${
+                    pathname === "/dashboard/retrieve" ? "active" : ""
+                  }`}>
+                  <BsTrash
+                    size={23}
+                    className="min-w-max"
+                  />
+                  Retrieve
+                </Link>
+              </li>
             </ul>
             <Logout />
           </div>
@@ -231,7 +246,7 @@ export const Sidebar = () => {
         </motion.div>
         {/* the menu icon for mobile */}
         <div
-          className="ml-5 mt-5 md:hidden flex absolute"
+          className=" mr-4 p-2 mt-3 md:hidden flex absolute"
           onClick={() => setIsOpen(true)}>
           <FiMenu size={25} />
         </div>

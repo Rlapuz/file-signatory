@@ -14,6 +14,7 @@ import {
   TableCell,
 } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
+import Swal from "sweetalert2";
 
 export const Profile = () => {
   const { data: session, update } = useSession();
@@ -25,6 +26,8 @@ export const Profile = () => {
     image: "",
   });
 
+  /** 
+   * ? this is for alert message manually
   useEffect(() => {
     if (alertMessage) {
       const timeout = setTimeout(() => {
@@ -33,6 +36,7 @@ export const Profile = () => {
       return () => clearTimeout(timeout);
     }
   }, [alertMessage]);
+  */
 
   async function handleUpdateprofile() {
     const { name, image, contact, employeeId } = formData;
@@ -56,6 +60,12 @@ export const Profile = () => {
     });
 
     if (res?.msg) setAlertMessage(res.msg);
+
+    if (res?.msg) {
+      // Show the SweetAlert for profile update success
+      showUpdateProfileSuccessAlert();
+    }
+
     // Reset the form after a successful update
     setFormData({
       name: "",
@@ -72,6 +82,16 @@ export const Profile = () => {
       [name]: value,
     }));
   };
+
+  // for sweet alert
+  const showUpdateProfileSuccessAlert = () => {
+    Swal.fire({
+      title: "Profile Updated",
+      text: "Your profile has been updated successfully!",
+      icon: "success",
+    });
+  };
+
   return (
     <>
       <div className="flex items-center justify-center mt-10">
@@ -166,6 +186,8 @@ export const Profile = () => {
             </TableRow>
             <TableRow key="6">
               <TableCell>
+                {/** 
+                 * ? This is for alert message manually
                 <div className="mt-10 text-center">
                   {alertMessage && (
                     // <Alert
@@ -177,6 +199,7 @@ export const Profile = () => {
                     <h1>{alertMessage}</h1>
                   )}
                 </div>
+                */}
               </TableCell>
             </TableRow>
           </TableBody>

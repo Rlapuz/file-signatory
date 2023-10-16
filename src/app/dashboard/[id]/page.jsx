@@ -13,7 +13,7 @@ export const DynamicRoutePage = ({ params }) => {
       <main className="flex flex-col gap-8">
         <div className="flex justify-between pr-2">
           <h1>Folders</h1>
-          <Link href={"/view-files"}>
+          <Link href={"/dashboard/view-files"}>
             <BiLeftArrowAlt size={25} />
           </Link>
         </div>

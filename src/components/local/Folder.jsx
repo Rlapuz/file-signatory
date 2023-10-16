@@ -5,11 +5,25 @@ import Link from "next/link";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { FaFolder } from "react-icons/fa";
 import { useSession } from "next-auth/react";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+  Checkbox,
+  Input,
+} from "@nextui-org/react";
+import Swal from "sweetalert2";
 
 export const Folder = () => {
   const [folders, setFolders] = useState([]);
   const [error, setError] = useState(null);
   const [showOptions, setShowOptions] = useState({});
+  const [newFolderName, setNewFolderName] = useState("");
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const { data: session } = useSession();
 
@@ -57,36 +71,50 @@ export const Folder = () => {
   }, [session]);
 
   const deleteFolder = async (id) => {
-    try {
-      const res = await fetch(
-        // local route
-        // `http://localhost:3000/api/folder?id=${id}`,
+    Swal.fire({
+      title: "Delete Folder",
+      text: "Are you sure you want to delete this folder and its contents?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel",
+      confirmButtonColor: "#d33",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const res = await fetch(
+            // local route
+            // `http://localhost:3000/api/folder?id=${id}`,
+            // deploy route vercel
+            `https://file-signatory.vercel.app/api/folder?id=${id}`,
+            {
+              method: "DELETE",
+            }
+          );
+          if (!res.ok) {
+            throw new Error("Something went wrong");
+          }
+          const { message } = await res.json();
 
-        // deploy route vercel
-        `https://file-signatory.vercel.app/api/folder?id=${id}`,
-        {
-          method: "DELETE",
+          Swal.fire("Deleted!", message, "success");
+
+          // After successful delete, update the folders list by filtering out the deleted folder
+          setFolders((prevFolders) =>
+            prevFolders.filter((folder) => folder._id !== id)
+          );
+        } catch (error) {
+          console.error(error);
+          Swal.fire("Error", error.message, "error");
         }
-      );
-      if (!res.ok) {
-        throw new Error("Something went wrong");
       }
-      const { message } = await res.json();
-      alert(message);
-      // After successful delete, update the folders list by filtering out the deleted folder
-      setFolders((prevFolders) =>
-        prevFolders.filter((folder) => folder._id !== id)
-      );
-    } catch (error) {
-      console.log(error);
-      alert(error.message);
-    }
+    });
   };
 
+  // Function to toggle file options (like delete and download)
   const toggleOptions = (id) => {
     setShowOptions((prevShowOptions) => ({
       ...prevShowOptions,
-      [id]: !prevShowOptions[id], // Toggle the options display for the clicked folder
+      [id]: !prevShowOptions[id],
     }));
   };
 
@@ -94,13 +122,46 @@ export const Folder = () => {
     return <div>Error: Something went wrong</div>;
   }
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(
+        // local route
+        // `http://localhost:3000/api/folder?id=${id}`,
+        // deploy route vercel
+        `https://file-signatory.vercel.app/api/folder?id=${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name: newFolderName }),
+        }
+      );
+      if (!res.ok) {
+        throw new Error("Something went wrong");
+      }
+      const { message } = await res.json();
+
+      Swal.fire("Renamed!", message, "success");
+
+      // After successful delete, update the folders list by filtering out the deleted folder
+      setFolders((prevFolders) =>
+        prevFolders.filter((folder) => folder._id !== id)
+      );
+    } catch (error) {
+      console.error(error);
+      Swal.fire("Error", error.message, "error");
+    }
+  };
+
   return (
     <>
       {folders.map((folder) => (
         <div key={folder._id}>
           <div className="flex justify-between items-center gap-4 border rounded-lg shadow-md px-3 py-4 bg-gray-50 hover:bg-gray-200">
             <Link
-              href={`/view-files/${folder._id}`}
+              href={`/dashboard/${folder._id}`}
               className="flex items-center gap-2">
               <FaFolder size={20} />
               <h3 className="ml-0">{folder.name}</h3>
@@ -112,9 +173,57 @@ export const Folder = () => {
           </div>
 
           {showOptions[folder._id] && ( // Display options only if showOptions[id] is true
-            <div className="flex gap-4 mt-2">
-              <button onClick={() => deleteFolder(folder._id)}>Delete</button>
-              <button>Download</button>
+            <div className="flex justify-between mt-2 md:py-2 md:px-5">
+              <Button
+                onPress={onOpen}
+                size="sm"
+                color="primary">
+                Rename
+              </Button>
+              <Button
+                color="danger"
+                size="sm"
+                onClick={() => deleteFolder(folder._id)}>
+                Delete
+              </Button>
+              <Modal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                placement="top-center">
+                <ModalContent>
+                  {(onClose) => (
+                    <>
+                      <ModalHeader className="flex flex-col gap-1">
+                        Folder Name
+                      </ModalHeader>
+                      <ModalBody>
+                        <Input
+                          autoFocus
+                          label="Rename"
+                          placeholder=""
+                          variant="bordered"
+                          onChange={(e) => setNewFolderName(e.target.value)}
+                          value={newFolderName}
+                        />
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button
+                          color="danger"
+                          variant="flat"
+                          onPress={onClose}>
+                          Close
+                        </Button>
+                        <Button
+                          color="primary"
+                          onPress={onClose}
+                          onSubmit={handleSubmit}>
+                          Rename
+                        </Button>
+                      </ModalFooter>
+                    </>
+                  )}
+                </ModalContent>
+              </Modal>
             </div>
           )}
         </div>

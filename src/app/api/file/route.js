@@ -23,6 +23,7 @@ export async function POST(request) {
 // GET
 export async function GET() {
     try {
+
         await connectDB();
         const files = await FileModel.find();
         return NextResponse.json(files);

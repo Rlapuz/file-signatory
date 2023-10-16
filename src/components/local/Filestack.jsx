@@ -3,6 +3,7 @@
 import { RxCross2 } from "react-icons/rx";
 import { PickerOverlay } from "filestack-react-18";
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 
 export const Filestack = () => {
   const [inputValue, setInputValue] = useState("");
@@ -35,8 +36,7 @@ export const Filestack = () => {
   const handleUploadDone = async (res) => {
     try {
       if (res?.filesUploaded && res.filesUploaded.length > 0) {
-        const { handle } = res.filesUploaded[0];
-        const { filename, size, url, mimetype } = res.filesUploaded[0];
+        const { handle, filename, size, url, mimetype } = res.filesUploaded[0];
 
         // Extract the filename without the extension
         const filenameWithoutExtension = filename
@@ -63,7 +63,6 @@ export const Filestack = () => {
             }),
           }
         );
-        // console.log("Response", response);
         if (response.ok) {
           console.log("File uploaded successfully!");
           setUploadedFile({
@@ -73,6 +72,9 @@ export const Filestack = () => {
             mimetype,
           });
           setHasUploadedFile(true); // Set the hasUploadedFile state to true
+
+          // Show the SweetAlert for upload success
+          showUploadSuccessAlert();
 
           // After successful upload, send the document to the appropriate signatory
           sendDocumentToSignatory();
@@ -126,6 +128,31 @@ export const Filestack = () => {
     } catch (error) {
       console.error("Error sending document:", error);
     }
+  };
+
+  // for sweet alert
+  const showUploadSuccessAlert = () => {
+    Swal.fire({
+      title: "File Upload Success",
+      text: "Your file has been uploaded successfully!",
+      icon: "success",
+    });
+  };
+
+  const showSendFileAlert = () => {
+    Swal.fire({
+      title: "Send File",
+      text: "Are you sure you want to send this file?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes, send it!",
+      cancelButtonText: "No, cancel",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        // Perform the send action here
+        handleSendFileClick();
+      }
+    });
   };
 
   return (
@@ -200,7 +227,7 @@ export const Filestack = () => {
 
             <div>
               <button
-                onClick={handleSendFileClick}
+                onClick={showSendFileAlert}
                 className="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">
                 Send File
               </button>

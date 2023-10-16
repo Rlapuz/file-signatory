@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { BsImage } from "react-icons/bs";
 import { BiSolidFilePdf } from "react-icons/bi";
@@ -23,6 +22,7 @@ import {
   Checkbox,
   Input,
 } from "@nextui-org/react";
+import Swal from "sweetalert2";
 
 export const File = () => {
   // State for storing files and handling errors
@@ -85,26 +85,40 @@ export const File = () => {
 
   // Function to delete a file by its ID
   const deleteFile = async (id) => {
-    try {
-      // deploy route vercel
-      const res = await fetch(
-        `https://file-signatory.vercel.app/api/file?id=${id}`,
-        {
-          // local route
-          // const res = await fetch(`http://localhost:3000/api/file?id=${id}`, {
-          method: "DELETE",
+    Swal.fire({
+      title: "Delete File",
+      text: "Are you sure you want to delete this file?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel",
+      confirmButtonColor: "#d33",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          // deploy route vercel
+          const res = await fetch(
+            `https://file-signatory.vercel.app/api/file?id=${id}`,
+            {
+              // local route
+              // const res = await fetch(`http://localhost:3000/api/file?id=${id}`, {
+              method: "DELETE",
+            }
+          );
+          if (!res.ok) {
+            throw new Error("Something went wrong");
+          }
+          const { message } = await res.json();
+
+          Swal.fire("Deleted!", message, "success");
+
+          setFiles((prevFiles) => prevFiles.filter((file) => file._id !== id));
+        } catch (error) {
+          console.error(error);
+          Swal.fire("Error", error.message, "error");
         }
-      );
-      if (!res.ok) {
-        throw new Error("Something went wrong");
       }
-      const { message } = await res.json();
-      alert(message);
-      setFiles((prevFiles) => prevFiles.filter((file) => file._id !== id));
-    } catch (error) {
-      console.error(error);
-      alert(error.message);
-    }
+    });
   };
 
   // Function to toggle file options (like delete and download)
@@ -254,19 +268,22 @@ export const File = () => {
               </Card>
               {/* nextui */}
               {showOptions[file._id] && (
-                <div>
+                <div className="flex gap-3 mt-2 ml-2">
                   <Button
                     onPress={onOpen}
+                    size="sm"
                     color="primary">
                     Rename
                   </Button>
                   <Button
                     color="danger"
+                    size="sm"
                     onClick={() => deleteFile(file._id)}>
                     Delete
                   </Button>
                   <Button
                     color="success"
+                    size="sm"
                     onClick={() =>
                       window.open(
                         `https://cdn.filestackcontent.com/${file.url}`

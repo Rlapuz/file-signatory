@@ -16,6 +16,7 @@ import {
   Checkbox,
   Input,
 } from "@nextui-org/react";
+import Swal from "sweetalert2";
 
 export const ViewFiles = ({ updateFolders }) => {
   const [newFolderName, setNewFolderName] = useState("");
@@ -36,7 +37,13 @@ export const ViewFiles = ({ updateFolders }) => {
 
   const handleCreate = async () => {
     try {
-      // Create a new folder here (similar to your previous code)
+      // Show SweetAlert after the folder is created
+      Swal.fire({
+        icon: "success",
+        title: "Folder Created",
+        text: "The new folder has been successfully created.",
+        confirmButtonColor: "#6A64F1", // Customize the confirm button color
+      });
 
       const response = await fetch(
         // local route
@@ -65,6 +72,7 @@ export const ViewFiles = ({ updateFolders }) => {
       // Handle the error, show a notification, etc.
     }
   };
+
   return (
     <>
       <div>

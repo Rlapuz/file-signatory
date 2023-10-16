@@ -9,6 +9,12 @@ const folderSchema = new Schema({
         ref: 'UserGoogle',
         required: true,
     },
+    // files: [
+    //     {
+    //         type: Schema.Types.ObjectId,
+    //         ref: 'File', // Reference to the File model
+    //     },
+    // ],
 }, { timestamps: true });
 
 const FolderModel = models.Folder || model('Folder', folderSchema);
