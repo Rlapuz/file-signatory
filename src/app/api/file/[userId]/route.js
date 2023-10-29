@@ -13,7 +13,7 @@ export async function GET(req) {
         console.log("Received userId:", userId);
 
         await connectDB();
-        const files = await FileModel.find({ userId });
+        const files = await FileModel.find({ userId, deleted: false });
         return NextResponse.json(files);
     } catch (error) {
         console.error("Error while getting files:", error);

@@ -33,6 +33,10 @@ const fileSchema = new Schema({
         type: String,
         default: "Pending",
     },
+    deleted: {
+        type: Boolean,
+        default: false, // Set as false initially to indicate not deleted
+    },
 
 }, { timestamps: true });
 

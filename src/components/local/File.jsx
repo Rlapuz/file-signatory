@@ -8,6 +8,7 @@ import { RiFileVideoFill } from "react-icons/ri";
 import { BsFileEarmarkWordFill } from "react-icons/bs";
 import { AiFillFilePpt } from "react-icons/ai";
 import { FaFileAlt } from "react-icons/fa";
+import { AiOutlineFileGif } from "react-icons/ai";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { Card, CardHeader, CardBody } from "@nextui-org/react";
@@ -172,6 +173,13 @@ export const File = () => {
             className="text-red-900"
           />
         );
+      case "GIF":
+        return (
+          <AiOutlineFileGif
+            size={20}
+            className="text-red-900"
+          />
+        );
       default:
         return (
           <FaFileAlt
@@ -245,7 +253,7 @@ export const File = () => {
                     {getIconForMimeType(file.mimetype)}
                   </div>
                   <div className="flex items-center">
-                    <p className="text-tiny font-bold text-clip overflow-hidden ...">
+                    <p className="text-tiny font-bold truncate w-20 text-center">
                       {file.filename}
                     </p>
                   </div>

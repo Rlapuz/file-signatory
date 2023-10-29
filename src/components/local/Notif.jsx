@@ -1,7 +1,11 @@
 "use client";
 
 export const Notif = () => {
-  return <div>Notifications</div>;
+  return (
+    <div>
+      <h1>Notifications</h1>
+    </div>
+  );
 };
 
 export default Notif;

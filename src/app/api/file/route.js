@@ -25,7 +25,9 @@ export async function GET() {
     try {
 
         await connectDB();
-        const files = await FileModel.find();
+        // const files = await FileModel.find();
+
+        const files = await FileModel.find({ deleted: false });
         return NextResponse.json(files);
     } catch (error) {
         console.error("Error while getting files:", error);
@@ -37,8 +39,11 @@ export async function GET() {
 export async function DELETE(request) {
     const id = request.nextUrl.searchParams.get("id")
     await connectDB()
-    await FileModel.findByIdAndDelete(id)
-    return NextResponse.json({ message: "File Deleted" }, { status: 200 })
+    // Find the file by ID and update the 'deleted' field to true
+    const updatedFileData = await FileModel.findByIdAndUpdate(id, { deleted: true }, { new: true });
+
+
+    return NextResponse.json(updatedFileData, { status: 200 })
 }
 
 // PUT
