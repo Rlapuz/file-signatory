@@ -43,7 +43,7 @@ export const Navbar = () => {
 
   //   try {
   //     const res = await fetch(
-  //       `http://localhost:3000/api/search?query=${searchQuery}&userId=${session.user._id}`
+  //       `/api/search?query=${searchQuery}&userId=${session.user._id}`
   //     );
 
   //     if (res.ok) {

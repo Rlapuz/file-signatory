@@ -35,15 +35,15 @@ export const Login = () => {
       // Check if the user has the "admin" role
       if (session.data?.user?.role === "admin") {
         // deploy route vercel
-        router.replace("https://file-signatory.vercel.app/admin");
+        // router.replace("https://file-signatory.vercel.app/admin");
         // Redirect to the admin page
-        // router.replace("/admin");
+        router.replace("/admin");
       } else {
         // deploy route vercel
-        router.replace("https://file-signatory.vercel.app/dashboard");
+        // router.replace("https://file-signatory.vercel.app/dashboard");
         // local route
         // Redirect to the dashboard page
-        // router.replace("/dashboard");
+        router.replace("/dashboard");
       }
     } catch (error) {
       console.error("Login error:", error);

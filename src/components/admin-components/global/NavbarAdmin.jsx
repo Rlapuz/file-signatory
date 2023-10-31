@@ -38,7 +38,7 @@ export const NavbarAdmin = () => {
   
       try {
         const res = await fetch(
-          `http://localhost:3000/api/file/search?query=${searchQuery}`
+          `/api/file/search?query=${searchQuery}`
         );
         if (res.ok) {
           const data = await res.json();
@@ -192,7 +192,7 @@ export const NavbarAdmin = () => {
                       className="cursor-pointer"
                       onClick={() =>
                         navigateToResult(
-                          `http://localhost:3000/api/file/${result._id}`
+                          `/api/file/${result._id}`
                         )
                       }>
                       {result.filename}
@@ -204,7 +204,7 @@ export const NavbarAdmin = () => {
                       className="cursor-pointer"
                       onClick={() =>
                         navigateToResult(
-                          `http://localhost:3000/api/folder/${result._id}`
+                          `/api/folder/${result._id}`
                         )
                       }>
                       {result.name}

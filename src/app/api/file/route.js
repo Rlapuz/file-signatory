@@ -25,7 +25,6 @@ export async function GET() {
     try {
 
         await connectDB();
-        // const files = await FileModel.find();
 
         const files = await FileModel.find({ deleted: false });
         return NextResponse.json(files);

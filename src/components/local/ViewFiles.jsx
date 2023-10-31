@@ -47,9 +47,9 @@ export const ViewFiles = ({ updateFolders }) => {
 
       const response = await fetch(
         // local route
-        // "http://localhost:3000/api/folder",
+        "/api/folder",
         // deploy route vercel
-        "https://file-signatory.vercel.app/api/folder",
+        // "https://file-signatory.vercel.app/api/folder",
         {
           method: "POST",
           headers: {

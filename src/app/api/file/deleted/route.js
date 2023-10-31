@@ -1,7 +1,7 @@
 import connectDB from "@/db/connectDB";
-
 import FileModel from "@/models/fileModel"
 import { NextResponse } from "next/server";
+
 
 
 
@@ -22,6 +22,8 @@ export async function GET(req) {
 
 // PUT for restoring a deleted file
 export async function PUT(request) {
+
+
     const id = request.nextUrl.searchParams.get("id");
     await connectDB();
 

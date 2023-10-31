@@ -46,9 +46,9 @@ export const Filestack = () => {
 
         const response = await fetch(
           // local route
-          // "http://localhost:3000/api/file",
+          "/api/file",
           // deploy route vercel
-          "https://file-signatory.vercel.app/api/file",
+          // "https://file-signatory.vercel.app/api/file",
           {
             method: "POST",
             headers: {
@@ -93,7 +93,7 @@ export const Filestack = () => {
   const sendDocumentToSignatory = async () => {
     try {
       // Send a POST request to your API route to initiate document routing
-      const response = await fetch("http://localhost:3000/api/signatory", {
+      const response = await fetch("/api/signatory", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

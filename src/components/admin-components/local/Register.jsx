@@ -39,7 +39,7 @@ export const Register = () => {
       // Send lowercaseEmail to the server
       const res = await fetch(
         // local route
-        // "http://localhost:3000/api/register",
+        // "/api/register",
         // deploy route vercel
         "https://file-signatory.vercel.app/api/register",
         {

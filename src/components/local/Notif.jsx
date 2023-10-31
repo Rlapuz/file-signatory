@@ -26,7 +26,7 @@ export default Notif;
 //     // Update the `notifications` and `files` states with the fetched data.
 
 //     // local route
-//     fetch("http://localhost:3000/api/notification")
+//     fetch("/api/notification")
 //       .then((res) => res.json())
 //       .then((data) => setNotifications(data));
 //   }, []);

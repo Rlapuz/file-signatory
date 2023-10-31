@@ -75,6 +75,27 @@ export const Profile = () => {
     });
   }
 
+  // const handleInputChange = (e) => {
+  //   const { name, value, files } = e.target;
+
+  //   if (name === "image") {
+  //     // Check if any files are selected
+  //     if (files.length > 0) {
+  //       // Use the first selected file
+  //       const selectedFile = files[0];
+  //       setFormData((prevFormData) => ({
+  //         ...prevFormData,
+  //         [name]: selectedFile,
+  //       }));
+  //     }
+  //   } else {
+  //     setFormData((prevFormData) => ({
+  //       ...prevFormData,
+  //       [name]: value,
+  //     }));
+  //   }
+  // };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({

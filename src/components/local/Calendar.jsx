@@ -56,7 +56,7 @@ function addEvent(data) {
     };
 
     // Make a POST request to the backend to create the event
-    fetch("http://localhost:3000/api/calendar", {
+    fetch("/api/calendar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +74,7 @@ function addEvent(data) {
 
   function deleteEvent(eventId) {
     // Send a DELETE request to the backend to delete the event
-    fetch(`http://localhost:3000/api/calendar?id=${eventId}`, {
+    fetch(`/api/calendar?id=${eventId}`, {
       method: "DELETE",
     })
       .then((response) => {

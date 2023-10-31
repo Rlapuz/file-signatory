@@ -34,9 +34,9 @@ export const Folder = () => {
           const userId = session.user._id; // Get the user's ID from the session
           const res = await fetch(
             // local route
-            // `http://localhost:3000/api/folder?userId=${userId}`,
+            `/api/folder?userId=${userId}`,
             // deploy route vercel
-            `https://file-signatory.vercel.app/api/folder?userId=${userId}`,
+            // `https://file-signatory.vercel.app/api/folder?userId=${userId}`,
             {
               cache: "no-store",
             }
@@ -84,9 +84,9 @@ export const Folder = () => {
         try {
           const res = await fetch(
             // local route
-            // `http://localhost:3000/api/folder?id=${id}`,
+            `/api/folder?id=${id}`,
             // deploy route vercel
-            `https://file-signatory.vercel.app/api/folder?id=${id}`,
+            // `https://file-signatory.vercel.app/api/folder?id=${id}`,
             {
               method: "DELETE",
             }
@@ -127,9 +127,9 @@ export const Folder = () => {
     try {
       const res = await fetch(
         // local route
-        // `http://localhost:3000/api/folder?id=${id}`,
+        `/api/folder?id=${id}`,
         // deploy route vercel
-        `https://file-signatory.vercel.app/api/folder?id=${id}`,
+        // `https://file-signatory.vercel.app/api/folder?id=${id}`,
         {
           method: "PUT",
           headers: {
