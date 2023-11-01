@@ -98,11 +98,9 @@ export const Sidebar = () => {
               height={0}
               alt="bsu logo"
             />
-            <Link
-              href="/"
-              className="text-xl whitespace-pre font-bold">
+            <h1 className="text-xl whitespace-pre font-bold">
               File Management
-            </Link>
+            </h1>
           </div>
 
           {/* menus */}

@@ -29,6 +29,7 @@ export const authOptions = {
                         email: profile.email,
                         image: profile.image,
                         role: profile.role ?? 'user',
+
                     }
                 },
                 async authorize(credentials, req) {
@@ -117,6 +118,7 @@ export const authOptions = {
                     image: credentials.image,
                     provider: account.provider,
                     role: 'user', // Set the role field to the default value 'user'
+                    status: 'active', // Set the status field to the default value 'active'
 
                 });
 
@@ -156,7 +158,11 @@ export const authOptions = {
                 const userCredential = await getCredentialByEmail({ email: token.email });
                 if (userCredential) {
                     token.user = userCredential; // Found in UserCredential model
-                } else {
+                }
+
+                /** 
+                 * ? uncomment this if you want to use OAuth
+                else {
 
                     // If not found in Credential model, check the User model (OAuth)
                     const user = await getUserByEmail({ email: token.email });
@@ -169,22 +175,23 @@ export const authOptions = {
                     }
                 }
 
-                // // First, attempt to find the user in the User model (OAuth)
-                // const user = await getUserByEmail({ email: token.email });
+                // First, attempt to find the user in the User model (OAuth)
+                const user = await getUserByEmail({ email: token.email });
 
-                // if (user) {
-                //     token.user = user; // Found in OAuth model
-                // } else {
-                //     // If not found in User model, check the Credential model
-                //     const userCredential = await getCredentialByEmail({ email: token.email });
+                if (user) {
+                    token.user = user; // Found in OAuth model
+                } else {
+                    // If not found in User model, check the Credential model
+                    const userCredential = await getCredentialByEmail({ email: token.email });
 
-                //     if (userCredential) {
-                //         token.user = userCredential; // Found in UserCredential model
-                //     } else {
-                //         // Handle the case when the email is not found in either model
-                //         throw new Error('User not found');
-                //     }
-                // }
+                    if (userCredential) {
+                        token.user = userCredential; // Found in UserCredential model
+                    } else {
+                        // Handle the case when the email is not found in either model
+                        throw new Error('User not found');
+                    }
+                }
+                */
 
 
             }

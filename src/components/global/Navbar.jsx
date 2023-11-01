@@ -17,11 +17,6 @@ import {
   Button,
 } from "@nextui-org/react";
 import { NavbarSkeleton } from "../skeleton/NavbarSkeleton";
-import {
-  NovuProvider,
-  PopoverNotificationCenter,
-  NotificationBell,
-} from "@novu/notification-center";
 
 export const Navbar = () => {
   const router = useRouter();
@@ -102,18 +97,18 @@ export const Navbar = () => {
             </form>
             {/* profile and notifications*/}
             <div className="relative flex-shrink-0 flex items-center gap-7">
-              {/* novu notification */}
-              <div className="">
-                <NovuProvider
-                  subscriberId={"6524074072a8166dd082c055"}
-                  applicationIdentifier={"mgMhy5mSP-w6"}>
-                  <PopoverNotificationCenter colorScheme={"light"}>
-                    {({ unseenCount }) => (
-                      <NotificationBell unseenCount={unseenCount} />
-                    )}
-                  </PopoverNotificationCenter>
-                </NovuProvider>
+              {/* ThemeSwitcher */}
+              {/* <ThemeSwitcher /> */}
+              {/* Notifications */}
+              <div className="relative">
+                <div className="flex items-center justify-center">
+                  <HiOutlineBellAlert className="w-6 h-6 text-gray-500 cursor-pointer" />
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
+                    3
+                  </span>
+                </div>
               </div>
+
               <div>
                 <div className="flex flex-col gap-2">
                   <Popover

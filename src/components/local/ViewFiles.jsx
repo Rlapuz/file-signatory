@@ -45,19 +45,13 @@ export const ViewFiles = ({ updateFolders }) => {
         confirmButtonColor: "#6A64F1", // Customize the confirm button color
       });
 
-      const response = await fetch(
-        // local route
-        "/api/folder",
-        // deploy route vercel
-        // "https://file-signatory.vercel.app/api/folder",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name: newFolderName }),
-        }
-      );
+      const response = await fetch("/api/folder", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: newFolderName }),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to create folder");

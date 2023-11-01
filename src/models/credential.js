@@ -37,6 +37,10 @@ const CredentialSchema = new Schema({
         type: String,
         default: 'credentials'
     },
+    status: {
+        type: String,
+        default: 'active', // You can set the default status as 'active'
+    },
 
 
 

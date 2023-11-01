@@ -37,26 +37,20 @@ export const Register = () => {
 
     try {
       // Send lowercaseEmail to the server
-      const res = await fetch(
-        // local route
-        // "/api/register",
-        // deploy route vercel
-        "https://file-signatory.vercel.app/api/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            contact,
-            employeeId,
-            email: lowercaseEmail,
-            password,
-            role,
-          }),
-        }
-      );
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          contact,
+          employeeId,
+          email: lowercaseEmail,
+          password,
+          role,
+        }),
+      });
 
       if (res.ok) {
         // Clear the form fields manually

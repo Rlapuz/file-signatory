@@ -1,4 +1,6 @@
+
 import { Login } from '../components/global/Login';
+
 
 export const metadata = {
   title: 'Meneses | Login',
@@ -7,7 +9,6 @@ export const metadata = {
 export default function Home() {
   return (
     <>
-
       <Login />
     </>
   )

@@ -19,7 +19,7 @@ export async function POST(request) {
         }
 
         // Create a new user credential in the database
-        await Credential.create({ name, contact, employeeId, email, password, role, provider });
+        await Credential.create({ name, contact, employeeId, email, password, role, provider, status: 'active' });
 
         // Return a success response with a 201 status code
         return NextResponse.json({ message: "Credential created" }, { status: 201 });

@@ -77,14 +77,6 @@ export const Retrieve = () => {
       if (result.isConfirmed) {
         try {
           // Your code to send a PUT request to restore the file here
-          // deploy route vercel
-          // const res = await fetch(
-          // `https://file-signatory.vercel.app/api/file/restore/${id}`,
-          // {
-          // method: "PUT",
-          // }
-          // );
-          // local route
           const res = await fetch(`/api/file/restore?id=${id}`, {
             method: "PUT",
           });
@@ -123,14 +115,6 @@ export const Retrieve = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          // deploy route vercel
-          // const res = await fetch(
-          // `https://file-signatory.vercel.app/api/file/permanent-delete/${id}`,
-          // {
-          // method: "DELETE",
-          // }
-          // );
-          // local route
           const res = await fetch(`/api/file/permanent-delete?id=${id}`, {
             method: "DELETE",
           });
@@ -228,7 +212,7 @@ export const Retrieve = () => {
             {deletedFiles.map((file) => (
               <div key={file._id}>
                 {/* nextui */}
-                <Card className="py-4">
+                <Card className="py-4 h-[270px]">
                   <CardHeader className="pb-0 pt-2 px-4 flex justify-between items-center">
                     <div className="flex items-center">
                       {getIconForMimeType(file.mimetype)}

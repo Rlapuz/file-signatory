@@ -1,7 +1,12 @@
+import { FacultyMember } from "@/components/admin-components/local/FacultyMember";
 import React from "react";
 
 export const UploadAdminPage = () => {
-  return <div>UploadAdminPage</div>;
+  return (
+    <>
+      <FacultyMember />
+    </>
+  );
 };
 
 export default UploadAdminPage;

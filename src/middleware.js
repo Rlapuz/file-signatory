@@ -7,7 +7,7 @@ export default withAuth(
     {
         callbacks: {
             authorized: ({ req, token }) => {
-                if (req.nextUrl.pathname === '/admin') {
+                if (req.nextUrl.pathname === '/admin' || req.nextUrl.pathname === '/admin/upload' || req.nextUrl.pathname === '/admin/signup' || req.nextUrl.pathname === '/admin/profile') {
                     return token?.role === "admin"
                 }
 
@@ -21,6 +21,6 @@ export default withAuth(
 // export { default } from "next-auth/middleware"
 
 export const config = {
-    matcher: ['/dashboard/:path*', '/admin']
+    matcher: ['/dashboard/:path*', '/admin/:path*']
 }
 

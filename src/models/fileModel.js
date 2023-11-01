@@ -31,15 +31,23 @@ const fileSchema = new Schema({
     },
     status: {
         type: String,
-        default: "Pending",
+        enum: ["Pending", "Approved", "Rejected", "Draft"],
+        default: "Draft",
     },
     deleted: {
         type: Boolean,
         default: false, // Set as false initially to indicate not deleted
     },
 
+
 }, { timestamps: true });
 
 const FileModel = models.File || model('File', fileSchema);
 
 export default FileModel;
+
+/**
+ * ! IMPORTANT NOTE 
+ * status need enum Pending, Approved, Rejected Draft
+ * Draft Signatory default  
+ */

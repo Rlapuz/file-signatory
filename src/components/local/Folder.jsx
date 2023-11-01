@@ -32,15 +32,9 @@ export const Folder = () => {
       try {
         if (session) {
           const userId = session.user._id; // Get the user's ID from the session
-          const res = await fetch(
-            // local route
-            `/api/folder?userId=${userId}`,
-            // deploy route vercel
-            // `https://file-signatory.vercel.app/api/folder?userId=${userId}`,
-            {
-              cache: "no-store",
-            }
-          );
+          const res = await fetch(`/api/folder?userId=${userId}`, {
+            cache: "no-store",
+          });
           if (!res.ok) {
             throw new Error("Something went wrong");
           }
@@ -82,15 +76,9 @@ export const Folder = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await fetch(
-            // local route
-            `/api/folder?id=${id}`,
-            // deploy route vercel
-            // `https://file-signatory.vercel.app/api/folder?id=${id}`,
-            {
-              method: "DELETE",
-            }
-          );
+          const res = await fetch(`/api/folder?id=${id}`, {
+            method: "DELETE",
+          });
           if (!res.ok) {
             throw new Error("Something went wrong");
           }
@@ -125,19 +113,13 @@ export const Folder = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(
-        // local route
-        `/api/folder?id=${id}`,
-        // deploy route vercel
-        // `https://file-signatory.vercel.app/api/folder?id=${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name: newFolderName }),
-        }
-      );
+      const res = await fetch(`/api/folder?id=${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: newFolderName }),
+      });
       if (!res.ok) {
         throw new Error("Something went wrong");
       }
@@ -159,7 +141,7 @@ export const Folder = () => {
     <>
       {folders.map((folder) => (
         <div key={folder._id}>
-          <div className="flex justify-between items-center gap-4 border rounded-lg shadow-md px-3 py-4 bg-gray-50 hover:bg-gray-200">
+          <div className="flex justify-between items-center gap-4 border rounded-lg shadow-md px-3 py-4 bg-white hover:bg-gray-200">
             <Link
               href={`/dashboard/${folder._id}`}
               className="flex items-center gap-2">

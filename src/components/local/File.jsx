@@ -46,15 +46,9 @@ export const File = () => {
           // console.log("Check userId", userId);
           // console.log("Session", session);
 
-          const res = await fetch(
-            // local route
-            `/api/file?userId=${userId}`,
-            // deploy route vercel
-            // `https://file-signatory.vercel.app/api/file?userId=${userId}`,
-            {
-              cache: "no-store",
-            }
-          );
+          const res = await fetch(`/api/file?userId=${userId}`, {
+            cache: "no-store",
+          });
           if (!res.ok) {
             throw new Error("Something went wrong");
           }
@@ -97,11 +91,6 @@ export const File = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          // deploy route vercel
-          // const res = await fetch(
-          // `https://file-signatory.vercel.app/api/file?id=${id}`,
-          // {
-          // local route
           const res = await fetch(`/api/file?id=${id}`, {
             method: "DELETE",
           });
@@ -193,11 +182,6 @@ export const File = () => {
     e.preventDefault();
 
     try {
-      // deploy route vercel
-      // const res = await fetch(
-      // `https://file-signatory.vercel.app/api/file?id=${id}`,
-      // {
-      // local route
       const res = await fetch(`/api/file?id=${id}`, {
         method: "PUT",
         headers: {
@@ -210,6 +194,44 @@ export const File = () => {
       }
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  // Function to determine the content to display in CardBody based on file type
+  const renderCardBodyContent = (file) => {
+    const { mimetype, url } = file;
+
+    if (mimetype.includes("video") || mimetype.includes("doc")) {
+      return (
+        <iframe
+          style={{ width: "200px", height: "150px" }}
+          src={url}></iframe>
+      );
+    } else if (
+      mimetype.includes("image") ||
+      mimetype.includes("gif") ||
+      mimetype.includes("pdf")
+    ) {
+      return (
+        <Image
+          alt="file-preview"
+          className="object-cover rounded-lg"
+          src={url}
+          width={200}
+          height={150}
+        />
+      );
+    } else {
+      // Default content for other file types
+      return (
+        <Image
+          alt="file-preview"
+          className="object-cover rounded-lg"
+          src={url}
+          width={200}
+          height={150}
+        />
+      );
     }
   };
 
@@ -245,7 +267,7 @@ export const File = () => {
                 </div>
               </div> */}
               {/* nextui */}
-              <Card className="py-4">
+              <Card className="py-4 h-[270px]">
                 <CardHeader className="pb-0 pt-2 px-4 flex justify-between items-center">
                   <div className="flex items-center">
                     {getIconForMimeType(file.mimetype)}
@@ -262,14 +284,8 @@ export const File = () => {
                     />
                   </div>
                 </CardHeader>
-                <CardBody className="overflow-visible py-2">
-                  <Image
-                    alt="file-preview"
-                    className="object-cover rounded-lg"
-                    src={file.url}
-                    width={200}
-                    height={150}
-                  />
+                <CardBody className="overflow-visible py-2 flex justify-center">
+                  {renderCardBodyContent(file)}
                 </CardBody>
               </Card>
               {/* nextui */}

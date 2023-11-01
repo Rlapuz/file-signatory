@@ -44,25 +44,19 @@ export const Filestack = () => {
           .slice(0, -1)
           .join(".");
 
-        const response = await fetch(
-          // local route
-          "/api/file",
-          // deploy route vercel
-          // "https://file-signatory.vercel.app/api/file",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            // Save the filename without extension to the database
-            body: JSON.stringify({
-              filename: filenameWithoutExtension,
-              size,
-              url,
-              mimetype,
-            }),
-          }
-        );
+        const response = await fetch("/api/file", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          // Save the filename without extension to the database
+          body: JSON.stringify({
+            filename: filenameWithoutExtension,
+            size,
+            url,
+            mimetype,
+          }),
+        });
         if (response.ok) {
           console.log("File uploaded successfully!");
           setUploadedFile({
