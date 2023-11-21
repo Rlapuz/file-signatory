@@ -2,14 +2,17 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { BiSearch } from "react-icons/bi";
 import { HiOutlineBellAlert } from "react-icons/hi2";
+import { RxCross2 } from "react-icons/rx";
+import { FaFileSignature } from "react-icons/fa6";
 import { IoCloseOutline } from "react-icons/io5";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Avatar } from "@nextui-org/react";
+import { ScrollShadow } from "@nextui-org/react";
 import {
   Popover,
   PopoverTrigger,
@@ -17,6 +20,8 @@ import {
   Button,
 } from "@nextui-org/react";
 import { NavbarSkeleton } from "../skeleton/NavbarSkeleton";
+import { formatDistanceToNow } from "date-fns";
+import { BsEmojiWinkFill } from "react-icons/bs";
 
 export const Navbar = () => {
   const router = useRouter();
@@ -27,6 +32,61 @@ export const Navbar = () => {
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [noResults, setNoResults] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpen2, setIsOpen2] = useState(false);
+
+  // State to manage notifications
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    // Fetch notifications when the component mounts or when the user changes
+    const fetchNotifications = async () => {
+      try {
+        if (session) {
+          const res = await fetch(`/api/notification`);
+
+          if (res.ok) {
+            const notificationsData = await res.json();
+            setNotifications(notificationsData);
+            // console.log("Notifications:", notificationsData);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+      }
+    };
+
+    fetchNotifications();
+    // Refresh the notification list every 1 seconds (adjust the interval as needed)
+    const interval = setInterval(() => {
+      fetchNotifications();
+    }, 1000);
+  }, [session]);
+
+  const deleteNotification = async (notification) => {
+    try {
+      // Send a request to the API to delete the notification
+      const res = await fetch(`/api/notification`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(notification),
+      });
+
+      if (res.ok) {
+        // Update the local state to reflect the deleted notification
+        setNotifications((prevNotifications) =>
+          prevNotifications.filter(
+            (notification) => notification._id !== notification.id
+          )
+        );
+      } else {
+        console.error("Failed to delete notification");
+      }
+    } catch (error) {
+      console.error("Error deleting notification:", error);
+    }
+  };
 
   // Function to handle the search query
   // const handleSearch = async (e) => {
@@ -68,9 +128,17 @@ export const Navbar = () => {
   };
 
   const navigateToResult = (result) => {
-    // Use router.push to navigate to the selected result
-    router.push(result);
-    clearSearch();
+    // Check if result and result.message are defined
+    if (result && result.message) {
+      // Assuming result.message is relevant for navigation
+      // You might need to implement a specific logic based on the message
+      console.log("Navigating based on message:", result.message);
+      // Example: router.push(`/some-path/${result.message}`);
+      clearSearch();
+    } else {
+      console.error("Invalid result or result.message:", result);
+      // Handle the error or provide a default behavior
+    }
   };
 
   return (
@@ -102,10 +170,90 @@ export const Navbar = () => {
               {/* Notifications */}
               <div className="relative">
                 <div className="flex items-center justify-center">
-                  <HiOutlineBellAlert className="w-6 h-6 text-gray-500 cursor-pointer" />
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
-                    3
-                  </span>
+                  <Popover
+                    placement="bottom"
+                    showArrow={true}
+                    isOpen={isOpen2}
+                    onOpenChange={(open) => setIsOpen2(open)}>
+                    <PopoverTrigger>
+                      <div>
+                        <HiOutlineBellAlert className="w-6 h-6 text-gray-500 cursor-pointer" />
+                        <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
+                          {notifications.length}
+                        </span>
+                      </div>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                      <ScrollShadow className="w-full h-[400px]">
+                        <div className=" bg-white-50  p-3">
+                          <div className="flex items-center justify-between">
+                            <p className="text-2xl font-semibold leading-6 text-gray-800">
+                              Notifications
+                            </p>
+                            <div className="cursor-pointer">
+                              <RxCross2
+                                size={20}
+                                // close the popover
+                                onClick={() => setIsOpen2(false)}
+                              />
+                            </div>
+                          </div>
+                          {/* Notifications */}
+                          {notifications.length === 0 ? (
+                            <p>No notifications</p>
+                          ) : (
+                            notifications.map((notification) => (
+                              <div
+                                key={notification._id}
+                                className="w-full p-3 mt-4 bg-violet-100 rounded shadow flex flex-shrink-0">
+                                <div className="w-8 h-8 border rounded-full border-gray-200 flex flex-shrink-0 items-center justify-center">
+                                  <FaFileSignature
+                                    size={20}
+                                    className="text-indigo-700"
+                                  />
+                                </div>
+                                <div className="pl-3 w-full">
+                                  <div className="flex items-center justify-between w-full">
+                                    <p className="text-sm leading-none cursor-pointer">
+                                      {notification.message}
+                                    </p>
+                                    <div className="cursor-pointer">
+                                      <RxCross2
+                                        size={17}
+                                        onClick={() =>
+                                          deleteNotification(notification)
+                                        }
+                                      />
+                                    </div>
+                                  </div>
+                                  <p className="text-xs leading-3 pt-1 text-gray-500">
+                                    {formatDistanceToNow(
+                                      new Date(notification.timestamps),
+                                      { addSuffix: true }
+                                    )}
+                                  </p>
+                                </div>
+                              </div>
+                            ))
+                          )}
+                          {/* Additional content or separators if needed */}
+                          <div className="flex items-center justiyf-between">
+                            <hr className="w-full" />
+                            <p className="text-sm flex flex-shrink-0 leading-normal px-3 py-16 text-gray-500">
+                              Thats it for now{" "}
+                              <span className="text-center">
+                                <BsEmojiWinkFill
+                                  size={17}
+                                  className=" text-pink-600"
+                                />
+                              </span>
+                            </p>
+                            <hr className="w-full" />
+                          </div>
+                        </div>
+                      </ScrollShadow>
+                    </PopoverContent>
+                  </Popover>
                 </div>
               </div>
 
@@ -150,6 +298,7 @@ export const Navbar = () => {
                             className="px-5 hover:bg-violet-300 rounded-md text-center">
                             Settings
                           </Link>
+
                           <hr />
                           <button
                             onClick={signOut}

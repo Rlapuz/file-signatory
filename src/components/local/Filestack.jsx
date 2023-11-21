@@ -12,6 +12,7 @@ export const Filestack = () => {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [uploadedFileHandle, setUploadedFileHandle] = useState("");
   const [hasUploadedFile, setHasUploadedFile] = useState(false);
+  const [destinationSignatory, setDestinationSignatory] = useState("");
 
   const handleClearInput = () => {
     setInputValue("");
@@ -36,7 +37,7 @@ export const Filestack = () => {
   const handleUploadDone = async (res) => {
     try {
       if (res?.filesUploaded && res.filesUploaded.length > 0) {
-        const { handle, filename, size, url, mimetype } = res.filesUploaded[0];
+        const { filename, size, url, mimetype } = res.filesUploaded[0];
 
         // Extract the filename without the extension
         const filenameWithoutExtension = filename
@@ -71,7 +72,9 @@ export const Filestack = () => {
           showUploadSuccessAlert();
 
           // After successful upload, send the document to the appropriate signatory
-          sendDocumentToSignatory();
+          // sendDocumentToSignatory();
+          // Set the destination signatory based on the hierarchy
+          // setDestinationSignatory(nextSignatory);
         } else {
           console.error("Failed to upload file to MongoDB.");
         }
@@ -92,6 +95,9 @@ export const Filestack = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          destinationSignatory,
+        }),
       });
 
       if (response.ok) {
@@ -114,11 +120,12 @@ export const Filestack = () => {
 
     try {
       // Send the document to the appropriate signatory
-      await sendDocumentToSignatory();
+      await sendDocumentToSignatory(destinationSignatory);
 
       // Reset the form and state after successful send
       setInputValue(""); // Clear the input field
       removeUploadedFile(); // Clear the uploaded file state
+      setDestinationSignatory("");
     } catch (error) {
       console.error("Error sending document:", error);
     }
@@ -221,7 +228,7 @@ export const Filestack = () => {
 
             <div>
               <button
-                onClick={showSendFileAlert}
+                // onClick={showSendFileAlert}
                 className="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">
                 Send File
               </button>

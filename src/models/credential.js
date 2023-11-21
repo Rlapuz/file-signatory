@@ -41,6 +41,25 @@ const CredentialSchema = new Schema({
         type: String,
         default: 'active', // You can set the default status as 'active'
     },
+    notifications: [
+        {
+
+            message: {
+                type: String,
+                required: true,
+            },
+            status: {
+                type: String,
+                enum: ["unread", "read"],
+                default: "unread",
+            },
+            // time
+            timestamps: {
+                type: Date,
+                default: Date.now,
+            }
+        },
+    ],
 
 
 

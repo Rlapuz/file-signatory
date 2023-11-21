@@ -17,6 +17,7 @@ import {
   Input,
 } from "@nextui-org/react";
 import Swal from "sweetalert2";
+import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
 
 export const Folder = () => {
   const [folders, setFolders] = useState([]);
@@ -98,13 +99,13 @@ export const Folder = () => {
     });
   };
 
-  // Function to toggle file options (like delete and download)
-  const toggleOptions = (id) => {
-    setShowOptions((prevShowOptions) => ({
-      ...prevShowOptions,
-      [id]: !prevShowOptions[id],
-    }));
-  };
+  // // Function to toggle file options (like delete and download)
+  // const toggleOptions = (id) => {
+  //   setShowOptions((prevShowOptions) => ({
+  //     ...prevShowOptions,
+  //     [id]: !prevShowOptions[id],
+  //   }));
+  // };
 
   if (error) {
     return <div>Error: Something went wrong</div>;
@@ -148,12 +149,83 @@ export const Folder = () => {
               <FaFolder size={20} />
               <h3 className="ml-0">{folder.name}</h3>
             </Link>
-            <BiDotsVerticalRounded
+            {/* <BiDotsVerticalRounded
               size={20}
               onClick={() => toggleOptions(folder._id)}
-            />
+            /> */}
+
+            <Popover
+              placement="right"
+              showArrow={true}
+              className=" bg-slate-200">
+              <PopoverTrigger>
+                <div className="flex items-center">
+                  <BiDotsVerticalRounded size={20} />
+                </div>
+              </PopoverTrigger>
+              <PopoverContent>
+                <div className="flex flex-col gap-3 p-5">
+                  <Button
+                    onPress={onOpen}
+                    size="sm"
+                    color="primary"
+                    variant="shadow">
+                    Rename
+                  </Button>
+                  <Button
+                    color="danger"
+                    variant="shadow"
+                    size="sm"
+                    onClick={() => deleteFolder(folder._id)}>
+                    Delete
+                  </Button>
+
+                  {/* for rename modal */}
+                  <Modal
+                    isOpen={isOpen}
+                    onOpenChange={onOpenChange}
+                    placement="top-center">
+                    <ModalContent>
+                      {(onClose) => (
+                        <>
+                          <ModalHeader className="flex flex-col gap-1">
+                            File Name
+                          </ModalHeader>
+                          <ModalBody>
+                            <Input
+                              autoFocus
+                              label="Rename"
+                              placeholder=""
+                              variant="bordered"
+                              onChange={(e) => setNewFileName(e.target.value)}
+                              value={newFileName}
+                            />
+                          </ModalBody>
+                          <ModalFooter>
+                            <Button
+                              color="danger"
+                              variant="flat"
+                              onPress={onClose}>
+                              Close
+                            </Button>
+                            <Button
+                              color="primary"
+                              onPress={onClose}
+                              onSubmit={() => handleSubmit(folder._id)}>
+                              Rename
+                            </Button>
+                          </ModalFooter>
+                        </>
+                      )}
+                    </ModalContent>
+                  </Modal>
+                </div>
+              </PopoverContent>
+            </Popover>
           </div>
 
+          {/* 
+          * ? manual
           {showOptions[folder._id] && ( // Display options only if showOptions[id] is true
             <div className="flex justify-between mt-2 md:py-2 md:px-5">
               <Button
@@ -207,7 +279,7 @@ export const Folder = () => {
                 </ModalContent>
               </Modal>
             </div>
-          )}
+          )} */}
         </div>
       ))}
     </>

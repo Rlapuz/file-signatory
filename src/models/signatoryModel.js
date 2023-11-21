@@ -1,28 +1,49 @@
+
 import { Schema, model, models } from "mongoose";
 
-const FilesignatorySchema = new Schema({
-    fileId: {
-        type: Schema.Types.ObjectId,
-        ref: "File",
+const fileSignatorySchema = new Schema({
+    filename: {
+        type: String,
         required: true,
     },
-    userId: {
-        type: Schema.Types.ObjectId,
-        ref: "Credential", // Reference to the user who sent the FileSignatory
+    size: {
+        type: Number,
+        required: true,
+    },
+    url: {
+        type: String,
+        required: true,
+    },
+    mimetype: {
+        type: String,
         required: true,
     },
     currentSignatory: {
         type: String,
         enum: ["ProgChair", "CESU", "DEAN", "FOCAL"],
-        default: "ProgChair", // Set the initial signatory role
+        default: "ProgChair",
     },
+
     status: {
         type: String,
-        default: "Pending",
+        enum: ["Pending", "Approved", "Rejected", "Draft"],
+        default: "Draft",
     },
-    // You can add more fields specific to the FileSignatory routing here
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Credential', // Reference to the Credential model
+        required: true,
+    },
+    deleted: {
+        type: Boolean,
+        default: false,
+    },
 }, { timestamps: true });
 
-const FileSignatory = models.FileSignatory || model('FileSignatory', FilesignatorySchema);
+const FileSignatoryModel = models.FileSignatory || model('FileSignatory', fileSignatorySchema);
 
-export default FileSignatory;
+export default FileSignatoryModel;
+
+/**
+ * TODO: implement if I upload file add currentSignatory based on my role
+ */

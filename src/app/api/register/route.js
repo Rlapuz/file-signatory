@@ -19,6 +19,7 @@ export async function POST(request) {
         }
 
         // Create a new user credential in the database
+        // status: 'active' is set as default
         await Credential.create({ name, contact, employeeId, email, password, role, provider, status: 'active' });
 
         // Return a success response with a 201 status code

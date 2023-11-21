@@ -183,6 +183,21 @@ export const Sidebar = () => {
                 </Link>
               </li>
 
+              {/* signatory */}
+              <li>
+                <Link
+                  href="/dashboard/signatory"
+                  className={`link ${
+                    pathname === "/dashboard/signatory" ? "active" : ""
+                  }`}>
+                  <BsBell
+                    size={23}
+                    className="min-w-max"
+                  />
+                  Signatory
+                </Link>
+              </li>
+
               {/* Profile */}
               <li>
                 <Link

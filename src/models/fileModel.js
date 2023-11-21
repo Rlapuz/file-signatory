@@ -24,16 +24,12 @@ const fileSchema = new Schema({
         ref: 'UserGoogle',
         required: true,
     },
-    currentSignatory: {
-        type: String,
-        enum: ["ProgChair", "CESU", "DEAN", "FOCAL"],
-        default: "ProgChair", // Set the initial signatory role
-    },
-    status: {
-        type: String,
-        enum: ["Pending", "Approved", "Rejected", "Draft"],
-        default: "Draft",
-    },
+    // currentSignatory: {
+    //     type: String,
+    //     enum: ["ProgChair", "CESU", "DEAN", "FOCAL"],
+    //     default: "ProgChair", // Set the initial signatory role
+    // },
+
     deleted: {
         type: Boolean,
         default: false, // Set as false initially to indicate not deleted

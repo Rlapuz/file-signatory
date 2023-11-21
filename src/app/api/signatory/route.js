@@ -1,85 +1,56 @@
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import FileSignatoryModel from "@/models/signatoryModel";
 import connectDB from "@/db/connectDB";
-import { authOptions } from "../auth/[...nextauth]/route";
 import { NextResponse } from "next/server";
 
-
-// POST
+// POST 
 export async function POST(request) {
     try {
-        const session = await getServerSession(authOptions);
+        const session = await getServerSession(authOptions)
 
-        // // Implement logic to route the document to the appropriate signatory here
-        // // You can access request.body to get the data you need.
-
-        // Example: Determine the next signatory based on the current user's role
-        // let nextSignatory = "";
-        // const currentUserRole = session.user.role; // Adjust this based on your data structure
-        // switch (currentUserRole) {
-        //   case "ProgChair":
-        //     nextSignatory = "CESU";
-        //     break;
-        //   // Add more cases for other roles
-        // }
-
-        // Implement logic to update the document status and current signatory
-
-        // You can make database updates, send notifications, etc.
-
-        return NextResponse.json({ message: "Document sent to nextSignatory" }, { status: 200 });
+        const { filename, size, url, mimetype } = await request.json();
+        await connectDB();
+        await FileSignatoryModel.create({ filename, size, url, mimetype, userId: session.user._id });
+        return NextResponse.json({ message: "SignatoryFile Created" }, { status: 201 });
     } catch (error) {
-        console.error("Error while processing document:", error);
-        return NextResponse.json({ message: "Failed to process document" }, { status: 500 });
+        console.error("Error while creating SignatoryFile:", error);
+        return NextResponse.json({ message: "Failed to create SignatoryFile" }, { status: 500 });
     }
 }
+
 
 // GET
-export async function GET(request) {
+export async function GET() {
     try {
+
         await connectDB();
-        // Implement logic to retrieve documents, e.g., documents assigned to the current user.
-        // You can use request.query or session.user to determine which documents to retrieve.
 
-        // const currentUser = session.user; // Get the current user
-        // const documents = await DocumentModel.find({ assignedTo: currentUser._id });
-
-        return NextResponse.json(/* documents data */{ status: 200 });
+        const files = await FileSignatoryModel.find({ deleted: false });
+        return NextResponse.json(files);
     } catch (error) {
-        console.error("Error while getting documents:", error);
-        return NextResponse.json({ message: "Failed to get documents" }, { status: 500 });
-    }
-}
-
-// PUT
-export async function PUT(request) {
-    try {
-        await connectDB();
-        // Implement logic to update a document, e.g., changing the document status.
-        // You can access request.body to get the data you need for the update.
-
-        // const updatedDocument = await DocumentModel.findOneAndUpdate(
-        //   { _id: request.query.id },
-        //   { status: request.body.status }
-        // );
-
-        return NextResponse.json(/* updatedDocument data */{ status: 200 });
-    } catch (error) {
-        console.error("Error while updating document:", error);
-        return NextResponse.json({ message: "Failed to update document" }, { status: 500 });
+        console.error("Error while getting SignatoryFile:", error);
+        return NextResponse.json({ message: "Failed to get SignatoryFile" }, { status: 500 });
     }
 }
 
 // DELETE
 export async function DELETE(request) {
-    try {
-        await connectDB();
-        // Implement logic to delete a document, e.g., based on the document ID in request.query.id.
+    const id = request.nextUrl.searchParams.get("id")
+    await connectDB()
+    // Find the file by ID and update the 'deleted' field to true
+    const updatedFileData = await FileSignatoryModel.findByIdAndUpdate(id, { deleted: true }, { new: true });
 
-        // await DocumentModel.findByIdAndDelete(request.query.id);
 
-        return NextResponse.json({ message: "Document deleted" }, { status: 200 });
-    } catch (error) {
-        console.error("Error while deleting document:", error);
-        return NextResponse.json({ message: "Failed to delete document" }, { status: 500 });
-    }
+    return NextResponse.json(updatedFileData, { status: 200 })
 }
+
+// PUT
+export async function PUT(request) {
+    const body = Object.fromEntries([...new FormData(request)])
+    const id = request.nextUrl.searchParams.get("id")
+    await connectDB()
+    const updatedFileData = await FileSignatoryModel.findOneAndUpdate({ "_id": id }, body, { new: true })
+    return NextResponse.json(updatedFileData, { status: 200 })
+}
+

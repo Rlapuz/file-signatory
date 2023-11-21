@@ -19,21 +19,21 @@ export const Register = () => {
     }
 
     // Email validation regex
-    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    // const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
-    if (!emailRegex.test(email)) {
-      setError("Invalid email address");
-      return;
-    }
+    // if (!emailRegex.test(email)) {
+    //   setError("Invalid email address");
+    //   return;
+    // }
 
     // Password validation (minimum length of 8 characters)
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters long");
-      return;
-    }
+    // if (password.length < 8) {
+    //   setError("Password must be at least 8 characters long");
+    //   return;
+    // }
 
     // Convert email to lowercase
-    const lowercaseEmail = email.toLowerCase();
+    // const lowercaseEmail = email.toLowerCase();
 
     try {
       // Send lowercaseEmail to the server
@@ -46,7 +46,8 @@ export const Register = () => {
           name,
           contact,
           employeeId,
-          email: lowercaseEmail,
+          // email: lowercaseEmail,
+          email,
           password,
           role,
         }),
