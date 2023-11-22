@@ -30,24 +30,19 @@ export async function GET(request) {
         // Check role and handle notifications accordingly
         switch (role) {
             case 'ProgChair':
-                // Handle notifications for ProgChair
                 return NextResponse.json(notifications, { status: 200 });
 
             case 'CESU':
-                // Handle notifications for CESU
-                // ...
+
 
                 return NextResponse.json(notifications, { status: 200 });
 
             case 'DEAN':
-                // Handle notifications for DEAN
-                // ...
+
 
                 return NextResponse.json(notifications, { status: 200 });
 
             case 'FOCAL':
-                // Handle notifications for FOCAL
-                // ...
 
                 return NextResponse.json(notifications, { status: 200 });
 

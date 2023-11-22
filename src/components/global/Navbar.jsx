@@ -141,12 +141,38 @@ export const Navbar = () => {
     }
   };
 
+  const handleNotificationClick = async (notification) => {
+    // Call the API route to update the notification status to "read"
+    try {
+      const res = await fetch("/api/notification/update-status", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ notificationId: notification._id }),
+      });
+
+      if (res.ok) {
+        // Update the local state or trigger a refetch of notifications if needed
+        // For example, you can refetch notifications by calling your fetchNotifications function
+        // fetchNotifications();
+        console.log("Notification status updated to 'read'");
+      } else {
+        console.error("Failed to update notification status");
+      }
+    } catch (error) {
+      console.error("Error updating notification status:", error);
+    }
+
+    // Other code to handle navigation or other actions when a notification is clicked
+  };
+
   return (
     <>
       <Suspense fallback={<NavbarSkeleton />}>
         <nav className="shadow-md bg-transparent rounded-md w-full">
           {/* search */}
-          <div className="flex items-center justify-between py-3 px-6 bg-gray-50 ">
+          <div className="flex items-center justify-between py-3 px-6 bg-white">
             <form
               // onSubmit={handleSearch}
               className="w-full max-w-md">
@@ -185,7 +211,7 @@ export const Navbar = () => {
                     </PopoverTrigger>
                     <PopoverContent>
                       <ScrollShadow className="w-full h-[400px]">
-                        <div className=" bg-white-50  p-3">
+                        <div className=" bg-white  p-3">
                           <div className="flex items-center justify-between">
                             <p className="text-2xl font-semibold leading-6 text-gray-800">
                               Notifications
@@ -214,7 +240,15 @@ export const Navbar = () => {
                                 </div>
                                 <div className="pl-3 w-full">
                                   <div className="flex items-center justify-between w-full">
-                                    <p className="text-sm leading-none cursor-pointer">
+                                    <p
+                                      className={`text-sm leading-none cursor-pointer ${
+                                        notification.status === "unread"
+                                          ? "font-bold"
+                                          : "font-thin"
+                                      }`}
+                                      onClick={() =>
+                                        handleNotificationClick(notification)
+                                      }>
                                       {notification.message}
                                     </p>
                                     <div className="cursor-pointer">
@@ -241,7 +275,7 @@ export const Navbar = () => {
                             <hr className="w-full" />
                             <p className="text-sm flex flex-shrink-0 leading-normal px-3 py-16 text-gray-500">
                               Thats it for now{" "}
-                              <span className="text-center">
+                              <span className="text-center ml-1">
                                 <BsEmojiWinkFill
                                   size={17}
                                   className=" text-pink-600"

@@ -15,7 +15,6 @@ import {
   Checkbox,
   Input,
 } from "@nextui-org/react";
-import { Spinner } from "@nextui-org/react";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { FaFileAlt } from "react-icons/fa";
 import { BiSolidFilePdf } from "react-icons/bi";
@@ -25,9 +24,10 @@ import { RiFileVideoFill } from "react-icons/ri";
 import { BsImage } from "react-icons/bs";
 import { AiOutlineFileGif } from "react-icons/ai";
 import Image from "next/image";
+import { Spinner } from "@nextui-org/react";
 
-export const Retrieve = () => {
-  const [deletedFiles, setDeletedFiles] = useState([]);
+export const RetrieveSignatory = () => {
+  const [deletedSignatoryFiles, setDeletedSignatoryFiles] = useState([]);
   const { data: session } = useSession();
   const [showOptions, setShowOptions] = useState({});
   const [newFileName, setNewFileName] = useState("");
@@ -35,18 +35,12 @@ export const Retrieve = () => {
 
   useEffect(() => {
     // Fetch deleted files for the logged-in user
-    const fetchDeletedFiles = async () => {
+    const fetchDeletedSignatoryFiles = async () => {
       try {
         if (session) {
           const userId = session.user._id; // Use the user's ID from the session
 
-          // Replace the URL with your API endpoint to fetch deleted files for the specific user
-          const res = await fetch(
-            // deploy route vercel
-            // `https://file-signatory.vercel.app/api/file/deleted?userId=${userId}`
-            // local route
-            `/api/file/deleted?userId=${userId}`
-          );
+          const res = await fetch(`/api/signatory/deleted?userId=${userId}`);
 
           const deletedFile = await res.json();
 
@@ -55,20 +49,20 @@ export const Retrieve = () => {
             (file) => file.userId === userId
           );
 
-          setDeletedFiles(filteredDeletedFile);
+          setDeletedSignatoryFiles(filteredDeletedFile);
         }
       } catch (error) {
         console.error(error);
       }
     };
 
-    fetchDeletedFiles();
+    fetchDeletedSignatoryFiles();
   }, [session]);
 
-  const restoreDeletedFile = async (id) => {
+  const restoreSignatoryDeletedFile = async (id) => {
     Swal.fire({
-      title: "Restore File",
-      text: "Are you sure you want to restore this file?",
+      title: "Restore Signatory File",
+      text: "Are you sure you want to restore this signatory file?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, restore it!",
@@ -78,22 +72,22 @@ export const Retrieve = () => {
       if (result.isConfirmed) {
         try {
           // Your code to send a PUT request to restore the file here
-          const res = await fetch(`/api/file/restore?id=${id}`, {
+          const res = await fetch(`/api/signatory/restore?id=${id}`, {
             method: "PUT",
           });
 
           if (res.ok) {
-            console.log("File restored successfully!");
+            console.log("Signatory File restored successfully!");
             const { message } = await res.json();
 
             Swal.fire("Restored!", message, "success");
 
-            setDeletedFiles((prevDeletedFiles) =>
+            setDeletedSignatoryFiles((prevDeletedFiles) =>
               prevDeletedFiles.filter((file) => file._id !== id)
             );
             // You can add additional logic here, such as updating UI or showing notifications.
           } else {
-            console.error("Failed to restore file.");
+            console.error("Failed to restore signatory file.");
           }
         } catch (error) {
           console.error(error);
@@ -104,10 +98,10 @@ export const Retrieve = () => {
   };
 
   // delete file permanently
-  const deleteFilePermanently = async (id) => {
+  const deleteSignatoryFilePermanently = async (id) => {
     Swal.fire({
-      title: "Delete File Permanent",
-      text: "Are you sure you want to delete this file permanent?",
+      title: "Delete Signatory File Permanent",
+      text: "Are you sure you want to delete this signatory file permanent?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, delete it!",
@@ -116,21 +110,21 @@ export const Retrieve = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await fetch(`/api/file/permanent-delete?id=${id}`, {
+          const res = await fetch(`/api/signatory/permanent-delete?id=${id}`, {
             method: "DELETE",
           });
 
           if (res.ok) {
-            console.log("File deleted permanently!");
+            console.log("Signatory File deleted permanently!");
             const { message } = await res.json();
             Swal.fire("Deleted!", message, "success");
 
-            setDeletedFiles((prevDeletedFiles) =>
+            setDeletedSignatoryFiles((prevDeletedFiles) =>
               prevDeletedFiles.filter((file) => file._id !== id)
             );
             // You can add additional logic here, such as updating UI or showing notifications.
           } else {
-            console.error("Failed to delete file permanently.");
+            console.error("Signatory Failed to delete file permanently.");
           }
         } catch (error) {
           console.error(error);
@@ -204,9 +198,8 @@ export const Retrieve = () => {
   };
   return (
     <>
-      <h1 className="text-md font-semibold mb-8">Retrieve Files</h1>
-
-      {deletedFiles.length === 0 ? (
+      <h1 className="text-md font-semibold mb-8">Retrieve Signatory Files</h1>
+      {deletedSignatoryFiles.length === 0 ? (
         <div className="flex justify-center">
           <Spinner
             label="Loading..."
@@ -216,7 +209,7 @@ export const Retrieve = () => {
       ) : (
         <div className="flex justify-center">
           <section className="grid grid-cols-1 gap-4 md:gap-10 md:grid-cols-3 lg:grid-cols-5 text-sm">
-            {deletedFiles.map((file) => (
+            {deletedSignatoryFiles.map((file) => (
               <div key={file._id}>
                 {/* nextui */}
                 <Card className="py-4 h-[270px]">
@@ -252,13 +245,13 @@ export const Retrieve = () => {
                     <Button
                       size="sm"
                       color="primary"
-                      onClick={() => restoreDeletedFile(file._id)}>
+                      onClick={() => restoreSignatoryDeletedFile(file._id)}>
                       Restore
                     </Button>
                     <Button
                       color="danger"
                       size="sm"
-                      onClick={() => deleteFilePermanently(file._id)}>
+                      onClick={() => deleteSignatoryFilePermanently(file._id)}>
                       Delete
                     </Button>
                     <Button

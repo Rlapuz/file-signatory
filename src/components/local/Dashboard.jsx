@@ -17,7 +17,7 @@ export const Dashboard = () => {
       {/*  */}
       <div className="flex flex-col justify-center items-center md:flex-row gap-10">
         {/* Profile content */}
-        <div className="h-80 w-3/4 md:h-80 md:w-2/5 lg:w-1/4 rounded-md shadow-md p-5  bg-gray-50">
+        <div className="h-80 w-3/4 md:h-80 md:w-2/5 lg:w-1/4 rounded-md shadow-md p-5  bg-white">
           <div className="flex justify-center items-center">
             <div className="h-20 w-20 flex justify-center items-center rounded-full border-2 ">
               {session?.user?.image ? (
@@ -66,11 +66,11 @@ export const Dashboard = () => {
 
         {/* profile end */}
         {/* Program */}
-        <div className=" hidden md:block md:h-80 md:w-3/4 md:basis-3/4 p-2 rounded-md shadow-md  bg-gray-50"></div>
+        <div className=" hidden md:block md:h-80 md:w-3/4 md:basis-3/4 p-2 rounded-md shadow-md  bg-white"></div>
       </div>
       {/* about */}
       <div className=" flex justify-center items-center md:justify-start font-semibold">
-        <div className="h-96 w-3/4 md:h-96 md:w-2/5 lg:w-1/4 rounded-md shadow-md bg-gray-50">
+        <div className="h-96 w-3/4 md:h-96 md:w-2/5 lg:w-1/4 rounded-md shadow-md bg-white">
           <div className=" bg-[#6A64F1] py-1 px-2 w-full border-b-2 border-black">
             <h1 className="text-white">About</h1>
           </div>

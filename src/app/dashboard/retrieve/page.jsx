@@ -1,4 +1,5 @@
 import { Retrieve } from "@/components/local/Retrieve";
+import { RetrieveSignatory } from "@/components/local/RetrieveSignatory";
 import React from "react";
 
 export const metadata = {
@@ -8,7 +9,15 @@ export const metadata = {
 export const RetrievePage = () => {
   return (
     <>
-      <Retrieve />
+      <div className="flex flex-col gap-5">
+        <div>
+          <Retrieve />
+        </div>
+        <hr />
+        <div>
+          <RetrieveSignatory />
+        </div>
+      </div>
     </>
   );
 };

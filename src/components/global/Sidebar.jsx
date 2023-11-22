@@ -14,9 +14,11 @@ import {
   BsPersonGear,
   BsBell,
 } from "react-icons/bs";
+import { LuFileSignature } from "react-icons/lu";
 import { BsTrash } from "react-icons/bs";
 import { SlCloudUpload } from "react-icons/sl";
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Logout } from "./Logout";
 
 export const Sidebar = () => {
@@ -71,8 +73,10 @@ export const Sidebar = () => {
         },
       };
 
-  const router = useRouter();
-  const pathname = router.pathname;
+  const pathname = usePathname();
+  // const pathname = router.pathname;
+
+  // console.log("Pathname", pathname);
 
   return (
     <>
@@ -89,7 +93,7 @@ export const Sidebar = () => {
           variants={Sidebar_animation}
           initial={{ x: isTab ? -250 : 0 }}
           animate={isOpen ? "open" : "closed"}
-          className="bg-gray-50 text-gray rounded-md shadow-lg z-[999] w-[16rem] max-w-[16rem] h-screen overflow-hidden md:relative fixed">
+          className="bg-gradient-to-br from-gray-800 to-gray-900 text-white shadow-lg z-[999] w-[16rem] max-w-[16rem] h-screen overflow-hidden md:relative fixed">
           {/* logo sidebar */}
           <div className="flex items-center gap-3 font-medium border-b border-slate-300 py-3 mx-3">
             <Image
@@ -98,7 +102,7 @@ export const Sidebar = () => {
               height={0}
               alt="bsu logo"
             />
-            <h1 className="text-xl whitespace-pre font-bold">
+            <h1 className="block antialiased tracking-normal font-sans text-xl font-semibold leading-relaxed text-white">
               File Management
             </h1>
           </div>
@@ -106,15 +110,13 @@ export const Sidebar = () => {
           {/* menus */}
           <div className="flex flex-col h-full">
             <ul
-              className="whitespace-pre px-3 text-[0.9rem] py-5 flex flex-col gap-1 font-bold overflow-x-hidden"
+              className="whitespace-pre px-3 text-[0.9rem] py-4 flex flex-col gap-1 text-menus overflow-x-hidden"
               onClick={closeSidebarMobile}>
               {/* dashboard */}
-              <li>
+              <li className={pathname == "/dashboard" ? "active" : ""}>
                 <Link
                   href="/dashboard"
-                  className={`link ${
-                    pathname === "/dashboard" ? "active" : ""
-                  }`}>
+                  className="link">
                   <BsGrid
                     size={23}
                     className="min-w-max"
@@ -124,12 +126,11 @@ export const Sidebar = () => {
               </li>
 
               {/* viewfiles */}
-              <li>
+              <li
+                className={pathname == "/dashboard/view-files" ? "active" : ""}>
                 <Link
                   href="/dashboard/view-files"
-                  className={`link ${
-                    pathname === "/dashboard/view-files" ? "active" : ""
-                  }`}>
+                  className="link">
                   <BsBox
                     size={23}
                     className="min-w-max"
@@ -139,12 +140,10 @@ export const Sidebar = () => {
               </li>
 
               {/* upload */}
-              <li>
+              <li className={pathname == "/dashboard/upload" ? "active" : ""}>
                 <Link
                   href="/dashboard/upload"
-                  className={`link ${
-                    pathname === "/dashboard/upload" ? "active" : ""
-                  }`}>
+                  className="link">
                   <SlCloudUpload
                     size={23}
                     className="min-w-max"
@@ -154,12 +153,10 @@ export const Sidebar = () => {
               </li>
 
               {/* calendar */}
-              <li>
+              <li className={pathname == "/dashboard/calendar" ? "active" : ""}>
                 <Link
                   href="/dashboard/calendar"
-                  className={`link ${
-                    pathname === "/dashboard/calendar" ? "active" : ""
-                  }`}>
+                  className="link">
                   <BsCalendar4Event
                     size={23}
                     className="min-w-max"
@@ -169,12 +166,13 @@ export const Sidebar = () => {
               </li>
 
               {/* notifications */}
-              <li>
+              <li
+                className={
+                  pathname == "/dashboard/notifications" ? "active" : ""
+                }>
                 <Link
                   href="/dashboard/notifications"
-                  className={`link ${
-                    pathname === "/dashboard/notifications" ? "active" : ""
-                  }`}>
+                  className="link">
                   <BsBell
                     size={23}
                     className="min-w-max"
@@ -184,13 +182,12 @@ export const Sidebar = () => {
               </li>
 
               {/* signatory */}
-              <li>
+              <li
+                className={pathname == "/dashboard/signatory" ? "active" : ""}>
                 <Link
                   href="/dashboard/signatory"
-                  className={`link ${
-                    pathname === "/dashboard/signatory" ? "active" : ""
-                  }`}>
-                  <BsBell
+                  className="link">
+                  <LuFileSignature
                     size={23}
                     className="min-w-max"
                   />
@@ -199,12 +196,10 @@ export const Sidebar = () => {
               </li>
 
               {/* Profile */}
-              <li>
+              <li className={pathname == "/dashboard/profile" ? "active" : ""}>
                 <Link
                   href="/dashboard/profile"
-                  className={`link ${
-                    pathname === "/dashboard/profile" ? "active" : ""
-                  }`}>
+                  className="link">
                   <BsPersonGear
                     size={23}
                     className="min-w-max"
@@ -214,12 +209,13 @@ export const Sidebar = () => {
               </li>
 
               {/* retrieve */}
-              <li>
+              <li className={pathname == "/dashboard/retrieve" ? "active" : ""}>
                 <Link
-                  href="/dashboard/retrieve"
-                  className={`link ${
-                    pathname === "/dashboard/retrieve" ? "active" : ""
-                  }`}>
+                  href={{
+                    pathname: "/dashboard/retrieve",
+                    query: { name: "retrieve" },
+                  }}
+                  className="link">
                   <BsTrash
                     size={23}
                     className="min-w-max"

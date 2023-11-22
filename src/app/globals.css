@@ -17,7 +17,7 @@
 }
 
 body {
-  background-color: rgb(241, 238, 238);
+  background-color: #edf2f7;
 }
 .my-config {
   --darkmode: 0;
@@ -31,12 +31,13 @@ body {
   background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
 }
 
+/* menus */
 .link {
-  @apply p-2.5 flex rounded-md gap-6 items-center md:cursor-pointer cursor-default duration-300 font-medium hover:bg-blue-400;
+  @apply p-2.5 flex rounded-md gap-6 items-center md:cursor-pointer cursor-default duration-300 font-medium hover:bg-gray-300 hover:text-black;
 }
 
 .active {
-  @apply bg-blue-900 text-white;
+  @apply bg-white text-black rounded-md;
 }
 
 /* calendar */
@@ -83,4 +84,14 @@ input {
 }
 .fc-v-event {
   @apply bg-violet-500 border border-violet-600;
+}
+
+/* for text */
+
+.text-calm {
+  @apply block antialiased tracking-normal  text-base font-semibold leading-relaxed text-white;
+}
+
+.text-menus {
+  @apply block antialiased text-base leading-relaxed text-inherit font-medium capitalize;
 }

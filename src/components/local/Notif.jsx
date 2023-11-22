@@ -1,6 +1,5 @@
 "use client";
-import { BsTrash } from "react-icons/bs";
-import { RxCross2 } from "react-icons/rx";
+import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
 
 export const Notif = () => {
   return <></>;

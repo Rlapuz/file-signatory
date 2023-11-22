@@ -18,6 +18,7 @@ import {
 } from "@nextui-org/react";
 import Swal from "sweetalert2";
 import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
+import { Spinner } from "@nextui-org/react";
 
 export const Folder = () => {
   const [folders, setFolders] = useState([]);
@@ -140,91 +141,102 @@ export const Folder = () => {
 
   return (
     <>
-      {folders.map((folder) => (
-        <div key={folder._id}>
-          <div className="flex justify-between items-center gap-4 border rounded-lg shadow-md px-3 py-4 bg-white hover:bg-gray-200">
-            <Link
-              href={`/dashboard/${folder._id}`}
-              className="flex items-center gap-2">
-              <FaFolder size={20} />
-              <h3 className="ml-0">{folder.name}</h3>
-            </Link>
-            {/* <BiDotsVerticalRounded
+      {folders.length === 0 ? (
+        <div className="flex justify-center">
+          <Spinner
+            label="Loading..."
+            color="secondary"
+          />
+        </div>
+      ) : (
+        <>
+          {folders.map((folder) => (
+            <div key={folder._id}>
+              <div className="flex justify-between items-center gap-4 border rounded-lg shadow-md px-3 py-4 bg-white hover:bg-gray-200">
+                <Link
+                  href={`/dashboard/${folder._id}`}
+                  className="flex items-center gap-2">
+                  <FaFolder size={20} />
+                  <h3 className="ml-0 text-menus text-sm">{folder.name}</h3>
+                </Link>
+                {/* <BiDotsVerticalRounded
               size={20}
               onClick={() => toggleOptions(folder._id)}
             /> */}
 
-            <Popover
-              placement="right"
-              showArrow={true}
-              className=" bg-slate-200">
-              <PopoverTrigger>
-                <div className="flex items-center">
-                  <BiDotsVerticalRounded size={20} />
-                </div>
-              </PopoverTrigger>
-              <PopoverContent>
-                <div className="flex flex-col gap-3 p-5">
-                  <Button
-                    onPress={onOpen}
-                    size="sm"
-                    color="primary"
-                    variant="shadow">
-                    Rename
-                  </Button>
-                  <Button
-                    color="danger"
-                    variant="shadow"
-                    size="sm"
-                    onClick={() => deleteFolder(folder._id)}>
-                    Delete
-                  </Button>
+                <Popover
+                  placement="right"
+                  showArrow={true}
+                  className=" bg-slate-200">
+                  <PopoverTrigger>
+                    <div className="flex items-center">
+                      <BiDotsVerticalRounded size={20} />
+                    </div>
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <div className="flex flex-col gap-3 p-5">
+                      <Button
+                        onPress={onOpen}
+                        size="sm"
+                        color="primary"
+                        variant="shadow">
+                        Rename
+                      </Button>
+                      <Button
+                        color="danger"
+                        variant="shadow"
+                        size="sm"
+                        onClick={() => deleteFolder(folder._id)}>
+                        Delete
+                      </Button>
 
-                  {/* for rename modal */}
-                  <Modal
-                    isOpen={isOpen}
-                    onOpenChange={onOpenChange}
-                    placement="top-center">
-                    <ModalContent>
-                      {(onClose) => (
-                        <>
-                          <ModalHeader className="flex flex-col gap-1">
-                            File Name
-                          </ModalHeader>
-                          <ModalBody>
-                            <Input
-                              autoFocus
-                              label="Rename"
-                              placeholder=""
-                              variant="bordered"
-                              onChange={(e) => setNewFileName(e.target.value)}
-                              value={newFileName}
-                            />
-                          </ModalBody>
-                          <ModalFooter>
-                            <Button
-                              color="danger"
-                              variant="flat"
-                              onPress={onClose}>
-                              Close
-                            </Button>
-                            <Button
-                              color="primary"
-                              onPress={onClose}
-                              onSubmit={() => handleSubmit(folder._id)}>
-                              Rename
-                            </Button>
-                          </ModalFooter>
-                        </>
-                      )}
-                    </ModalContent>
-                  </Modal>
-                </div>
-              </PopoverContent>
-            </Popover>
-          </div>
+                      {/* for rename modal */}
+                      <Modal
+                        isOpen={isOpen}
+                        onOpenChange={onOpenChange}
+                        placement="top-center">
+                        <ModalContent>
+                          {(onClose) => (
+                            <>
+                              <ModalHeader className="flex flex-col gap-1">
+                                File Name
+                              </ModalHeader>
+                              <ModalBody>
+                                <Input
+                                  autoFocus
+                                  label="Rename"
+                                  placeholder=""
+                                  variant="bordered"
+                                  onChange={(e) =>
+                                    setNewFileName(e.target.value)
+                                  }
+                                  value={newFileName}
+                                />
+                              </ModalBody>
+                              <ModalFooter>
+                                <Button
+                                  color="danger"
+                                  variant="flat"
+                                  onPress={onClose}>
+                                  Close
+                                </Button>
+                                <Button
+                                  color="primary"
+                                  onPress={onClose}
+                                  onSubmit={() => handleSubmit(folder._id)}>
+                                  Rename
+                                </Button>
+                              </ModalFooter>
+                            </>
+                          )}
+                        </ModalContent>
+                      </Modal>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              </div>
 
-          {/* 
+              {/* 
           * ? manual
           {showOptions[folder._id] && ( // Display options only if showOptions[id] is true
             <div className="flex justify-between mt-2 md:py-2 md:px-5">
@@ -280,8 +292,10 @@ export const Folder = () => {
               </Modal>
             </div>
           )} */}
-        </div>
-      ))}
+            </div>
+          ))}
+        </>
+      )}
     </>
   );
 };

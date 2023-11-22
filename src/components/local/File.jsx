@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { BsImage } from "react-icons/bs";
 import { BiSolidFilePdf } from "react-icons/bi";
@@ -25,6 +26,7 @@ import {
 } from "@nextui-org/react";
 import Swal from "sweetalert2";
 import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
+import { Spinner } from "@nextui-org/react";
 
 export const File = () => {
   // State for storing files and handling errors
@@ -202,17 +204,16 @@ export const File = () => {
   const renderCardBodyContent = (file) => {
     const { mimetype, url } = file;
 
-    if (mimetype.includes("video") || mimetype.includes("doc")) {
+    if (mimetype.startsWith("video") || mimetype.includes("doc")) {
+      // Handle video or doc file types (you can customize this part)
       return (
         <iframe
           style={{ width: "200px", height: "150px" }}
-          src={url}></iframe>
+          src={url}
+          title="file-preview"></iframe>
       );
-    } else if (
-      mimetype.includes("image") ||
-      mimetype.includes("gif") ||
-      mimetype.includes("pdf")
-    ) {
+    } else if (mimetype.startsWith("image") || mimetype.startsWith("gif")) {
+      // Handle image or gif file types
       return (
         <Image
           alt="file-preview"
@@ -221,6 +222,14 @@ export const File = () => {
           width={200}
           height={150}
         />
+      );
+    } else if (mimetype === "application/pdf") {
+      // Handle PDF file type with a link to open in a new tab
+      return (
+        <iframe
+          className="w-[200px] h-[130px] object-fill rounded-lg"
+          src={url}
+          title="file-preview"></iframe>
       );
     } else {
       // Default content for other file types
@@ -239,12 +248,20 @@ export const File = () => {
   return (
     <>
       <h1 className="text-md font-semibold mb-8">Files</h1>
-      <div className="flex justify-center">
-        <section className="grid grid-cols-1 gap-4 md:gap-10 md:grid-cols-3 lg:grid-cols-5 text-sm">
-          {files.map((file) => (
-            <div key={file._id}>
-              {/* manual */}
-              {/* <div className="flex flex-col gap-2 border rounded-lg p-2 bg-gray-50 hover:bg-gray-200 box-border h-52 w-52 shadow-md  overflow-hidden">
+      {files.length === 0 ? (
+        <div className="flex justify-center">
+          <Spinner
+            label="Loading..."
+            color="secondary"
+          />
+        </div>
+      ) : (
+        <div className="flex justify-center">
+          <section className="grid grid-cols-1 gap-4 md:gap-10 md:grid-cols-3 lg:grid-cols-5 text-sm">
+            {files.map((file) => (
+              <div key={file._id}>
+                {/* manual */}
+                {/* <div className="flex flex-col gap-2 border rounded-lg p-2 bg-gray-50 hover:bg-gray-200 box-border h-52 w-52 shadow-md  overflow-hidden">
                 <div className="flex justify-between gap-4">
                   <div className="flex items-center gap-2">
                     <BsImage
@@ -267,113 +284,113 @@ export const File = () => {
                   />
                 </div>
               </div> */}
-              {/* nextui */}
-              <Card className="py-4 h-[270px]">
-                <CardHeader className="pb-0 pt-2 px-4 flex justify-between items-center">
-                  <div className="flex items-center">
-                    {getIconForMimeType(file.mimetype)}
-                  </div>
-                  <div className="flex items-center">
-                    <p className="text-tiny font-bold truncate w-20 text-center">
-                      {file.filename}
-                    </p>
-                  </div>
-                  {/* <div className="flex items-center">
+                {/* nextui */}
+                <Card className="py-4 h-[270px] bg-white">
+                  <CardHeader className="pb-0 pt-2 px-4 flex justify-between items-center">
+                    <div className="flex items-center">
+                      {getIconForMimeType(file.mimetype)}
+                    </div>
+                    <div className="flex items-center">
+                      <p className="text-tiny font-bold truncate w-20 text-center">
+                        {file.filename}
+                      </p>
+                    </div>
+                    {/* <div className="flex items-center">
                     <BiDotsVerticalRounded
                       size={20}
                       onClick={() => toggleOptions(file._id)}
                     />
                   </div> */}
 
-                  {/* next ui */}
-                  <Popover
-                    placement="right"
-                    showArrow={true}
-                    className=" bg-slate-200">
-                    <PopoverTrigger>
-                      <div className="flex items-center">
-                        <BiDotsVerticalRounded size={20} />
-                      </div>
-                    </PopoverTrigger>
-                    <PopoverContent>
-                      <div className="flex flex-col gap-3 p-5">
-                        <Button
-                          onPress={onOpen}
-                          size="sm"
-                          color="primary"
-                          variant="shadow">
-                          Rename
-                        </Button>
-                        <Button
-                          color="danger"
-                          variant="shadow"
-                          size="sm"
-                          onClick={() => deleteFile(file._id)}>
-                          Delete
-                        </Button>
-                        <Button
-                          color="success"
-                          variant="shadow"
-                          size="sm"
-                          onClick={() =>
-                            window.open(
-                              `https://cdn.filestackcontent.com/${file.url}`
-                            )
-                          }>
-                          View
-                        </Button>
+                    {/* next ui */}
+                    <Popover
+                      placement="right"
+                      showArrow={true}
+                      className=" bg-slate-200">
+                      <PopoverTrigger>
+                        <div className="flex items-center">
+                          <BiDotsVerticalRounded size={20} />
+                        </div>
+                      </PopoverTrigger>
+                      <PopoverContent>
+                        <div className="flex flex-col gap-3 p-5">
+                          <Button
+                            onPress={onOpen}
+                            size="sm"
+                            color="primary"
+                            variant="shadow">
+                            Rename
+                          </Button>
+                          <Button
+                            color="danger"
+                            variant="shadow"
+                            size="sm"
+                            onClick={() => deleteFile(file._id)}>
+                            Delete
+                          </Button>
+                          <Button
+                            color="success"
+                            variant="shadow"
+                            size="sm"
+                            onClick={() =>
+                              window.open(
+                                `https://cdn.filestackcontent.com/${file.url}`
+                              )
+                            }>
+                            View
+                          </Button>
 
-                        {/* for rename modal */}
-                        <Modal
-                          isOpen={isOpen}
-                          onOpenChange={onOpenChange}
-                          placement="top-center">
-                          <ModalContent>
-                            {(onClose) => (
-                              <>
-                                <ModalHeader className="flex flex-col gap-1">
-                                  File Name
-                                </ModalHeader>
-                                <ModalBody>
-                                  <Input
-                                    autoFocus
-                                    label="Rename"
-                                    placeholder=""
-                                    variant="bordered"
-                                    onChange={(e) =>
-                                      setNewFileName(e.target.value)
-                                    }
-                                    value={newFileName}
-                                  />
-                                </ModalBody>
-                                <ModalFooter>
-                                  <Button
-                                    color="danger"
-                                    variant="flat"
-                                    onPress={onClose}>
-                                    Close
-                                  </Button>
-                                  <Button
-                                    color="primary"
-                                    onPress={onClose}
-                                    onSubmit={() => handleSubmit(file._id)}>
-                                    Rename
-                                  </Button>
-                                </ModalFooter>
-                              </>
-                            )}
-                          </ModalContent>
-                        </Modal>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                </CardHeader>
-                <CardBody className="overflow-visible py-2 flex justify-center">
-                  {renderCardBodyContent(file)}
-                </CardBody>
-              </Card>
-              {/* nextui */}
-              {/* 
+                          {/* for rename modal */}
+                          <Modal
+                            isOpen={isOpen}
+                            onOpenChange={onOpenChange}
+                            placement="top-center">
+                            <ModalContent>
+                              {(onClose) => (
+                                <>
+                                  <ModalHeader className="flex flex-col gap-1">
+                                    File Name
+                                  </ModalHeader>
+                                  <ModalBody>
+                                    <Input
+                                      autoFocus
+                                      label="Rename"
+                                      placeholder=""
+                                      variant="bordered"
+                                      onChange={(e) =>
+                                        setNewFileName(e.target.value)
+                                      }
+                                      value={newFileName}
+                                    />
+                                  </ModalBody>
+                                  <ModalFooter>
+                                    <Button
+                                      color="danger"
+                                      variant="flat"
+                                      onPress={onClose}>
+                                      Close
+                                    </Button>
+                                    <Button
+                                      color="primary"
+                                      onPress={onClose}
+                                      onSubmit={() => handleSubmit(file._id)}>
+                                      Rename
+                                    </Button>
+                                  </ModalFooter>
+                                </>
+                              )}
+                            </ModalContent>
+                          </Modal>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  </CardHeader>
+                  <CardBody className="overflow-visible py-2 flex justify-center">
+                    {renderCardBodyContent(file)}
+                  </CardBody>
+                </Card>
+                {/* nextui */}
+                {/* 
               * ? manual
               { showOptions[file._id] && (
                 <div className="flex gap-3 mt-2 ml-2">
@@ -439,10 +456,11 @@ export const File = () => {
                   </Modal>
                 </div>
               )} */}
-            </div>
-          ))}
-        </section>
-      </div>
+              </div>
+            ))}
+          </section>
+        </div>
+      )}
     </>
   );
 };
