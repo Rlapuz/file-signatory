@@ -97,6 +97,7 @@ export const File = () => {
           const res = await fetch(`/api/file?id=${id}`, {
             method: "DELETE",
           });
+
           if (!res.ok) {
             throw new Error("Something went wrong");
           }
@@ -204,16 +205,17 @@ export const File = () => {
   const renderCardBodyContent = (file) => {
     const { mimetype, url } = file;
 
-    if (mimetype.startsWith("video") || mimetype.includes("doc")) {
-      // Handle video or doc file types (you can customize this part)
+    if (mimetype.includes("video") || mimetype.includes("doc")) {
       return (
         <iframe
           style={{ width: "200px", height: "150px" }}
-          src={url}
-          title="file-preview"></iframe>
+          src={url}></iframe>
       );
-    } else if (mimetype.startsWith("image") || mimetype.startsWith("gif")) {
-      // Handle image or gif file types
+    } else if (
+      mimetype.includes("image") ||
+      mimetype.includes("gif") ||
+      mimetype.includes("pdf")
+    ) {
       return (
         <Image
           alt="file-preview"
@@ -222,14 +224,6 @@ export const File = () => {
           width={200}
           height={150}
         />
-      );
-    } else if (mimetype === "application/pdf") {
-      // Handle PDF file type with a link to open in a new tab
-      return (
-        <iframe
-          className="w-[200px] h-[130px] object-fill rounded-lg"
-          src={url}
-          title="file-preview"></iframe>
       );
     } else {
       // Default content for other file types
@@ -250,10 +244,14 @@ export const File = () => {
       <h1 className="text-md font-semibold mb-8">Files</h1>
       {files.length === 0 ? (
         <div className="flex justify-center">
-          <Spinner
-            label="Loading..."
-            color="secondary"
-          />
+          {session ? (
+            <p>No files uploaded</p>
+          ) : (
+            <Spinner
+              label="Loading..."
+              color="secondary"
+            />
+          )}
         </div>
       ) : (
         <div className="flex justify-center">

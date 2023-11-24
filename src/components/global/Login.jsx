@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -28,12 +29,18 @@ export const Login = () => {
       });
 
       if (res.error) {
-        setLoginError("Invalid email or password"); // Set an error message
+        setLoginError("Invalid email or password");
         return;
       }
 
-      // Check if the user has the "admin" role
-      if (session.data?.user?.role === "admin") {
+      // Wait for the session to be updated
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Adjust the timeout as needed
+
+      // Fetch the updated session
+      const updatedSession = await getSession();
+
+      // Check if the user has the "ADMIN" role
+      if (updatedSession?.user?.role === "ADMIN") {
         // Redirect to the admin page
         router.replace("/admin");
       } else {
@@ -124,14 +131,15 @@ export const Login = () => {
                         {/* Forgot password link */}
                         {/* <a href="#!">Forgot password?</a> */}
 
-                        <div>
+                        {/* uncomment for google provider signin */}
+                        {/* <div>
                           <p>or</p>
                           <Link
                             href="/signin"
                             className=" text-blue-800">
                             Signin
                           </Link>
-                        </div>
+                        </div> */}
                       </div>
                     </form>
                   </div>

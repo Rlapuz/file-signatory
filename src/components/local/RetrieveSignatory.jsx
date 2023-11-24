@@ -201,10 +201,14 @@ export const RetrieveSignatory = () => {
       <h1 className="text-md font-semibold mb-8">Retrieve Signatory Files</h1>
       {deletedSignatoryFiles.length === 0 ? (
         <div className="flex justify-center">
-          <Spinner
-            label="Loading..."
-            color="secondary"
-          />
+          {session ? (
+            <p>No deleted Signatory Files</p>
+          ) : (
+            <Spinner
+              label="Loading..."
+              color="secondary"
+            />
+          )}
         </div>
       ) : (
         <div className="flex justify-center">

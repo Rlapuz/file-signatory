@@ -7,17 +7,30 @@ import { NextResponse } from "next/server";
 // POST 
 export async function POST(request) {
     try {
-        const session = await getServerSession(authOptions)
+        const session = await getServerSession(authOptions);
 
         const { filename, size, url, mimetype } = await request.json();
         await connectDB();
-        await FileSignatoryModel.create({ filename, size, url, mimetype, userId: session.user._id });
+
+        // Get the user's role from the session
+        const userRole = session.user.role; // Update this line with the correct way to get the user's role
+
+        await FileSignatoryModel.create({
+            filename,
+            size,
+            url,
+            mimetype,
+            userId: session.user._id,
+            currentSignatory: userRole, // Set currentSignatory based on the user's role
+        });
+
         return NextResponse.json({ message: "SignatoryFile Created" }, { status: 201 });
     } catch (error) {
         console.error("Error while creating SignatoryFile:", error);
         return NextResponse.json({ message: "Failed to create SignatoryFile" }, { status: 500 });
     }
 }
+
 
 
 // GET

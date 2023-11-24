@@ -19,11 +19,13 @@ export default function RootLayout({ children }) {
       <body
         className={roboto.className}
       >
+        {/* <FileProvider> */}
         <NextAuthProvider>
           {/* <Providers> */}
           {children}
           {/* </Providers> */}
         </NextAuthProvider>
+        {/* </FileProvider> */}
       </body>
     </html>
   )

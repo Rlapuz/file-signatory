@@ -59,14 +59,11 @@ export async function GET(request) {
 }
 
 
-// DELETE
 export async function DELETE(request) {
     try {
         const notifications = await request.json();
-        // console.log("Notification:", notifications);
-
         const { _id } = notifications;
-        console.log("Notification ID:", _id);
+
         await connectDB();
 
         const user = await Credential.findOneAndUpdate(
@@ -75,16 +72,23 @@ export async function DELETE(request) {
             { new: true }
         );
 
-        // console.log("User:", user);
-
         if (!user) {
-            return NextResponse.json({ message: "Notification not found" }, { status: 404 });
+            return NextResponse.json(
+                { message: "Notification not found" },
+                { status: 404 }
+            );
         }
 
-        return NextResponse.json({ message: "Notification Deleted" }, { status: 200 });
+        return NextResponse.json(
+            { message: "Notification Deleted" },
+            { status: 200 }
+        );
     } catch (error) {
         console.error("Error deleting notification:", error);
-        return NextResponse.json({ message: "Failed to delete notification" }, { status: 500 });
+        return NextResponse.json(
+            { message: "Failed to delete notification" },
+            { status: 500 }
+        );
     }
 }
 

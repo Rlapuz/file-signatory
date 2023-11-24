@@ -208,10 +208,14 @@ export const Retrieve = () => {
 
       {deletedFiles.length === 0 ? (
         <div className="flex justify-center">
-          <Spinner
-            label="Loading..."
-            color="secondary"
-          />
+          {session ? (
+            <p>No deleted Files </p>
+          ) : (
+            <Spinner
+              label="Loading..."
+              color="secondary"
+            />
+          )}
         </div>
       ) : (
         <div className="flex justify-center">

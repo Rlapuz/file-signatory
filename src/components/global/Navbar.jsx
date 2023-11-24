@@ -142,7 +142,6 @@ export const Navbar = () => {
   };
 
   const handleNotificationClick = async (notification) => {
-    // Call the API route to update the notification status to "read"
     try {
       const res = await fetch("/api/notification/update-status", {
         method: "POST",
@@ -152,19 +151,25 @@ export const Navbar = () => {
         body: JSON.stringify({ notificationId: notification._id }),
       });
 
+      // Navigate to the /dashboard/notification route
+      router.push(`/dashboard/notifications`);
+
       if (res.ok) {
         // Update the local state or trigger a refetch of notifications if needed
-        // For example, you can refetch notifications by calling your fetchNotifications function
         // fetchNotifications();
         console.log("Notification status updated to 'read'");
+
+        setNotifications((prevNotifications) =>
+          prevNotifications.map((n) =>
+            n._id === notification._id ? { ...n, status: "read" } : n
+          )
+        );
       } else {
         console.error("Failed to update notification status");
       }
     } catch (error) {
       console.error("Error updating notification status:", error);
     }
-
-    // Other code to handle navigation or other actions when a notification is clicked
   };
 
   return (
@@ -205,7 +210,11 @@ export const Navbar = () => {
                       <div>
                         <HiOutlineBellAlert className="w-6 h-6 text-gray-500 cursor-pointer" />
                         <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
-                          {notifications.length}
+                          {
+                            notifications.filter(
+                              (notification) => notification.status === "unread"
+                            ).length
+                          }
                         </span>
                       </div>
                     </PopoverTrigger>

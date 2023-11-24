@@ -24,7 +24,7 @@ export async function POST(request) {
         const file = await FileSignatoryModel.findOne({ userId, status: "Draft" });
 
         if (!file) {
-            return NextResponse.json({ message: "File not found" }, { status: 404 });
+            return NextResponse.json({ message: "You already send to Signatory" }, { status: 404 });
         }
 
         console.log("User Role:", userRole);
@@ -33,25 +33,25 @@ export async function POST(request) {
         switch (file.currentSignatory) {
             case "ProgChair":
                 console.log("Switch Case: ProgChair");
-                if (userRole === "CESU") {
+                if (userRole === "ProgChair") {
                     file.currentSignatory = "CESU";
                 }
                 break;
             case "CESU":
                 console.log("Switch Case: CESU");
-                if (userRole === "DEAN") {
+                if (userRole === "CESU") {
                     file.currentSignatory = "DEAN";
                 }
                 break;
             case "DEAN":
                 console.log("Switch Case: DEAN");
-                if (userRole === "FOCAL") {
+                if (userRole === "DEAN") {
                     file.currentSignatory = "FOCAL";
                 }
                 break;
             case "FOCAL":
                 console.log("Switch Case: FOCAL");
-                if (userRole === "ProgChair") {
+                if (userRole === "FOCAL") {
                     file.currentSignatory = "ProgChair";
                     file.status = "Approved"; // Set status to Approved when FOCAL sends back to ProgChair
                 }

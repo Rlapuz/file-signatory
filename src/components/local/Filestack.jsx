@@ -12,11 +12,6 @@ export const Filestack = () => {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [uploadedFileHandle, setUploadedFileHandle] = useState("");
   const [hasUploadedFile, setHasUploadedFile] = useState(false);
-  const [destinationSignatory, setDestinationSignatory] = useState("");
-
-  const handleClearInput = () => {
-    setInputValue("");
-  };
 
   const removeUploadedFile = () => {
     setUploadedFile(null);
@@ -86,73 +81,12 @@ export const Filestack = () => {
     }
   };
 
-  // / Function to send the document to the appropriate signatory
-  const sendDocumentToSignatory = async () => {
-    try {
-      // Send a POST request to your API route to initiate document routing
-      const response = await fetch("/api/signatory", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          destinationSignatory,
-        }),
-      });
-
-      if (response.ok) {
-        console.log("Document sent to the appropriate signatory!");
-        // You can add additional logic here, such as updating UI or showing notifications.
-      } else {
-        console.error("Failed to send document to signatory.");
-      }
-    } catch (error) {
-      console.error("Error sending document to signatory:", error);
-    }
-  };
-
-  // Function to handle the "Send File" button click
-  const handleSendFileClick = async () => {
-    if (!hasUploadedFile) {
-      console.warn("No files uploaded.");
-      return;
-    }
-
-    try {
-      // Send the document to the appropriate signatory
-      await sendDocumentToSignatory(destinationSignatory);
-
-      // Reset the form and state after successful send
-      setInputValue(""); // Clear the input field
-      removeUploadedFile(); // Clear the uploaded file state
-      setDestinationSignatory("");
-    } catch (error) {
-      console.error("Error sending document:", error);
-    }
-  };
-
   // for sweet alert
   const showUploadSuccessAlert = () => {
     Swal.fire({
       title: "File Upload Success",
       text: "Your file has been uploaded successfully!",
       icon: "success",
-    });
-  };
-
-  const showSendFileAlert = () => {
-    Swal.fire({
-      title: "Send File",
-      text: "Are you sure you want to send this file?",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonText: "Yes, send it!",
-      cancelButtonText: "No, cancel",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        // Perform the send action here
-        handleSendFileClick();
-      }
     });
   };
 

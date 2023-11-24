@@ -21,7 +21,7 @@ const fileSignatorySchema = new Schema({
     currentSignatory: {
         type: String,
         enum: ["ProgChair", "CESU", "DEAN", "FOCAL"],
-        default: "ProgChair",
+        // default: "ProgChair",
     },
 
     status: {

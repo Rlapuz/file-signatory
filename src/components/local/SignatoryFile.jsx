@@ -55,6 +55,7 @@ export const SignatoryFile = () => {
           if (!res.ok) {
             throw new Error("Something went wrong");
           }
+
           const filesData = await res.json();
 
           // Filter files that match the user's ID
@@ -120,10 +121,6 @@ export const SignatoryFile = () => {
   //     [id]: !prevShowOptions[id],
   //   }));
   // };
-
-  if (error) {
-    return <div>Error: Something went wrong</div>;
-  }
 
   // for dynamic icon
   const getIconForMimeType = (mimeType) => {
@@ -262,6 +259,8 @@ export const SignatoryFile = () => {
             timer: 3000,
             showConfirmButton: false,
           });
+
+          dispatch({ type: "REMOVE_FILE", payload: fileId });
         } else {
           console.error("Unexpected response from the server");
 
@@ -292,15 +291,23 @@ export const SignatoryFile = () => {
     }
   };
 
+  if (error) {
+    return <div>Error: Something went wrong</div>;
+  }
+
   return (
     <>
       <h1 className="text-md font-semibold mb-8">Signatory Files</h1>
       {files.length === 0 ? (
         <div className="flex justify-center">
-          <Spinner
-            label="Loading..."
-            color="secondary"
-          />
+          {session ? (
+            <p>No files uploaded</p>
+          ) : (
+            <Spinner
+              label="Loading..."
+              color="secondary"
+            />
+          )}
         </div>
       ) : (
         <div className="flex justify-center">

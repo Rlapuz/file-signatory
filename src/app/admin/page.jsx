@@ -5,7 +5,7 @@ import { DashboardAdmin } from "@/components/admin-components/local/DashboardAdm
 export const AdminPage = async () => {
   const session = await getServerSession(authOptions);
 
-  if (session.user.role !== "admin") {
+  if (session.user.role !== "ADMIN") {
     return (
       <section>
         <h1>You are not authorized here!!!</h1>

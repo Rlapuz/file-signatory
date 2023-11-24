@@ -5,6 +5,7 @@ import { PickerOverlay } from "filestack-react-18";
 import Swal from "sweetalert2";
 import { RxCross2 } from "react-icons/rx";
 import { SignatoryFile } from "./SignatoryFile";
+import { getSession } from "next-auth/react";
 
 export const SignatoryUpload = () => {
   const [inputValue, setInputValue] = useState("");
@@ -40,6 +41,14 @@ export const SignatoryUpload = () => {
           .slice(0, -1)
           .join(".");
 
+        const session = await getSession();
+        const userRole = session.user.role;
+
+        if (!userRole) {
+          console.error("User role not found.");
+          return;
+        }
+
         const response = await fetch("/api/signatory", {
           method: "POST",
           headers: {
@@ -50,6 +59,7 @@ export const SignatoryUpload = () => {
             size,
             url,
             mimetype,
+            currentSignatory: userRole, // Set currentSignatory based on user's role
           }),
         });
 
@@ -60,7 +70,7 @@ export const SignatoryUpload = () => {
             size,
             url,
             mimetype,
-            currentSignatory: "ProgChair", // Initial signatory
+            currentSignatory: userRole, // Set currentSignatory in the local state
             status: "Pending", // Initial status
           });
           setHasUploadedFile(true);

@@ -143,10 +143,14 @@ export const Folder = () => {
     <>
       {folders.length === 0 ? (
         <div className="flex justify-center">
-          <Spinner
-            label="Loading..."
-            color="secondary"
-          />
+          {session ? (
+            <p>No folders uploaded</p>
+          ) : (
+            <Spinner
+              label="Loading..."
+              color="secondary"
+            />
+          )}
         </div>
       ) : (
         <>
