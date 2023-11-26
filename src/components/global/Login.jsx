@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { getSession } from "next-auth/react";
-import { CircleLoader } from "react-awesome-loaders";
+import { Spinner } from "@nextui-org/react";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -62,12 +62,9 @@ export const Login = () => {
     <section className="gradient-form h-screen bg-neutral-200 dark:bg-neutral-700 flex items-center justify-center">
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
-          <CircleLoader
-            meshColor={"#6366F1"}
-            lightColor={"#E0E7FF"}
-            duration={1.5}
-            desktopSize={"90px"}
-            mobileSize={"64px"}
+          <Spinner
+            label="Logging in..."
+            color="warning"
           />
         </div>
       )}
