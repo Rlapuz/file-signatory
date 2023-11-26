@@ -235,7 +235,7 @@ export const SidebarAdmin = () => {
                     size={23}
                     className="min-w-max"
                   />
-                  Sign Up
+                  Register
                 </Link>
               </li>
               {/* account */}
