@@ -43,6 +43,15 @@ const CredentialSchema = new Schema({
     },
     notifications: [
         {
+            sender: {
+                name: {
+                    type: String,
+                    required: false,
+                },
+                image: {
+                    type: String,
+                },
+            },
 
             message: {
                 type: String,

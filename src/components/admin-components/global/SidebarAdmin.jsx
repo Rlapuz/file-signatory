@@ -14,10 +14,15 @@ import {
   BsPersonGear,
   BsBell,
 } from "react-icons/bs";
-import { GrUserAdmin } from "react-icons/gr";
+import { LuFileSignature } from "react-icons/lu";
+import { BsTrash } from "react-icons/bs";
 import { SlCloudUpload } from "react-icons/sl";
 import { useRouter } from "next/navigation";
-import { LogoutAdmin } from "./LogoutAdmin";
+import { usePathname } from "next/navigation";
+import { Logout } from "@/components/global/Logout";
+import { getSession, useSession } from "next-auth/react";
+import { FaUserCog } from "react-icons/fa";
+import { GrUserAdmin } from "react-icons/gr";
 
 export const SidebarAdmin = () => {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
@@ -71,8 +76,10 @@ export const SidebarAdmin = () => {
         },
       };
 
-  const router = useRouter();
-  const pathname = router.pathname;
+  const pathname = usePathname();
+  // const pathname = router.pathname;
+
+  // console.log("Pathname", pathname);
 
   return (
     <>
@@ -89,7 +96,7 @@ export const SidebarAdmin = () => {
           variants={Sidebar_animation}
           initial={{ x: isTab ? -250 : 0 }}
           animate={isOpen ? "open" : "closed"}
-          className="bg-gray-50 text-gray rounded-md shadow-lg z-[999] w-[16rem] max-w-[16rem] h-screen overflow-hidden md:relative fixed">
+          className="bg-gradient-to-br from-gray-800 to-gray-900 text-white shadow-lg z-[999] w-[16rem] max-w-[16rem] h-screen overflow-hidden md:relative fixed">
           {/* logo sidebar */}
           <div className="flex items-center gap-3 font-medium border-b border-slate-300 py-3 mx-3">
             <Image
@@ -98,23 +105,21 @@ export const SidebarAdmin = () => {
               height={0}
               alt="bsu logo"
             />
-            <Link
-              href="/"
-              className="text-xl whitespace-pre font-bold">
+            <h1 className="block antialiased tracking-normal font-sans text-xl font-semibold leading-relaxed text-white">
               File Management
-            </Link>
+            </h1>
           </div>
 
           {/* menus */}
           <div className="flex flex-col h-full">
             <ul
-              className="whitespace-pre px-3 text-[0.9rem] py-5 flex flex-col gap-1 font-bold overflow-x-hidden"
+              className="whitespace-pre px-3 text-[0.9rem] py-4 flex flex-col gap-1 text-menus overflow-x-hidden"
               onClick={closeSidebarMobile}>
               {/* dashboard */}
-              <li>
+              <li className={pathname == "/admin" ? "active" : ""}>
                 <Link
                   href="/admin"
-                  className={`link ${pathname === "/admin" ? "active" : ""}`}>
+                  className="link">
                   <BsGrid
                     size={23}
                     className="min-w-max"
@@ -124,12 +129,10 @@ export const SidebarAdmin = () => {
               </li>
 
               {/* viewfiles */}
-              <li>
+              <li className={pathname == "/admin/view-files" ? "active" : ""}>
                 <Link
                   href="/admin/view-files"
-                  className={`link ${
-                    pathname === "/admin/view-files" ? "active" : ""
-                  }`}>
+                  className="link">
                   <BsBox
                     size={23}
                     className="min-w-max"
@@ -139,12 +142,10 @@ export const SidebarAdmin = () => {
               </li>
 
               {/* upload */}
-              <li>
+              <li className={pathname == "/admin/upload" ? "active" : ""}>
                 <Link
                   href="/admin/upload"
-                  className={`link ${
-                    pathname === "/admin/upload" ? "active" : ""
-                  }`}>
+                  className="link">
                   <SlCloudUpload
                     size={23}
                     className="min-w-max"
@@ -154,12 +155,10 @@ export const SidebarAdmin = () => {
               </li>
 
               {/* calendar */}
-              <li>
+              <li className={pathname == "/admin/calendar" ? "active" : ""}>
                 <Link
                   href="/admin/calendar"
-                  className={`link ${
-                    pathname === "/admin/calendar" ? "active" : ""
-                  }`}>
+                  className="link">
                   <BsCalendar4Event
                     size={23}
                     className="min-w-max"
@@ -169,12 +168,11 @@ export const SidebarAdmin = () => {
               </li>
 
               {/* notifications */}
-              <li>
+              <li
+                className={pathname == "/admin/notifications" ? "active" : ""}>
                 <Link
                   href="/admin/notifications"
-                  className={`link ${
-                    pathname === "/admin/notifications" ? "active" : ""
-                  }`}>
+                  className="link">
                   <BsBell
                     size={23}
                     className="min-w-max"
@@ -183,13 +181,25 @@ export const SidebarAdmin = () => {
                 </Link>
               </li>
 
+              {/* signatory
+              <li
+                className={pathname == "/admin/signatory" ? "active" : ""}>
+                <Link
+                  href="/admin/signatory"
+                  className="link">
+                  <LuFileSignature
+                    size={23}
+                    className="min-w-max"
+                  />
+                  Signatory
+                </Link>
+              </li> */}
+
               {/* Profile */}
-              <li>
+              <li className={pathname == "/admin/profile" ? "active" : ""}>
                 <Link
                   href="/admin/profile"
-                  className={`link ${
-                    pathname === "/admin/profile" ? "active" : ""
-                  }`}>
+                  className="link">
                   <BsPersonGear
                     size={23}
                     className="min-w-max"
@@ -197,22 +207,54 @@ export const SidebarAdmin = () => {
                   Profile
                 </Link>
               </li>
-              {/* signupAdmin */}
-              <li>
+
+              {/* retrieve */}
+              <li className={pathname == "/admin/retrieve" ? "active" : ""}>
                 <Link
-                  href="/admin/signup"
-                  className={`link ${
-                    pathname === "/admin/signup" ? "active" : ""
-                  }`}>
+                  href={{
+                    pathname: "/admin/retrieve",
+                    query: { name: "retrieve" },
+                  }}
+                  className="link">
+                  <BsTrash
+                    size={23}
+                    className="min-w-max"
+                  />
+                  Retrieve
+                </Link>
+              </li>
+              {/* signup */}
+              <li className={pathname == "/admin/signup" ? "active" : ""}>
+                <Link
+                  href={{
+                    pathname: "/admin/signup",
+                    query: { name: "signup" },
+                  }}
+                  className="link">
                   <GrUserAdmin
                     size={23}
                     className="min-w-max"
                   />
-                  Sign up
+                  Register
+                </Link>
+              </li>
+              {/* account */}
+              <li className={pathname == "/admin/account" ? "active" : ""}>
+                <Link
+                  href={{
+                    pathname: "/admin/account",
+                    query: { name: "account" },
+                  }}
+                  className="link">
+                  <FaUserCog
+                    size={23}
+                    className="min-w-max"
+                  />
+                  Accounts
                 </Link>
               </li>
             </ul>
-            <LogoutAdmin />
+            <Logout />
           </div>
 
           {/* control button */}
@@ -243,7 +285,7 @@ export const SidebarAdmin = () => {
         </motion.div>
         {/* the menu icon for mobile */}
         <div
-          className="ml-5 mt-5 md:hidden flex absolute"
+          className=" mr-4 p-2 mt-3 md:hidden flex absolute"
           onClick={() => setIsOpen(true)}>
           <FiMenu size={25} />
         </div>

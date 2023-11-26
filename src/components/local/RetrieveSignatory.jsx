@@ -25,6 +25,8 @@ import { BsImage } from "react-icons/bs";
 import { AiOutlineFileGif } from "react-icons/ai";
 import Image from "next/image";
 import { Spinner } from "@nextui-org/react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const RetrieveSignatory = () => {
   const [deletedSignatoryFiles, setDeletedSignatoryFiles] = useState([]);
@@ -77,10 +79,16 @@ export const RetrieveSignatory = () => {
           });
 
           if (res.ok) {
-            console.log("Signatory File restored successfully!");
-            const { message } = await res.json();
-
-            Swal.fire("Restored!", message, "success");
+            toast.success("Restored successfully!", {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
 
             setDeletedSignatoryFiles((prevDeletedFiles) =>
               prevDeletedFiles.filter((file) => file._id !== id)
@@ -88,10 +96,15 @@ export const RetrieveSignatory = () => {
             // You can add additional logic here, such as updating UI or showing notifications.
           } else {
             console.error("Failed to restore signatory file.");
+            toast.error("Failed to restore signatory file", {
+              position: "top-center",
+            });
           }
         } catch (error) {
           console.error(error);
-          Swal.fire("Error", error.message, "error");
+          toast.error("Failed to restore signatory file", {
+            position: "top-center",
+          });
         }
       }
     });
@@ -113,22 +126,32 @@ export const RetrieveSignatory = () => {
           const res = await fetch(`/api/signatory/permanent-delete?id=${id}`, {
             method: "DELETE",
           });
-
           if (res.ok) {
-            console.log("Signatory File deleted permanently!");
-            const { message } = await res.json();
-            Swal.fire("Deleted!", message, "success");
+            toast.success("Signatory file deleted permanent!", {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
 
             setDeletedSignatoryFiles((prevDeletedFiles) =>
               prevDeletedFiles.filter((file) => file._id !== id)
             );
-            // You can add additional logic here, such as updating UI or showing notifications.
           } else {
             console.error("Signatory Failed to delete file permanently.");
+            toast.error("Signatory Failed to delete file permanently", {
+              position: "top-center",
+            });
           }
         } catch (error) {
           console.error(error);
-          Swal.fire("Error", error.message, "error");
+          toast.error("Signatory Failed to delete file permanently", {
+            position: "top-center",
+          });
         }
       }
     });

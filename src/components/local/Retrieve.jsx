@@ -25,6 +25,8 @@ import { RiFileVideoFill } from "react-icons/ri";
 import { BsImage } from "react-icons/bs";
 import { AiOutlineFileGif } from "react-icons/ai";
 import Image from "next/image";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Retrieve = () => {
   const [deletedFiles, setDeletedFiles] = useState([]);
@@ -66,78 +68,98 @@ export const Retrieve = () => {
   }, [session]);
 
   const restoreDeletedFile = async (id) => {
-    Swal.fire({
-      title: "Restore File",
-      text: "Are you sure you want to restore this file?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, restore it!",
-      cancelButtonText: "No, cancel",
-      confirmButtonColor: "#d33",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          // Your code to send a PUT request to restore the file here
+    try {
+      Swal.fire({
+        title: "Restore File",
+        text: "Are you sure you want to restore this file?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, restore it!",
+        cancelButtonText: "No, cancel",
+        confirmButtonColor: "#d33",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
           const res = await fetch(`/api/file/restore?id=${id}`, {
             method: "PUT",
           });
 
           if (res.ok) {
             console.log("File restored successfully!");
-            const { message } = await res.json();
 
-            Swal.fire("Restored!", message, "success");
+            toast.success("File restored ", {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
 
             setDeletedFiles((prevDeletedFiles) =>
               prevDeletedFiles.filter((file) => file._id !== id)
             );
-            // You can add additional logic here, such as updating UI or showing notifications.
           } else {
             console.error("Failed to restore file.");
+            toast.error("Error restoring file", { position: "top-center" });
           }
-        } catch (error) {
-          console.error(error);
-          Swal.fire("Error", error.message, "error");
         }
-      }
-    });
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error("Error restoring file", { position: "top-center" });
+    }
   };
 
   // delete file permanently
   const deleteFilePermanently = async (id) => {
-    Swal.fire({
-      title: "Delete File Permanent",
-      text: "Are you sure you want to delete this file permanent?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, cancel",
-      confirmButtonColor: "#d33",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
+    try {
+      Swal.fire({
+        title: "Delete File Permanent",
+        text: "Are you sure you want to delete this file permanently?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel",
+        confirmButtonColor: "#d33",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
           const res = await fetch(`/api/file/permanent-delete?id=${id}`, {
             method: "DELETE",
           });
 
           if (res.ok) {
             console.log("File deleted permanently!");
-            const { message } = await res.json();
-            Swal.fire("Deleted!", message, "success");
+
+            toast.success("File deleted permanently", {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
 
             setDeletedFiles((prevDeletedFiles) =>
               prevDeletedFiles.filter((file) => file._id !== id)
             );
-            // You can add additional logic here, such as updating UI or showing notifications.
           } else {
             console.error("Failed to delete file permanently.");
+            toast.error("Error deleting file permanently", {
+              position: "top-center",
+            });
           }
-        } catch (error) {
-          console.error(error);
-          Swal.fire("Error", error.message, "error");
         }
-      }
-    });
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error("Error deleting file permanently", {
+        position: "top-center",
+      });
+    }
   };
 
   const toggleOptions = (id) => {

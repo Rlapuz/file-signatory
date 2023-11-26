@@ -20,6 +20,7 @@ import { SlCloudUpload } from "react-icons/sl";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { Logout } from "./Logout";
+import { getSession, useSession } from "next-auth/react";
 
 export const Sidebar = () => {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });

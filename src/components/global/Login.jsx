@@ -8,12 +8,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { getSession } from "next-auth/react";
+import { CircleLoader } from "react-awesome-loaders";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loginError, setLoginError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
@@ -22,6 +24,7 @@ export const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const res = await signIn("credentials", {
         email,
         password,
@@ -30,11 +33,12 @@ export const Login = () => {
 
       if (res.error) {
         setLoginError("Invalid email or password");
+        setLoading(false);
         return;
       }
 
       // Wait for the session to be updated
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Adjust the timeout as needed
+      await new Promise((resolve) => setTimeout(resolve, 3000));
 
       // Fetch the updated session
       const updatedSession = await getSession();
@@ -49,11 +53,24 @@ export const Login = () => {
       }
     } catch (error) {
       console.error("Login error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <section className="gradient-form h-screen bg-neutral-200 dark:bg-neutral-700 flex items-center justify-center">
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
+          <CircleLoader
+            meshColor={"#6366F1"}
+            lightColor={"#E0E7FF"}
+            duration={1.5}
+            desktopSize={"90px"}
+            mobileSize={"64px"}
+          />
+        </div>
+      )}
       <div className="container h-full p-10">
         <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
           <div className="w-full">
@@ -120,9 +137,10 @@ export const Login = () => {
                         <button
                           className="mb-3 inline-block w-full rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_rgba(0,0,0,0.2)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] lot"
                           type="submit"
+                          disabled={loading} // Disable the button when loading is true
                           data-te-ripple-init
                           data-te-ripple-color="light">
-                          Log in
+                          {loading ? "Logging in..." : "Log in"}
                         </button>
                         {loginError && (
                           <p className="text-red-500 mt-4">{loginError}</p>

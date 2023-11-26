@@ -23,10 +23,12 @@ import {
   Checkbox,
   Input,
 } from "@nextui-org/react";
-import Swal from "sweetalert2";
+
 import { getSession } from "next-auth/react";
 import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const SignatoryFile = () => {
   // State for storing files and handling errors
@@ -60,7 +62,7 @@ export const SignatoryFile = () => {
 
           // Filter files that match the user's ID
           const filteredFiles = filesData.filter(
-            (file) => file.userId === userId
+            (file) => file.userId === userId && file.status === "Draft"
           );
 
           setFiles(filteredFiles);
@@ -84,34 +86,37 @@ export const SignatoryFile = () => {
 
   // Function to delete a file by its ID
   const deleteFile = async (id) => {
-    Swal.fire({
-      title: "Delete File",
-      text: "Are you sure you want to delete this file?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, cancel",
-      confirmButtonColor: "#d33",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const res = await fetch(`/api/signatory?id=${id}`, {
-            method: "DELETE",
-          });
-          if (!res.ok) {
-            throw new Error("Something went wrong");
-          }
-          const { message } = await res.json();
+    try {
+      const response = await fetch(`/api/signatory?id=${id}`, {
+        method: "DELETE",
+      });
 
-          Swal.fire("Deleted!", message, "success");
+      const result = await response.json();
 
-          setFiles((prevFiles) => prevFiles.filter((file) => file._id !== id));
-        } catch (error) {
-          console.error(error);
-          Swal.fire("Error", error.message, "error");
-        }
-      }
-    });
+      toast.success("File move to retrieve!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      setFiles((prevFiles) => prevFiles.filter((file) => file._id !== id));
+    } catch (error) {
+      console.error(error);
+      toast.error("Error deleting file!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
   };
 
   // // Function to toggle file options (like delete and download)
@@ -250,44 +255,38 @@ export const SignatoryFile = () => {
         const result = await res.json();
 
         console.log("Successfully sent file to signatory", result);
-        // Check if there's a specific message from the server
-        if (result.message) {
-          Swal.fire({
-            title: "Success",
-            text: result.message,
-            icon: "success",
-            timer: 3000,
-            showConfirmButton: false,
-          });
 
-          dispatch({ type: "REMOVE_FILE", payload: fileId });
-        } else {
-          console.error("Unexpected response from the server");
+        toast.success("File sent to signatory!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
 
-          Swal.fire({
-            title: "Error",
-            text: "Failed to send file to signatory",
-            icon: "error",
-          });
-        }
+        // Additional handling or state updates if needed
       } else {
         const errorResult = await res.json();
-        console.error("Failed to send file to signatory", errorResult.message);
+        console.error("Already send to signatory!", errorResult.message);
 
-        Swal.fire({
-          title: "Error",
-          text: errorResult.message || "Failed to send file to signatory",
-          icon: "error",
+        toast.error("Already send to signatory!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
         });
       }
     } catch (error) {
-      console.error("Error while sending file to signatory:", error);
+      console.error("Already send to signatory!", error);
 
-      Swal.fire({
-        title: "Error",
-        text: "Error while sending file to signatory",
-        icon: "error",
-      });
+      toast.error("Already send to signatory!", { position: "top-right" });
     }
   };
 
@@ -310,7 +309,7 @@ export const SignatoryFile = () => {
           )}
         </div>
       ) : (
-        <div className="flex justify-center">
+        <div className="flex justify-center mb-3">
           <section className="grid grid-cols-1 gap-4 md:gap-10 md:grid-cols-3 lg:grid-cols-5 text-sm">
             {files.map((file) => (
               <div key={file._id}>
@@ -339,7 +338,7 @@ export const SignatoryFile = () => {
                </div>
              </div> */}
                 {/* nextui */}
-                <Card className="py-4 h-[270px]">
+                <Card className="py-4 h-[270px] hover:bg-gray-200">
                   <CardHeader className="pb-0 pt-2 px-4 flex justify-between items-center">
                     <div className="flex items-center">
                       {getIconForMimeType(file.mimetype)}

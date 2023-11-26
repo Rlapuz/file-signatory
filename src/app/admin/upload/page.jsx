@@ -1,10 +1,14 @@
-import { FacultyMember } from "@/components/admin-components/local/FacultyMember";
+import { Filestack } from "@/components/local/Filestack";
 import React from "react";
+
+export const metadata = {
+  title: "Meneses | Admin Upload",
+};
 
 export const UploadAdminPage = () => {
   return (
     <>
-      <FacultyMember />
+      <Filestack />
     </>
   );
 };

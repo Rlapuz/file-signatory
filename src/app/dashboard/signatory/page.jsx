@@ -1,5 +1,6 @@
 import { SignatoryFile } from "@/components/local/SignatoryFile";
 import { SignatoryUpload } from "@/components/local/SignatoryUpload";
+import { ToastContainer } from "react-toastify";
 
 export const metadata = {
   title: "Meneses | Signatory",
@@ -8,6 +9,8 @@ export const metadata = {
 export const SignatoryPage = () => {
   return (
     <>
+      <ToastContainer />
+
       <div className="flex flex-col gap-3">
         <div>
           <SignatoryUpload />

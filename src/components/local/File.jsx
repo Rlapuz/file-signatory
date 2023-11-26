@@ -27,6 +27,8 @@ import {
 import Swal from "sweetalert2";
 import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const File = () => {
   // State for storing files and handling errors
@@ -84,31 +86,46 @@ export const File = () => {
   // Function to delete a file by its ID
   const deleteFile = async (id) => {
     Swal.fire({
-      title: "Delete File",
-      text: "Are you sure you want to delete this file?",
+      title: "Move to Trash",
+      text: "Are you sure you want to move this file to trash ?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Yes, move it!",
       cancelButtonText: "No, cancel",
       confirmButtonColor: "#d33",
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
+          // Send a DELETE request to delete the file
           const res = await fetch(`/api/file?id=${id}`, {
             method: "DELETE",
           });
 
-          if (!res.ok) {
+          if (res.ok) {
+            // Notify the user about the successful file deletion
+            toast.success("File move to trash!", {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+
+            // Remove the deleted file from the state
+            setFiles((prevFiles) =>
+              prevFiles.filter((file) => file._id !== id)
+            );
+          } else {
             throw new Error("Something went wrong");
           }
-          const { message } = await res.json();
-
-          Swal.fire("Deleted!", message, "success");
-
-          setFiles((prevFiles) => prevFiles.filter((file) => file._id !== id));
         } catch (error) {
           console.error(error);
-          Swal.fire("Error", error.message, "error");
+          toast.error("Error moving file to trash", {
+            position: "top-center",
+          });
         }
       }
     });
@@ -182,7 +199,7 @@ export const File = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, id) => {
     e.preventDefault();
 
     try {
@@ -193,11 +210,25 @@ export const File = () => {
         },
         body: JSON.stringify({ newFileName }),
       });
-      if (!res.ok) {
+      if (res.ok) {
+        toast.success("File renamed successfully!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else {
         throw new Error("Something went wrong");
       }
     } catch (error) {
       console.error(error);
+      toast.error("Error renaming file", {
+        position: "top-center",
+      });
     }
   };
 
@@ -324,7 +355,7 @@ export const File = () => {
                             variant="shadow"
                             size="sm"
                             onClick={() => deleteFile(file._id)}>
-                            Delete
+                            Trash
                           </Button>
                           <Button
                             color="success"

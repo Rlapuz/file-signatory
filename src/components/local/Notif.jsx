@@ -59,11 +59,12 @@ export const Notif = () => {
 
           const filesData = await res.json();
 
-          //   // console.log("Files data:", filesData);
+          // console.log("Files data:", filesData);
 
           // Filter files that match the user's ID
           const filteredFiles = filesData.filter(
-            (file) => file.currentSignatory === role
+            (file) =>
+              file.currentSignatory === role && file.status === "Pending"
           );
 
           setFiles(filteredFiles);
@@ -368,8 +369,8 @@ export const Notif = () => {
                             Send to Signatory
                           </Button>
                           <Button
-                            color="primary"
-                            variant="outlined"
+                            color="secondary"
+                            variant="shadow"
                             size="sm"
                             onClick={() => downloadFile(file.url)}>
                             Download

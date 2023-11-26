@@ -71,17 +71,38 @@ export async function POST(request) {
         file.status = "Pending"; // Ensure that status is set to Pending for all other cases
         const updatedFileData = await file.save();
 
+        // const sender = await Credential.findById(userId);
+
+        // console.log("Before Sender:", sender);
         // Add a notification for the new signatory
         const newSignatoryUser = await Credential.findOne({
             role: file.currentSignatory,
         });
 
-        if (newSignatoryUser) {
-            newSignatoryUser.notifications.push({
-                message: `File "${file.filename}" is awaiting your signature.`,
-            });
 
-            await newSignatoryUser.save();
+        if (newSignatoryUser) {
+            const sender = await Credential.findById(userId);
+
+            // console.log("Sender:", sender);
+            if (sender && sender.name) {
+                // console.log("Sender name before push:", sender.name);
+                newSignatoryUser.notifications.push({
+                    sender: {
+                        name: sender.name,
+                        image: sender.image,
+                    },
+                    message: `${file.filename} sign this file`,
+
+
+                });
+
+                // console.log("Name:", sender.name);
+                // console.log("Image:", sender.image);
+
+                await newSignatoryUser.save();
+            } else {
+                console.error("Sender not found or name is missing");
+            }
         }
 
         return NextResponse.json(

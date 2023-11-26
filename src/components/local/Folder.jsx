@@ -19,6 +19,8 @@ import {
 import Swal from "sweetalert2";
 import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Folder = () => {
   const [folders, setFolders] = useState([]);
@@ -81,12 +83,20 @@ export const Folder = () => {
           const res = await fetch(`/api/folder?id=${id}`, {
             method: "DELETE",
           });
-          if (!res.ok) {
+          if (res.ok) {
+            toast.success("Folder deleted successfully!", {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+          } else {
             throw new Error("Something went wrong");
           }
-          const { message } = await res.json();
-
-          Swal.fire("Deleted!", message, "success");
 
           // After successful delete, update the folders list by filtering out the deleted folder
           setFolders((prevFolders) =>
@@ -122,12 +132,20 @@ export const Folder = () => {
         },
         body: JSON.stringify({ name: newFolderName }),
       });
-      if (!res.ok) {
+      if (res.ok) {
+        toast.success("Folder renamed successfully!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else {
         throw new Error("Something went wrong");
       }
-      const { message } = await res.json();
-
-      Swal.fire("Renamed!", message, "success");
 
       // After successful delete, update the folders list by filtering out the deleted folder
       setFolders((prevFolders) =>

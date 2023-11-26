@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 import { RxCross2 } from "react-icons/rx";
 import { SignatoryFile } from "./SignatoryFile";
 import { getSession } from "next-auth/react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const SignatoryUpload = () => {
   const [inputValue, setInputValue] = useState("");
@@ -88,10 +90,15 @@ export const SignatoryUpload = () => {
   };
 
   const showUploadSuccessAlert = () => {
-    Swal.fire({
-      title: "File Upload Success",
-      text: "Your file has been uploaded successfully!",
-      icon: "success",
+    toast.success("File uploaded successfully!", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
     });
   };
 

@@ -30,7 +30,7 @@ export const Dashboard = () => {
                 />
               ) : (
                 <Image
-                  src="/images/cat.jpg"
+                  src="/images/avatar.jpg"
                   alt="profile image"
                   height={80}
                   width={80}
