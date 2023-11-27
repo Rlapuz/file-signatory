@@ -6,6 +6,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --hue: 223;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -94,4 +95,66 @@ input {
 
 .text-menus {
   @apply block antialiased text-base leading-relaxed text-inherit font-medium capitalize;
+}
+
+/* loading animation login */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: hsl(var(--hue), 90%, 5%);
+    --fg: hsl(var(--hue), 90%, 95%);
+  }
+  .ip-track {
+    stroke: hsl(var(--hue), 90%, 15%);
+  }
+}
+
+main {
+  @apply p-6;
+}
+
+.ip {
+  @apply w-64 h-32;
+}
+
+.ip-track {
+  stroke: hsl(var(--hue), 90%, 90%);
+  transition: stroke var(--trans-dur);
+}
+
+.ip-worm1 {
+  animation: worm1 2s linear infinite;
+}
+
+.ip-worm2 {
+  animation: worm2 2s linear infinite;
+}
+
+@keyframes worm1 {
+  from {
+    stroke-dashoffset: 0;
+  }
+  50% {
+    animation-timing-function: steps(1);
+    stroke-dashoffset: -358;
+  }
+  50.01% {
+    animation-timing-function: linear;
+    stroke-dashoffset: 358;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes worm2 {
+  from {
+    stroke-dashoffset: 358;
+  }
+  50% {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -358;
+  }
 }

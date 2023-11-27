@@ -300,7 +300,7 @@ export const Notif = () => {
       {files.length === 0 ? (
         <div className="flex justify-center">
           {session ? (
-            <p>No files uploaded</p>
+            <p>No Notifications</p>
           ) : (
             <Spinner
               label="Loading..."

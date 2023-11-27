@@ -4,6 +4,8 @@ import { RxCross2 } from "react-icons/rx";
 import { PickerOverlay } from "filestack-react-18";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Filestack = () => {
   const [inputValue, setInputValue] = useState("");
@@ -65,11 +67,6 @@ export const Filestack = () => {
 
           // Show the SweetAlert for upload success
           showUploadSuccessAlert();
-
-          // After successful upload, send the document to the appropriate signatory
-          // sendDocumentToSignatory();
-          // Set the destination signatory based on the hierarchy
-          // setDestinationSignatory(nextSignatory);
         } else {
           console.error("Failed to upload file to MongoDB.");
         }
@@ -83,10 +80,15 @@ export const Filestack = () => {
 
   // for sweet alert
   const showUploadSuccessAlert = () => {
-    Swal.fire({
-      title: "File Upload Success",
-      text: "Your file has been uploaded successfully!",
-      icon: "success",
+    toast.success("File uploaded successfully!", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
     });
   };
 

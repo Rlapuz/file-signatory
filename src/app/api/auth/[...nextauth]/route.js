@@ -45,11 +45,17 @@ export const authOptions = {
                             throw new Error('Email does not exist in Credential!');
                         }
 
-                        // const passwordsMatch = await bcrypt.compare(password, user.password)
-                        // Compare plain text password with the hashed password from the database
-                        if (password !== user.password) {
+                        // Compare the entered password with the stored hashed password
+                        const passwordsMatch = await bcrypt.compare(password, user.password);
+
+                        if (!passwordsMatch) {
                             throw new Error('Incorrect password!');
                         }
+
+                        // // Compare plain text password with the hashed password from the database
+                        // if (password !== user.password) {
+                        //     throw new Error('Incorrect password!');
+                        // }
 
 
                         return user
@@ -117,8 +123,8 @@ export const authOptions = {
                     password: credentials.password,
                     image: credentials.image,
                     provider: account.provider,
-                    role: 'user', // Set the role field to the default value 'user'
-                    status: 'active', // Set the status field to the default value 'active'
+                    role: 'user',
+                    status: 'active',
 
                 });
 

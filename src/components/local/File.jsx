@@ -201,15 +201,19 @@ export const File = () => {
 
   const handleSubmit = async (e, id) => {
     e.preventDefault();
-
     try {
+      const formData = new FormData();
+      formData.append("newFileName", newFileName);
+
       const res = await fetch(`/api/file?id=${id}`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ newFileName }),
+        body: formData,
       });
+
+      // console.log("Check newFileName", newFileName);
+      // console.log("Check id", id);
+      // console.log("Check res", res);
+
       if (res.ok) {
         toast.success("File renamed successfully!", {
           position: "top-center",
@@ -221,6 +225,7 @@ export const File = () => {
           progress: undefined,
           theme: "colored",
         });
+        // console.log("Check Ok res", res);
       } else {
         throw new Error("Something went wrong");
       }
@@ -401,8 +406,10 @@ export const File = () => {
                                     </Button>
                                     <Button
                                       color="primary"
-                                      onPress={onClose}
-                                      onSubmit={() => handleSubmit(file._id)}>
+                                      onClick={(e) => {
+                                        handleSubmit(e, file._id);
+                                        onOpenChange(); // Close the modal after handling the submit
+                                      }}>
                                       Rename
                                     </Button>
                                   </ModalFooter>

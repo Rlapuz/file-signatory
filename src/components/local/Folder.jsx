@@ -122,16 +122,21 @@ export const Folder = () => {
     return <div>Error: Something went wrong</div>;
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, id) => {
     e.preventDefault();
     try {
+      const formData = new FormData();
+      formData.append("newFolderName", newFolderName);
+
       const res = await fetch(`/api/folder?id=${id}`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: newFolderName }),
+        body: formData,
       });
+
+      // console.log("Check newFolderName", newFolderName);
+      // console.log("Check id", id);
+      // console.log("Check res", res);
+
       if (res.ok) {
         toast.success("Folder renamed successfully!", {
           position: "top-center",
@@ -143,17 +148,15 @@ export const Folder = () => {
           progress: undefined,
           theme: "colored",
         });
+        // console.log("Check Ok res", res);
       } else {
         throw new Error("Something went wrong");
       }
-
-      // After successful delete, update the folders list by filtering out the deleted folder
-      setFolders((prevFolders) =>
-        prevFolders.filter((folder) => folder._id !== id)
-      );
     } catch (error) {
       console.error(error);
-      Swal.fire("Error", error.message, "error");
+      toast.error("Error renaming folder", {
+        position: "top-center",
+      });
     }
   };
 
@@ -221,7 +224,7 @@ export const Folder = () => {
                           {(onClose) => (
                             <>
                               <ModalHeader className="flex flex-col gap-1">
-                                File Name
+                                Folder Name
                               </ModalHeader>
                               <ModalBody>
                                 <Input
@@ -230,9 +233,9 @@ export const Folder = () => {
                                   placeholder=""
                                   variant="bordered"
                                   onChange={(e) =>
-                                    setNewFileName(e.target.value)
+                                    setNewFolderName(e.target.value)
                                   }
-                                  value={newFileName}
+                                  value={newFolderName}
                                 />
                               </ModalBody>
                               <ModalFooter>
@@ -245,7 +248,10 @@ export const Folder = () => {
                                 <Button
                                   color="primary"
                                   onPress={onClose}
-                                  onSubmit={() => handleSubmit(folder._id)}>
+                                  onClick={(e) => {
+                                    handleSubmit(e, folder._id);
+                                    onOpenChange();
+                                  }}>
                                   Rename
                                 </Button>
                               </ModalFooter>

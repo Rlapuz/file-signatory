@@ -17,6 +17,7 @@ import {
   Input,
 } from "@nextui-org/react";
 import Swal from "sweetalert2";
+import { ToastContainer } from "react-toastify";
 
 export const ViewFiles = ({ updateFolders }) => {
   const [newFolderName, setNewFolderName] = useState("");
@@ -69,6 +70,8 @@ export const ViewFiles = ({ updateFolders }) => {
 
   return (
     <>
+      <ToastContainer />
+
       <div>
         <div className="flex flex-row-reverse mr-5">
           {/*  manual modal */}

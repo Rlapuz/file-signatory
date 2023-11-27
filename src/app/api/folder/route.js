@@ -41,10 +41,29 @@ export async function DELETE(request) {
 
 // PUT
 export async function PUT(request) {
-    const data = JSON.parse((await request).body)
-    const id = request.nextUrl.searchParams.get("id")
-    await connectDB()
-    const result = await FolderModel.updateOne({ "_id": id }, { "name": data })
-    return NextResponse.json(result, { status: 200 })
+    try {
+        const id = request.nextUrl.searchParams.get("id");
+        const formData = await request.formData();
+        const newFolderName = formData.get('newFolderName');
+
+        console.log("Received PUT request for folder ID:", id);
+        console.log("New folder name:", newFolderName);
+
+        await connectDB();
+
+        const updateFoldername = await FolderModel.findByIdAndUpdate(
+            id,
+            { $set: { name: newFolderName } },
+            { new: true }
+        );
+
+
+        console.log("Updated folder data:", updateFoldername);
+
+        return NextResponse.json(updateFoldername, { status: 200 });
+    } catch (error) {
+        console.error("Error while updating folder:", error);
+        return NextResponse.json({ message: "Failed to update folder" }, { status: 500 });
+    }
 }
 

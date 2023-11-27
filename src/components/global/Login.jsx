@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { getSession } from "next-auth/react";
 import { Spinner } from "@nextui-org/react";
+import { LoadingAnimation } from "./LoadingAnimation";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -38,7 +39,7 @@ export const Login = () => {
       }
 
       // Wait for the session to be updated
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Fetch the updated session
       const updatedSession = await getSession();
@@ -60,14 +61,7 @@ export const Login = () => {
 
   return (
     <section className="gradient-form h-screen bg-neutral-200 dark:bg-neutral-700 flex items-center justify-center">
-      {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
-          <Spinner
-            label="Logging in..."
-            color="warning"
-          />
-        </div>
-      )}
+      {loading && <LoadingAnimation />}
       <div className="container h-full p-10">
         <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
           <div className="w-full">
