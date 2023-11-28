@@ -27,6 +27,7 @@ import { AiOutlineFileGif } from "react-icons/ai";
 import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
 
 export const Retrieve = () => {
   const [deletedFiles, setDeletedFiles] = useState([]);
@@ -162,13 +163,6 @@ export const Retrieve = () => {
     }
   };
 
-  const toggleOptions = (id) => {
-    setShowOptions((prevShowOptions) => ({
-      ...prevShowOptions,
-      [id]: !prevShowOptions[id],
-    }));
-  };
-
   // for dynamic icon
   const getIconForMimeType = (mimeType) => {
     switch (mimeType) {
@@ -255,12 +249,88 @@ export const Retrieve = () => {
                         {file.filename}
                       </p>
                     </div>
-                    <div className="flex items-center">
-                      <BiDotsVerticalRounded
-                        size={20}
-                        onClick={() => toggleOptions(file._id)}
-                      />
-                    </div>
+
+                    <Popover
+                      placement="right"
+                      showArrow={true}
+                      className=" bg-slate-200">
+                      <PopoverTrigger>
+                        <div className="flex items-center">
+                          <BiDotsVerticalRounded size={20} />
+                        </div>
+                      </PopoverTrigger>
+                      <PopoverContent>
+                        <div className="flex flex-col gap-3 p-5">
+                          <Button
+                            color="secondary"
+                            size="sm"
+                            onClick={() => restoreDeletedFile(file._id)}>
+                            Restore
+                          </Button>
+                          <Button
+                            color="danger"
+                            size="sm"
+                            onClick={() => deleteFilePermanently(file._id)}>
+                            Delete
+                          </Button>
+                          <Button
+                            color="success"
+                            variant="shadow"
+                            size="sm"
+                            onClick={() =>
+                              window.open(
+                                `https://cdn.filestackcontent.com/${file.url}`
+                              )
+                            }>
+                            View
+                          </Button>
+
+                          {/* for rename modal */}
+                          <Modal
+                            isOpen={isOpen}
+                            onOpenChange={onOpenChange}
+                            placement="top-center">
+                            <ModalContent>
+                              {(onClose) => (
+                                <>
+                                  <ModalHeader className="flex flex-col gap-1">
+                                    File Name
+                                  </ModalHeader>
+                                  <ModalBody>
+                                    <Input
+                                      autoFocus
+                                      label="Rename"
+                                      placeholder=""
+                                      variant="bordered"
+                                      onChange={(e) =>
+                                        setNewFileName(e.target.value)
+                                      }
+                                      value={newFileName}
+                                    />
+                                  </ModalBody>
+                                  <ModalFooter>
+                                    <Button
+                                      color="danger"
+                                      variant="flat"
+                                      onPress={onClose}>
+                                      Close
+                                    </Button>
+                                    <Button
+                                      color="primary"
+                                      onClick={(e) => {
+                                        handleSubmit(e, file._id);
+                                        onOpenChange(); // Close the modal after handling the submit
+                                      }}>
+                                      Rename
+                                    </Button>
+                                  </ModalFooter>
+                                </>
+                              )}
+                            </ModalContent>
+                          </Modal>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
                   </CardHeader>
                   <CardBody className="overflow-visible py-2">
                     <Image
@@ -273,32 +343,6 @@ export const Retrieve = () => {
                   </CardBody>
                 </Card>
                 {/* nextui */}
-                {showOptions[file._id] && (
-                  <div className="flex gap-3 mt-2 ml-2">
-                    <Button
-                      size="sm"
-                      color="primary"
-                      onClick={() => restoreDeletedFile(file._id)}>
-                      Restore
-                    </Button>
-                    <Button
-                      color="danger"
-                      size="sm"
-                      onClick={() => deleteFilePermanently(file._id)}>
-                      Delete
-                    </Button>
-                    <Button
-                      color="success"
-                      size="sm"
-                      onClick={() =>
-                        window.open(
-                          `https://cdn.filestackcontent.com/${file.url}`
-                        )
-                      }>
-                      View
-                    </Button>
-                  </div>
-                )}
               </div>
             ))}
           </section>

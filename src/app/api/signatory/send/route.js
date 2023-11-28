@@ -31,6 +31,13 @@ export async function POST(request) {
 
         // Determine the next signatory based on the current signatory
         switch (file.currentSignatory) {
+            case "FOCAL":
+                console.log("Switch Case: FOCAL");
+                if (userRole === "FOCAL") {
+                    file.currentSignatory = "ProgChair";
+
+                }
+                break;
             case "ProgChair":
                 console.log("Switch Case: ProgChair");
                 if (userRole === "ProgChair") {
@@ -47,15 +54,10 @@ export async function POST(request) {
                 console.log("Switch Case: DEAN");
                 if (userRole === "DEAN") {
                     file.currentSignatory = "FOCAL";
+                    // file.status = "Approved";
                 }
                 break;
-            case "FOCAL":
-                console.log("Switch Case: FOCAL");
-                if (userRole === "FOCAL") {
-                    file.currentSignatory = "ProgChair";
-                    file.status = "Approved"; // Set status to Approved when FOCAL sends back to ProgChair
-                }
-                break;
+
             default:
                 console.log("Switch Case: Default");
                 console.log("Unexpected Current Signatory:", file.currentSignatory);
@@ -63,7 +65,7 @@ export async function POST(request) {
         }
 
 
-        console.log("Updated File Object:", file);
+        // console.log("Updated File Object:", file);
 
 
 
@@ -91,7 +93,7 @@ export async function POST(request) {
                         name: sender.name,
                         image: sender.image,
                     },
-                    message: `${file.filename} sign this file`,
+                    message: ` sign this ${file.filename} file `,
 
 
                 });
@@ -113,6 +115,17 @@ export async function POST(request) {
             { status: 200 }
         );
     } catch (error) {
+        if (error.name === 'ValidationError') {
+            // Handle Mongoose validation error
+            return NextResponse.json(
+                {
+                    message: 'Validation failed',
+                    errors: error.errors,
+                },
+                { status: 400 }
+            );
+        }
+
         console.error("Error while sending file to signatory:", error);
         return NextResponse.json(
             { message: "Failed to send file to signatory" },

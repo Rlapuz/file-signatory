@@ -11,6 +11,7 @@ import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { CheckIcon, ExclamationTriangleIcon } from "@heroicons/react/20/solid";
 import { EventSourceInput } from "@fullcalendar/core/index.js";
+import { EventModel } from "@/models/eventsModel";
 
 export const Calendar = () => {
   const [events, setEvents] = useState([
@@ -31,29 +32,30 @@ export const Calendar = () => {
     id: 0,
   });
 
-  /**
-   * ? this is for backend events to stored in database
-    useEffect(() => {
-  // Fetch events from MongoDB and update state
-  async function fetchEvents() {
-    try {
-      const events = await EventModel.find();
-      setAllEvents(events);
-    } catch (error) {
-      console.error("Error fetching events:", error);
+  useEffect(() => {
+    // Fetch events from MongoDB and update state
+    async function fetchEvents() {
+      try {
+        const events = await EventModel.find();
+        setAllEvents(events);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
     }
-  }
 
-  fetchEvents();
-}, []);
+    fetchEvents();
+  }, []);
 
-function addEvent(data) {
+  function addEvent(data) {
     // Prepare the data to be sent to the backend
     const eventData = {
       title: data.draggedEl.innerText,
       start: data.date.toISOString(), // Convert to ISO string
       allDay: data.allDay,
+      id: new Date().getTime(),
     };
+
+    setAllEvents([...allEvents, event]);
 
     // Make a POST request to the backend to create the event
     fetch("/api/calendar", {
@@ -61,7 +63,7 @@ function addEvent(data) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(eventData),
+      body: JSON.stringify(event),
     })
       .then((response) => response.json())
       .then((createdEvent) => {
@@ -72,22 +74,29 @@ function addEvent(data) {
       });
   }
 
-  function deleteEvent(eventId) {
-    // Send a DELETE request to the backend to delete the event
-    fetch(`/api/calendar?id=${eventId}`, {
+  function handleDelete() {
+    // Update frontend state
+    setAllEvents(
+      allEvents.filter((event) => Number(event.id) !== Number(idToDelete))
+    );
+
+    // Make a request to the backend to delete the event
+    fetch(`/api/calendar?id=${idToDelete}`, {
       method: "DELETE",
     })
       .then((response) => {
         if (response.status === 200) {
-          // If the deletion was successful, remove the event from the client-side state
-          setAllEvents(allEvents.filter((event) => event.id !== eventId));
+          // Optionally update the frontend state again if needed
         }
       })
       .catch((error) => {
         console.error("Error deleting event:", error);
       });
+
+    // Close the delete modal
+    setShowDeleteModal(false);
+    setIdToDelete(null);
   }
-   */
 
   useEffect(() => {
     let draggableEl = document.getElementById("draggable-el");

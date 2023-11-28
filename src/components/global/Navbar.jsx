@@ -293,7 +293,7 @@ export const Navbar = () => {
                                     className={`text-sm leading-none cursor-pointer ms-3  ${
                                       notification.status === "unread"
                                         ? " font-extrabold"
-                                        : "font-medium"
+                                        : " font-medium"
                                     } `}
                                     onClick={() =>
                                       handleNotificationClick(notification)

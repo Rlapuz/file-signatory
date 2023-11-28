@@ -23,12 +23,13 @@ import {
   Checkbox,
   Input,
 } from "@nextui-org/react";
-
+import { LoadingAnimation } from "../global/LoadingAnimation";
 import { getSession } from "next-auth/react";
 import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { LoadingSendSignatory } from "../global/LoadingSendSignatory";
 
 export const SignatoryFile = () => {
   // State for storing files and handling errors
@@ -39,6 +40,7 @@ export const SignatoryFile = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   // const [userId, setUserId] = useState();
   const [newFileName, setNewFileName] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { data: session } = useSession();
 
@@ -183,20 +185,41 @@ export const SignatoryFile = () => {
     }
   };
 
-  const handleSubmit = async (id) => {
+  const handleSubmit = async (e, id) => {
+    e.preventDefault();
     try {
+      const formData = new FormData();
+      formData.append("newFileName", newFileName);
+
       const res = await fetch(`/api/signatory?id=${id}`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ newFileName }),
+        body: formData,
       });
-      if (!res.ok) {
+
+      // console.log("Check newFileName", newFileName);
+      // console.log("Check id", id);
+      // console.log("Check res", res);
+
+      if (res.ok) {
+        toast.success("File renamed successfully!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        // console.log("Check Ok res", res);
+      } else {
         throw new Error("Something went wrong");
       }
     } catch (error) {
       console.error(error);
+      toast.error("Error renaming file", {
+        position: "top-center",
+      });
     }
   };
 
@@ -240,6 +263,7 @@ export const SignatoryFile = () => {
 
   const sendToSignatory = async (fileId) => {
     try {
+      setLoading(true);
       const session = await getSession();
       const userRole = session.user.role;
 
@@ -253,6 +277,7 @@ export const SignatoryFile = () => {
 
       if (res.ok) {
         const result = await res.json();
+        setLoading(false);
 
         console.log("Successfully sent file to signatory", result);
 
@@ -271,6 +296,7 @@ export const SignatoryFile = () => {
       } else {
         const errorResult = await res.json();
         console.error("Already send to signatory!", errorResult.message);
+        setLoading(false);
 
         toast.error("Already send to signatory!", {
           position: "top-center",
@@ -296,6 +322,8 @@ export const SignatoryFile = () => {
 
   return (
     <>
+      {loading && <LoadingSendSignatory />}
+
       <h1 className="text-md font-semibold mb-8">Signatory Files</h1>
       {files.length === 0 ? (
         <div className="flex justify-center">
@@ -394,7 +422,8 @@ export const SignatoryFile = () => {
                             color="warning"
                             variant="shadow"
                             size="sm"
-                            onClick={() => sendToSignatory(file._id)}>
+                            onClick={() => sendToSignatory(file._id)}
+                            onOpenChange={onOpenChange}>
                             Send to Signatory
                           </Button>
                           {/* for rename modal */}
@@ -429,8 +458,10 @@ export const SignatoryFile = () => {
                                     </Button>
                                     <Button
                                       color="primary"
-                                      onPress={onClose}
-                                      onSubmit={() => handleSubmit(file._id)}>
+                                      onClick={(e) => {
+                                        handleSubmit(e, file._id);
+                                        onOpenChange(); // Close the modal after handling the submit
+                                      }}>
                                       Rename
                                     </Button>
                                   </ModalFooter>

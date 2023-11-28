@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import { getSession } from "next-auth/react";
 import { Spinner } from "@nextui-org/react";
 import { LoadingAnimation } from "./LoadingAnimation";
+import { LoadingSendSignatory } from "./LoadingSendSignatory";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -61,7 +62,7 @@ export const Login = () => {
 
   return (
     <section className="gradient-form h-screen bg-neutral-200 dark:bg-neutral-700 flex items-center justify-center">
-      {loading && <LoadingAnimation />}
+      {loading && <LoadingSendSignatory />}
       <div className="container h-full p-10">
         <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
           <div className="w-full">

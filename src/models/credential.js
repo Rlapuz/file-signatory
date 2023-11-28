@@ -64,6 +64,11 @@ const CredentialSchema = new Schema({
                 enum: ["unread", "read"],
                 default: "unread",
             },
+
+            statusFile: {
+                type: String,
+                ref: 'FileSignatory',
+            },
             // time
             timestamps: {
                 type: Date,

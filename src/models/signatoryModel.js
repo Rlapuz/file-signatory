@@ -20,7 +20,7 @@ const fileSignatorySchema = new Schema({
     },
     currentSignatory: {
         type: String,
-        enum: ["ProgChair", "CESU", "DEAN", "FOCAL"],
+        enum: ["FOCAL", "ProgChair", "CESU", "DEAN"],
         // default: "ProgChair",
     },
 
@@ -44,6 +44,3 @@ const FileSignatoryModel = models.FileSignatory || model('FileSignatory', fileSi
 
 export default FileSignatoryModel;
 
-/**
- * TODO: implement if I upload file add currentSignatory based on my role
- */

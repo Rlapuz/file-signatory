@@ -25,8 +25,11 @@ import {
 } from "@nextui-org/react";
 import Swal from "sweetalert2";
 import { getSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
+import { NotifValidation } from "../global/NotifValidation";
+import Link from "next/link";
 
 export const Notif = () => {
   const [error, setError] = useState(null);
@@ -179,20 +182,41 @@ export const Notif = () => {
     }
   };
 
-  const handleSubmit = async (id) => {
+  const handleSubmit = async (e, id) => {
+    e.preventDefault();
     try {
+      const formData = new FormData();
+      formData.append("newFileName", newFileName);
+
       const res = await fetch(`/api/signatory?id=${id}`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ newFileName }),
+        body: formData,
       });
-      if (!res.ok) {
+
+      // console.log("Check newFileName", newFileName);
+      // console.log("Check id", id);
+      // console.log("Check res", res);
+
+      if (res.ok) {
+        toast.success("File renamed successfully!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        // console.log("Check Ok res", res);
+      } else {
         throw new Error("Something went wrong");
       }
     } catch (error) {
       console.error(error);
+      toast.error("Error renaming file", {
+        position: "top-center",
+      });
     }
   };
 
@@ -234,61 +258,61 @@ export const Notif = () => {
     }
   };
 
-  const sendToSignatory = async (fileId) => {
-    try {
-      const session = await getSession();
-      const userRole = session.user.role;
+  // const sendToSignatory = async (fileId) => {
+  //   try {
+  //     const session = await getSession();
+  //     const userRole = session.user.role;
 
-      const res = await fetch(`/api/signatory/send`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ fileId, userRole }),
-      });
+  //     const res = await fetch(`/api/signatory/send`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({ fileId, userRole }),
+  //     });
 
-      if (res.ok) {
-        const result = await res.json();
+  //     if (res.ok) {
+  //       const result = await res.json();
 
-        console.log("Successfully sent file to signatory", result);
-        // Check if there's a specific message from the server
-        if (result.message) {
-          Swal.fire({
-            title: "Success",
-            text: result.message,
-            icon: "success",
-            timer: 3000,
-            showConfirmButton: false,
-          });
-        } else {
-          console.error("Unexpected response from the server");
+  //       console.log("Successfully sent file to signatory", result);
+  //       // Check if there's a specific message from the server
+  //       if (result.message) {
+  //         Swal.fire({
+  //           title: "Success",
+  //           text: result.message,
+  //           icon: "success",
+  //           timer: 3000,
+  //           showConfirmButton: false,
+  //         });
+  //       } else {
+  //         console.error("Unexpected response from the server");
 
-          Swal.fire({
-            title: "Error",
-            text: "Failed to send file to signatory",
-            icon: "error",
-          });
-        }
-      } else {
-        const errorResult = await res.json();
-        console.error("Failed to send file to signatory", errorResult.message);
+  //         Swal.fire({
+  //           title: "Error",
+  //           text: "Failed to send file to signatory",
+  //           icon: "error",
+  //         });
+  //       }
+  //     } else {
+  //       const errorResult = await res.json();
+  //       console.error("Failed to send file to signatory", errorResult.message);
 
-        Swal.fire({
-          title: "Error",
-          text: errorResult.message || "Failed to send file to signatory",
-          icon: "error",
-        });
-      }
-    } catch (error) {
-      console.error("Error while sending file to signatory:", error);
+  //       Swal.fire({
+  //         title: "Error",
+  //         text: errorResult.message || "Failed to send file to signatory",
+  //         icon: "error",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error while sending file to signatory:", error);
 
-      Swal.fire({
-        title: "Error",
-        text: "Error while sending file to signatory",
-        icon: "error",
-      });
-    }
-  };
+  //     Swal.fire({
+  //       title: "Error",
+  //       text: "Error while sending file to signatory",
+  //       icon: "error",
+  //     });
+  //   }
+  // };
 
   if (error) {
     return <div>Error: Something went wrong</div>;
@@ -313,6 +337,7 @@ export const Notif = () => {
           <section className="grid grid-cols-1 gap-4 md:gap-10 md:grid-cols-3 lg:grid-cols-5 text-sm">
             {files.map((file) => (
               <div key={file._id}>
+                {/* <Link href={`/dashboard/notifications/${file._id}`}> */}
                 {/* nextui */}
                 <Card className="py-4 h-[270px]">
                   <CardHeader className="pb-0 pt-2 px-4 flex justify-between items-center">
@@ -320,7 +345,7 @@ export const Notif = () => {
                       {getIconForMimeType(file.mimetype)}
                     </div>
                     <div className="flex items-center">
-                      <p className="text-tiny font-bold truncate w-20 text-center">
+                      <p className="text-tiny font-bold truncate w-20 text-center cursor-pointer">
                         {file.filename}
                       </p>
                     </div>
@@ -361,13 +386,13 @@ export const Notif = () => {
                             }>
                             View
                           </Button>
-                          <Button
+                          {/* <Button
                             color="warning"
                             variant="shadow"
                             size="sm"
                             onClick={() => sendToSignatory(file._id)}>
                             Send to Signatory
-                          </Button>
+                          </Button> */}
                           <Button
                             color="secondary"
                             variant="shadow"
@@ -407,8 +432,10 @@ export const Notif = () => {
                                     </Button>
                                     <Button
                                       color="primary"
-                                      onPress={onClose}
-                                      onSubmit={() => handleSubmit(file._id)}>
+                                      onClick={(e) => {
+                                        handleSubmit(e, file._id);
+                                        onOpenChange(); // Close the modal after handling the submit
+                                      }}>
                                       Rename
                                     </Button>
                                   </ModalFooter>
@@ -425,11 +452,13 @@ export const Notif = () => {
                   </CardBody>
                 </Card>
                 {/* nextui */}
+                {/* </Link> */}
               </div>
             ))}
           </section>
         </div>
       )}
+      <div className="mt-5">{/* <NotifValidation /> */}</div>
     </>
   );
 };

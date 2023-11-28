@@ -4,6 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Credential from "@/models/credential";
 import connectDB from "@/db/connectDB";
 import { NextResponse } from "next/server";
+import FileSignatoryModel from "@/models/signatoryModel";
 
 export async function GET(request) {
     try {
@@ -26,6 +27,8 @@ export async function GET(request) {
         }
 
         const { role, notifications } = user;
+
+
 
 
 

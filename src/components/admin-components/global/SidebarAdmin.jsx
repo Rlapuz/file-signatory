@@ -213,7 +213,6 @@ export const SidebarAdmin = () => {
                 <Link
                   href={{
                     pathname: "/admin/retrieve",
-                    query: { name: "retrieve" },
                   }}
                   className="link">
                   <BsTrash

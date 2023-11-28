@@ -1,5 +1,10 @@
 "use client";
 import { useState } from "react";
+import { BsPersonFillDown } from "react-icons/bs";
+import { Select, SelectItem } from "@nextui-org/react";
+import React from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const Register = () => {
   const [name, setName] = useState("");
@@ -61,113 +66,173 @@ export const Register = () => {
         setEmail("");
         setPassword("");
         setRole("user");
-        // Display a success alert message
-        alert("Registration successful!");
+        // Display a success  message
+        toast.success("Register Successfully!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       } else {
-        console.log("Credential registration Failed");
+        toast.error("Register failed!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       }
     } catch (error) {
       console.log("Error during registration", error);
+      if (error.response && error.response.status === 400) {
+        toast.error("Email already exists!", { position: "top-center" });
+      } else {
+        toast.error("Registration failed!", { position: "top-center" });
+      }
     }
   };
+
   return (
     <>
-      <h1>Admin Page</h1>
-      <form
-        onSubmit={registerSubmit}
-        className="flex flex-col p-5 justify-center items-center">
-        <div class="relative">
-          <input
-            type="text"
-            class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <label class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
-            Name
-          </label>
-        </div>
-        <br />
-        <br />
-        <div class="relative">
-          <input
-            type="text"
-            class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            value={employeeId}
-            onChange={(e) => setEmployeeId(e.target.value)}
-          />
-          <label class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
-            EmpoyeeId
-          </label>
-        </div>
-        <br />
-        <br />
-        <div class="relative">
-          <input
-            type="text"
-            class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            value={contact}
-            onChange={(e) => setContact(e.target.value)}
-          />
-          <label class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
-            Contact
-          </label>
-        </div>
+      <div className="flex justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full item-center justify-center">
+          <div class="flex justify-center mb-6">
+            <span class="inline-block bg-gray-200 rounded-full p-3">
+              <BsPersonFillDown />
+            </span>
+          </div>
+          <h2 class="text-2xl font-semibold text-center mb-4">
+            Create a new account
+          </h2>
+          <p class="text-gray-600 text-center mb-6">
+            Enter your details to register.
+          </p>
+          <form onSubmit={registerSubmit}>
+            <div class="mb-4">
+              <label class="block text-gray-700 text-sm font-semibold mb-2">
+                Full Name *
+              </label>
+              <input
+                type="text"
+                class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500"
+                required
+                placeholder="Full Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div class="mb-4">
+              <label
+                for="fullName"
+                class="block text-gray-700 text-sm font-semibold mb-2">
+                Employee ID
+              </label>
+              <input
+                type="text"
+                class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500"
+                required
+                placeholder="Employee ID"
+                value={employeeId}
+                onChange={(e) => setEmployeeId(e.target.value)}
+              />
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700 text-sm font-semibold mb-2">
+                Contact
+              </label>
+              <input
+                type="text"
+                class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500"
+                required
+                placeholder="Contact"
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+              />
+            </div>
 
-        <br />
-        <div class="relative">
-          <input
-            type="text"
-            class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <label class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
-            Email
-          </label>
-        </div>
-        <br />
-        <div class="relative">
-          <input
-            type="password"
-            class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            placeholder=" "
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <label
-            htmlFor="Password"
-            class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
-            Password
-          </label>
-        </div>
-        <br />
-        <br />
+            <div class="mb-4">
+              <label
+                for="email"
+                class="block text-gray-700 text-sm font-semibold mb-2">
+                Email Address *
+              </label>
+              <input
+                type="email"
+                class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500"
+                required
+                placeholder="@bulsu.edu.ph"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div class="mb-6">
+              <label
+                for="password"
+                class="block text-gray-700 text-sm font-semibold mb-2">
+                Password *
+              </label>
+              <input
+                type="password"
+                class="form-input w-full px-4 py-2 border rounded-lg text-gray-700 focus:ring-blue-500"
+                required
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              {/* <p class="text-gray-600 text-xs mt-1">
+                Must contain 1 uppercase letter, 1 number, min. 8 characters.
+              </p> */}
+            </div>
+            <div className="mb-6">
+              <Select
+                label="Choose Role"
+                placeholder="Select Role"
+                className="max-w-xs"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}>
+                <SelectItem
+                  key="FOCAL"
+                  value="FOCAL">
+                  FOCAL
+                </SelectItem>
+                <SelectItem
+                  key="ProgChair"
+                  value="ProgChair">
+                  ProgChair
+                </SelectItem>
+                <SelectItem
+                  key="CESU"
+                  value="CESU">
+                  CESU
+                </SelectItem>
+                <SelectItem
+                  key="DEAN"
+                  value="DEAN">
+                  DEAN
+                </SelectItem>
+                <SelectItem
+                  key="ADMIN"
+                  value="ADMIN">
+                  ADMIN
+                </SelectItem>
+              </Select>
+            </div>
 
-        {/* choose role 5 roles ProgChair, Focal, Admin, Dean , and Cesu */}
-        <select
-          name="role"
-          id="role"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}>
-          <option value="FOCAL">Focal</option>
-          <option value="ADMIN">Admin</option>
-          <option value="DEAN">Dean</option>
-          <option value="CESU">Cesu</option>
-          <option value="ProgChair">ProgChair</option>
-        </select>
-
-        <br />
-        <button
-          type="submit"
-          className="p-2 bg-red-500 rounded-md">
-          Register
-        </button>
-      </form>
+            <button
+              type="submit"
+              class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+              Register
+            </button>
+          </form>
+        </div>
+      </div>
     </>
   );
 };

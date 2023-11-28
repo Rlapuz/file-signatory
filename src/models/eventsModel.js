@@ -17,7 +17,6 @@ const eventSchema = new Schema({
         type: Schema.Types.ObjectId,
         // Reference to the Credential model and UserGoogle model
         ref: 'Credential',
-        ref: 'UserGoogle',
         required: true,
     },
 }, { timestamps: true });

@@ -8,6 +8,7 @@ import { SignatoryFile } from "./SignatoryFile";
 import { getSession } from "next-auth/react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { LuUpload } from "react-icons/lu";
 
 export const SignatoryUpload = () => {
   const [inputValue, setInputValue] = useState("");
@@ -15,6 +16,7 @@ export const SignatoryUpload = () => {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [uploadedFileHandle, setUploadedFileHandle] = useState("");
   const [hasUploadedFile, setHasUploadedFile] = useState(false);
+
   const handleClearInput = () => {
     setInputValue("");
   };
@@ -73,7 +75,7 @@ export const SignatoryUpload = () => {
             url,
             mimetype,
             currentSignatory: userRole, // Set currentSignatory in the local state
-            status: "Pending", // Initial status
+            status: "Pending",
           });
           setHasUploadedFile(true);
 
@@ -104,58 +106,39 @@ export const SignatoryUpload = () => {
 
   return (
     <>
-      <div className="flex items-center justify-center p-12">
-        <div className="mx-auto w-full max-w-[450px] bg-white">
-          <form className="py-6 px-9">
-            <div className="mb-6 pt-4">
-              <label className="mb-5 block text-xl font-semibold text-[#07074D] text-center">
-                Upload File for Signatory
-              </label>
+      <div className="flex flex-col items-center justify-center border p-5 w-full md:w-1/2 md:mx-auto bg-white">
+        <h1 className="text-md font-semibold mb-8 text-center">
+          Upload File for Signatory
+        </h1>
 
-              <div className="mb-8">
-                <label
-                  for="file"
-                  className="relative flex min-h-[150px] items-center justify-center rounded-md border border-dashed border-[#e0e0e0] p-8 text-center">
-                  <div>
-                    {/* filestack */}
-                    {/* <span className="mb-2 block text-xl font-semibold text-[#07074D]">
-                      Drop files here
-                    </span> */}
-                    {/* <span className="mb-2 block text-base font-medium text-[#6B7280]">
-                      Or
-                    </span> */}
-                    <span
-                      className="inline-flex rounded border border-[#e0e0e0] py-2 px-7 text-base font-medium text-[#07074D]"
-                      onClick={handleClick}>
-                      Choose File
-                    </span>
-                  </div>
-                </label>
-              </div>
-
-              {uploadedFile && (
-                <div className="mb-5 rounded-md bg-[#F5F7FB] py-4 px-8">
-                  <div className="flex items-center justify-between">
-                    <span
-                      onClick={() =>
-                        window.open(
-                          `https://cdn.filestackcontent.com/${uploadedFileHandle}`
-                        )
-                      }
-                      className="truncate pr-3 text-base font-medium text-[#07074D]">
-                      {uploadedFile.filename.split(".")[0]}
-                    </span>
-                    <button
-                      className="text-[#07074D]"
-                      onClick={removeUploadedFile}>
-                      <RxCross2 size={23} />
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </form>
+        <div className="mb-3">
+          <span
+            className="inline-flex rounded border border-[#e0e0e0] py-2 px-7 text-base font-medium text-[#07074D] mb-3 "
+            onClick={handleClick}>
+            <LuUpload size={23} />
+          </span>
         </div>
+
+        {uploadedFile && (
+          <div className="mb-5 rounded-md bg-[#F5F7FB] py-4 px-8 w-full md:w-1/2">
+            <div className="flex items-center justify-between">
+              <span
+                onClick={() =>
+                  window.open(
+                    `https://cdn.filestackcontent.com/${uploadedFileHandle}`
+                  )
+                }
+                className="truncate pr-3 text-base font-medium text-[#07074D]">
+                {uploadedFile.filename.split(".")[0]}
+              </span>
+              <button
+                className="text-[#07074D]"
+                onClick={removeUploadedFile}>
+                <RxCross2 size={23} />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {showPicker && !hasUploadedFile && (
