@@ -113,13 +113,15 @@ export const DashboardAdmin = () => {
             />
           </div>
         ) : (
-          <Image
-            src="/images/avatar.jpg"
-            className="rounded-none lg:rounded-lg shadow-2xl hidden lg:block"
-            width={400}
-            height={750}
-            alt="..."
-          />
+          <div className="w-full lg:w-2/5">
+            <Image
+              src="/images/avatar.jpg"
+              className="rounded-none lg:rounded-lg shadow-2xl hidden lg:block"
+              width={400}
+              height={750}
+              alt="..."
+            />
+          </div>
         )}
       </div>
     </>
