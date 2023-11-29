@@ -178,12 +178,20 @@ export const Folder = () => {
           {folders.map((folder) => (
             <div key={folder._id}>
               <div className="flex justify-between items-center gap-4 border rounded-lg shadow-md px-3 py-4 bg-white hover:bg-gray-200">
-                <Link
+                {/* <Link
                   href={`/dashboard/${folder._id}`}
                   className="flex items-center gap-2">
                   <FaFolder size={20} />
-                  <h3 className="ml-0 text-menus text-sm">{folder.name}</h3>
-                </Link>
+                  <h3 className="ml-0 text-menus text-sm truncate w-20">
+                    {folder.name}
+                  </h3>
+                </Link> */}
+                <div className="flex items-center gap-2">
+                  <FaFolder size={20} />
+                  <h3 className="ml-0 text-menus text-sm sm:truncate ">
+                    {folder.name}
+                  </h3>
+                </div>
                 {/* <BiDotsVerticalRounded
               size={20}
               onClick={() => toggleOptions(folder._id)}

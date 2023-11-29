@@ -19,13 +19,15 @@ export const DashboardAdmin = () => {
       <div className="max-w-4xl flex items-center h-auto  flex-wrap mx-auto my-32 lg:mt-auto">
         <div
           id="profile"
-          className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-2xl bg-white opacity-75 mx-6 lg:mx-0 mt-auto">
+          className="w-full lg:w-3/5 rounded-lg lg:rounded-l-lg lg:rounded-r-none shadow-2xl bg-white  mx-6 lg:mx-0 mt-auto">
           <div className="p-4 md:p-12 text-center lg:text-left">
+            {/* Image for mobile view*/}
             <div
               className="block lg:hidden rounded-full shadow-xl mx-auto -mt-16 h-48 w-48 bg-cover bg-center"
               style={{
-                backgroundImage:
-                  "url('https://cdn.filestackcontent.com/44rSNfeQeeJn0eBQNU7g')",
+                backgroundImage: session?.user?.image
+                  ? `url('${session?.user?.image}')`
+                  : "url('https://cdn.filestackcontent.com/44rSNfeQeeJn0eBQNU7g')",
               }}></div>
 
             <h1 className="text-3xl font-bold pt-8 lg:pt-0 text-center">
@@ -103,12 +105,12 @@ export const DashboardAdmin = () => {
         </div>
 
         {session?.user?.image ? (
-          <div className="w-full lg:w-2/5">
+          <div className="w-full lg:w-2/5 ">
             <Image
               src={session?.user?.image}
               className="rounded-none lg:rounded-lg shadow-2xl hidden lg:block"
-              width={400}
-              height={750}
+              width={350}
+              height={700}
               alt="..."
             />
           </div>

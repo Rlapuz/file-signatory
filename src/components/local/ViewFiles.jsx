@@ -17,7 +17,8 @@ import {
   Input,
 } from "@nextui-org/react";
 import Swal from "sweetalert2";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const ViewFiles = ({ updateFolders }) => {
   const [newFolderName, setNewFolderName] = useState("");
@@ -38,14 +39,6 @@ export const ViewFiles = ({ updateFolders }) => {
 
   const handleCreate = async () => {
     try {
-      // Show SweetAlert after the folder is created
-      Swal.fire({
-        icon: "success",
-        title: "Folder Created",
-        text: "The new folder has been successfully created.",
-        confirmButtonColor: "#6A64F1", // Customize the confirm button color
-      });
-
       const response = await fetch("/api/folder", {
         method: "POST",
         headers: {
@@ -56,6 +49,19 @@ export const ViewFiles = ({ updateFolders }) => {
 
       if (!response.ok) {
         throw new Error("Failed to create folder");
+      }
+
+      if (response.ok) {
+        toast.success("Folder uploaded successfully!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       }
 
       // Fetch the updated list of folders from the component (implement this)
@@ -70,8 +76,6 @@ export const ViewFiles = ({ updateFolders }) => {
 
   return (
     <>
-      <ToastContainer />
-
       <div>
         <div className="flex flex-row-reverse mr-5">
           {/*  manual modal */}

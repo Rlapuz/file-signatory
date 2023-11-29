@@ -3,6 +3,7 @@
 import { Footer } from "@/components/global/Footer";
 import { Navbar } from "@/components/global/Navbar";
 import { Sidebar } from "@/components/global/Sidebar";
+import { ToastContainer } from "react-toastify";
 
 export const Dashboardlayout = ({ children }) => {
   return (

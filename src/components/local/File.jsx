@@ -34,7 +34,6 @@ export const File = () => {
   // State for storing files and handling errors
   const [files, setFiles] = useState([]);
   const [error, setError] = useState(null);
-  const [showOptions, setShowOptions] = useState({});
   // for modal
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   // const [userId, setUserId] = useState();

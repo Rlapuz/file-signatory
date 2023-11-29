@@ -30,7 +30,7 @@ export const Footer = () => {
         <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
           <Link
             className="text-gray-400"
-            href="https://www.facebook.com/raymund.lapuz.p//">
+            href="https://www.facebook.com/raymund.lapuz.p/">
             <span>
               <FaFacebook size={20} />
             </span>

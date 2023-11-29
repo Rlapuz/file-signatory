@@ -61,6 +61,10 @@ export const Navbar = () => {
     const interval = setInterval(() => {
       fetchNotifications();
     }, 1000);
+
+    // Clear the interval when the component unmounts
+    return () => clearInterval(interval);
+    s;
   }, [session]);
 
   const deleteNotification = async (notification) => {
@@ -154,11 +158,13 @@ export const Navbar = () => {
 
       // Navigate to the /dashboard/notification route
       router.push(`/dashboard/notifications`);
+      // close the popover after router.push
+      setIsOpen2(false);
 
       if (res.ok) {
         // Update the local state or trigger a refetch of notifications if needed
-        // fetchNotifications();
-        console.log("Notification status updated to 'read'");
+        notification();
+        // console.log("Notification status updated to 'read'");
 
         setNotifications((prevNotifications) =>
           prevNotifications.map((n) =>
@@ -392,11 +398,6 @@ export const Navbar = () => {
                             href="/dashboard/profile"
                             className="px-5 hover:bg-violet-300 rounded-md text-center">
                             Profile
-                          </Link>
-                          <Link
-                            href="/setting"
-                            className="px-5 hover:bg-violet-300 rounded-md text-center">
-                            Settings
                           </Link>
 
                           <hr />
