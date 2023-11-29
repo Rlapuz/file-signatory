@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { Dashboard } from "@/components/local/Dashboard";
+import { DashboardAdmin } from "@/components/admin-components/local/DashboardAdmin";
 
 export const metadata = {
   title: "Meneses | Admin Dashboard",
@@ -19,7 +20,7 @@ export const AdminPage = async () => {
 
   return (
     <>
-      <Dashboard />
+      <DashboardAdmin />
     </>
   );
 };

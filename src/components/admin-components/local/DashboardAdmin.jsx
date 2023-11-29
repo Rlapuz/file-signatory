@@ -102,15 +102,25 @@ export const DashboardAdmin = () => {
           </div>
         </div>
 
-        <div className="w-full lg:w-2/5">
+        {session?.user?.image ? (
+          <div className="w-full lg:w-2/5">
+            <Image
+              src={session?.user?.image}
+              className="rounded-none lg:rounded-lg shadow-2xl hidden lg:block"
+              width={400}
+              height={750}
+              alt="..."
+            />
+          </div>
+        ) : (
           <Image
-            src={session?.user?.image}
+            src="/images/avatar.jpg"
             className="rounded-none lg:rounded-lg shadow-2xl hidden lg:block"
             width={400}
-            height={700}
+            height={750}
             alt="..."
           />
-        </div>
+        )}
       </div>
     </>
   );
