@@ -178,11 +178,11 @@ export const Navbar = () => {
       <Suspense fallback={<NavbarSkeleton />}>
         <nav className="shadow-md bg-transparent rounded-md w-full">
           {/* search */}
-          <div className="flex items-center justify-between py-3 px-6 bg-white">
-            <form
+          <div className="flex items-center justify-end py-3 px-6 bg-white">
+            {/* <form
               // onSubmit={handleSearch}
               className="w-full max-w-md">
-              <div className="relative flex items-center text-gray-400 focus-within:text-gray-600  ">
+              <div className="relative flex items-center text-gray-400 focus-within:text-gray-600 mr-3 ">
                 <BiSearch className="w-5 h-5 absolute ml-7 md:ml-3 pointer-events-none" />
                 <input
                   type="text"
@@ -194,7 +194,7 @@ export const Navbar = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-            </form>
+            </form> */}
             {/* profile and notifications*/}
             <div className="relative flex-shrink-0 flex items-center gap-7">
               {/* ThemeSwitcher */}

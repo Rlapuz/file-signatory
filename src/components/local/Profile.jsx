@@ -26,18 +26,6 @@ export const Profile = () => {
     image: "",
   });
 
-  /** 
-   * ? this is for alert message manually
-  useEffect(() => {
-    if (alertMessage) {
-      const timeout = setTimeout(() => {
-        setAlertMessage(null);
-      }, 5000); // Change the timeout value (in milliseconds) to adjust the duration before the alert vanishes
-      return () => clearTimeout(timeout);
-    }
-  }, [alertMessage]);
-  */
-
   async function handleUpdateprofile() {
     const { name, image, contact, employeeId } = formData;
 

@@ -66,7 +66,9 @@ export const Dashboard = () => {
 
         {/* profile end */}
         {/* Program */}
-        <div className=" hidden md:block md:h-80 md:w-3/4 md:basis-3/4 p-2 rounded-md shadow-md  bg-white"></div>
+        <div className=" hidden md:block md:h-80 md:w-3/4 md:basis-3/4 p-2 rounded-md shadow-md  bg-white">
+          <h1>WELCOME BACK MASTER</h1>
+        </div>
       </div>
       {/* about */}
       <div className=" flex justify-center items-center md:justify-start font-semibold">

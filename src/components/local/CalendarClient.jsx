@@ -12,7 +12,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { CheckIcon, ExclamationTriangleIcon } from "@heroicons/react/20/solid";
 import { EventSourceInput } from "@fullcalendar/core/index.js";
 
-export const Calendar = () => {
+export const CalendarClient = () => {
   const [events, setEvents] = useState([
     { title: "event 1", id: "1" },
     { title: "event 2", id: "2" },
@@ -30,58 +30,6 @@ export const Calendar = () => {
     allDay: false,
     id: 0,
   });
-
-  function addEvent(data) {
-    // Prepare the data to be sent to the backend
-    const eventData = {
-      title: data.draggedEl.innerText,
-      start: data.date.toISOString(), // Convert to ISO string
-      allDay: data.allDay,
-      id: new Date().getTime(),
-    };
-
-    setAllEvents([...allEvents, createdEvent]);
-
-    // Make a POST request to the backend to create the event
-    fetch("/api/calendar", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(eventData),
-    })
-      .then((response) => response.json())
-      .then((createdEvent) => {
-        setAllEvents([...allEvents, createdEvent]);
-      })
-      .catch((error) => {
-        console.error("Error creating event:", error);
-      });
-  }
-
-  function handleDelete() {
-    // Update frontend state
-    setAllEvents(
-      allEvents.filter((event) => Number(event.id) !== Number(idToDelete))
-    );
-
-    // Make a request to the backend to delete the event
-    fetch(`/api/calendar?id=${idToDelete}`, {
-      method: "DELETE",
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          // Optionally update the frontend state again if needed
-        }
-      })
-      .catch((error) => {
-        console.error("Error deleting event:", error);
-      });
-
-    // Close the delete modal
-    setShowDeleteModal(false);
-    setIdToDelete(null);
-  }
 
   useEffect(() => {
     let draggableEl = document.getElementById("draggable-el");
@@ -165,14 +113,14 @@ export const Calendar = () => {
 
   return (
     <>
-      <div className="">
-        <nav className="flex flex-col justify-between mb-2 border-b border-violet-100 p-4">
+      <div className=" ">
+        <nav className="flex justify-between mb-2 border-b border-violet-100 p-2 sm:p-4">
           <h1 className="font-bold text-2xl text-gray-700">Calendar</h1>
         </nav>
-        <main className="flex flex-col items-center justify-between py-4 px-6">
-          <div className=" md:flex gap-5 justify-center grid md:grid-cols-10 ">
-            {/* ..................................................... */}
-            <div className="w-full md:col-span-8 overflow-auto md:overflow-visible">
+        {/* main */}
+        <main className="flex flex-col items-center justify-between py-4 px-2 sm:px-6 md:px-8 overflow-clip">
+          <div className="grid grid-cols-1 sm:grid-cols-8 gap-5 justify-center">
+            <div className="col-span-6">
               <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
                 headerToolbar={{
@@ -236,12 +184,12 @@ export const Calendar = () => {
                     leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
                     <Dialog.Panel
                       className="relative transform overflow-hidden rounded-lg
-                       bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                           bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                       <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                         <div className="sm:flex sm:items-start">
                           <div
                             className="mx-auto flex h-12 w-12 flex-shrink-0 items-center 
-                          justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                              justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
                             <ExclamationTriangleIcon
                               className="h-6 w-6 text-red-600"
                               aria-hidden="true"
@@ -264,15 +212,14 @@ export const Calendar = () => {
                       <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                         <button
                           type="button"
-                          className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm 
-                          font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                          className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                           onClick={handleDelete}>
                           Delete
                         </button>
                         <button
                           type="button"
                           className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 
-                          shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                              shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                           onClick={handleCloseModal}>
                           Cancel
                         </button>
@@ -332,11 +279,7 @@ export const Calendar = () => {
                               <input
                                 type="text"
                                 name="title"
-                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 
-                                shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 
-                                focus:ring-2 
-                                focus:ring-inset focus:ring-violet-600 
-                                sm:text-sm sm:leading-6"
+                                className="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
                                 value={newEvent.title}
                                 onChange={(e) => handleChange(e)}
                                 placeholder="Title"

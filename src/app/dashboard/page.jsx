@@ -1,3 +1,4 @@
+import { DashboardAdmin } from "@/components/admin-components/local/DashboardAdmin";
 import { Dashboard } from "@/components/local/Dashboard";
 // import { Suspense } from "react";
 
@@ -8,7 +9,8 @@ export const metadata = {
 const DashboardPage = () => {
   return (
     <>
-      <Dashboard />
+      {/* <Dashboard /> */}
+      <DashboardAdmin />
     </>
   );
 };

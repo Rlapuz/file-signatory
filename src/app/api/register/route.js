@@ -52,12 +52,13 @@ export async function GET(request) {
 // DELETE
 export async function DELETE(request) {
     try {
-        // Ensure a database connection is established
-        await connectDB();
 
         // Retrieve the credential ID from the request parameters
-        const { id } = request.params;
+        const id = request.nextUrl.searchParams.get("id");
 
+        // console.log("id: ", id);
+
+        await connectDB();
         // Delete the credential from the database
         await Credential.findByIdAndDelete(id);
 
@@ -77,7 +78,8 @@ export async function PUT(request) {
         await connectDB();
 
         // Retrieve the credential ID from the request parameters
-        const { id } = request.params;
+        const id = request.nextUrl.searchParams.get("id");
+
 
         // Extract data from the request JSON
         const { name, contact, employeeId, email, password, role, provider } = await request.json();
